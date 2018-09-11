@@ -1,0 +1,22 @@
+{
+	"id": "Ballistic",
+	"colors": [
+		{
+			"R": 150,
+			"G": 0,
+			"B": 0
+		}
+	],
+	"mass": 1,
+	"damage": 1,
+	"lifetime": 2,
+	"vel": 5,
+	"scale": 1,
+	"shape": {
+		"Lines": [
+			{"X": 0, "Y": 0}
+		],
+		"Boxes": [],
+		"Triangles": []
+	}
+}

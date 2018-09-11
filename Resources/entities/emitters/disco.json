@@ -1,0 +1,7 @@
+{
+	"id": "Disco",
+	"rate": 60,
+	"particle": {
+		"path": "\\entities\\particles\\rainbow.json"
+	}
+}

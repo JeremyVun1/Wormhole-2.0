@@ -1,0 +1,63 @@
+	{
+	"id": "testShip",
+	"cost": 100,
+	"health": 10,
+	"rgb": [
+		127,
+		255,
+		212
+	],
+	"scale": 1,
+	"shape": {
+		"lines": [
+			{
+				"StartPoint":
+					{"X": 0, "Y": 0},
+				"EndPoint":
+					{"X": 0, "Y": 1}
+			},
+			{
+				"StartPoint":
+					{"X": 0, "Y": 1},
+				"EndPoint":
+					{"X": 1, "Y": 1}
+			}
+		],
+		"boxes": [
+			{"X": 0, "Y": 0},
+			{"X": 0, "Y": 1},
+			{"X": 1, "Y": 1},
+			{"X": 1, "Y": 0}
+		],
+		"triangles": [
+			{"X": 0, "Y": 0},
+			{"X": 1, "Y": 0}
+		]
+	},
+	"engines": [
+		{
+			"path": "\\entities\\engines\\light.json",
+			"pos": {"X": 0, "Y": 1}
+		},
+		{
+			"path": "\\entities\\engines\\light.json",
+			"pos": {"X": 1, "Y": 1}
+		}
+	],
+	"tools": [
+		{
+			"path": "\\entities\\tools\\railgun.json",
+			"pos": {"X": 0, "Y": -1}
+		},
+		{
+			"path": "\\entities\\tools\\railgun.json",
+			"pos": {"X": 1, "Y": -1}
+		}
+	],
+	"emitters": [
+		{
+			"path": "\\entities\\emitters\\disco.json",
+			"pos": {"X": 1, "Y": 1}
+		}
+	]
+}

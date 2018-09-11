@@ -1,0 +1,22 @@
+{
+	"id": "Railgun",
+	"colors": [
+		{
+			"R": 255,
+			"G": 255,
+			"B": 255
+		}
+	],
+	"cooldown": 0.5,
+	"scale": 0.5,
+	"shape": {
+		"Lines": [],
+		"Boxes": [],
+		"Triangles": [
+			{"X": 0, "Y": 0}
+		]
+	},
+	"Ammo": {
+		"path": "\\entities\\ammo\\ballistic.json"
+	}
+}

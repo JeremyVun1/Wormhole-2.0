@@ -1,0 +1,23 @@
+{
+	"id": "Light",
+	"thrust": 1,
+	"maxVel": 2,
+	"turnRate": 0.2,
+	"mass": 5,
+	"scale": 0.3,
+	"shape": {
+		"Lines": [],
+		"boxes": [
+			{"X": 0, "Y": 0}
+		],
+		"triangles": [
+			{"X": 0, "Y": -1}
+		]
+	},
+	"emitters": [
+		{
+		"path": "\\entities\\emitters\\disco.json",
+		"pos": {"X": 0, "Y": 0}
+		}
+	]
+}

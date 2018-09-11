@@ -1,0 +1,1 @@
+{"Id":"testParticle","Colors":[{"R":10,"G":10,"B":10}],"Scale":0.4,"Shape":{"Lines":[],"Boxes":[{"X":0.0,"Y":0.0}],"Triangles":[]},"LifetimeRange":{"Min":0.1,"Max":0.5},"VelRange":{"Min":0.1,"Max":0.5},"Friction":0.95,"TurnRateRange":{"Min":0.1,"Max":1.0}}

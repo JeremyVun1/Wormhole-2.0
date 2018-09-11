@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug-Windows</Configuration>
+    <ProjectGuid>{A9DCAC72-BC77-4C33-BE70-BBFD31D7C798}</ProjectGuid>
+    <RootNamespace>Wormhole</RootNamespace>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <AssemblyName>Wormhole</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
+    <SuppressXamMacMigration>True</SuppressXamMacMigration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Exe</OutputType>
+    <ApplicationIcon>Resources\SwinGame.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Windows|x86' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>false</UseSGen>
+    <UseRefCounting>false</UseRefCounting>
+    <Profiling>false</Profiling>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Wormhole.GameMain</StartupObject>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyLibsToOut</PrepareForRunDependsOn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="src\Entities\Asteroids\Asteroid.cs" />
+    <Compile Include="src\Entities\Entity.cs" />
+    <Compile Include="src\Entities\Mob.cs" />
+    <Compile Include="src\Game\IGameModule.cs" />
+    <Compile Include="src\Factories\Level\product\Background.cs" />
+    <Compile Include="src\Factories\Level\product\Difficulty.cs" />
+    <Compile Include="src\Factories\Level\product\LevelList.cs" />
+    <Compile Include="src\Factories\Level\product\Star.cs" />
+    <Compile Include="src\Game\IModule.cs" />
+    <Compile Include="src\Menu\buttons\ButtonHandler.cs" />
+    <Compile Include="src\Menu\buttons\NavButton.cs" />
+    <Compile Include="src\Menu\IMenuModule.cs" />
+    <Compile Include="src\Extensions\MoveExtensions.cs" />
+    <Compile Include="src\Extensions\RotateExtensions.cs" />
+    <Compile Include="src\enums\Enums.cs" />
+    <Compile Include="src\Extensions\UtilExtensions.cs" />
+    <Compile Include="src\Menu\buttons\Button.cs" />
+    <Compile Include="src\Menu\MenuModule.cs" />
+    <Compile Include="src\Menu\textbox\TextBox.cs" />
+    <Compile Include="src\Factories\Level\LevelFactory.cs" />
+    <Compile Include="src\Factories\Level\product\Level.cs" />
+    <Compile Include="src\Menu\MenuFactory.cs" />
+    <Compile Include="src\Menu\Menu.cs" />
+    <Compile Include="src\Game\WHGameModule.cs" />
+    <Compile Include="src\Game\WHGameFactory.cs" />
+    <Compile Include="src\Factories\Ship\ShipFactory.cs" />
+    <Compile Include="src\Factories\Ship\ShipList.cs" />
+    <Compile Include="src\GameController.cs" />
+    <Compile Include="src\log\Log.cs" />
+    <Compile Include="src\Main.cs" />
+    <Compile Include="src\Progress\Player.cs" />
+    <Compile Include="src\Entities\Ship\Components\Ammo\Ammo.cs" />
+    <Compile Include="src\Entities\Ship\Components\Ammo\AmmoGroup.cs" />
+    <Compile Include="src\Entities\Ship\Components\Component.cs" />
+    <Compile Include="src\Entities\Ship\Components\ComponentGroup.cs" />
+    <Compile Include="src\Entities\Ship\Components\Emitters\Emitter.cs" />
+    <Compile Include="src\Entities\Ship\Components\Emitters\EmitterGroup.cs" />
+    <Compile Include="src\Entities\Ship\Components\Engines\Engine.cs" />
+    <Compile Include="src\Entities\Ship\Components\Engines\EngineGroup.cs" />
+    <Compile Include="src\Entities\Ship\Components\IComponent.cs" />
+    <Compile Include="src\Entities\Ship\Components\Particles\Particle.cs" />
+    <Compile Include="src\Entities\Ship\Components\Particles\ParticleGroup.cs" />
+    <Compile Include="src\Entities\Ship\Components\Tools\Tool.cs" />
+    <Compile Include="src\Entities\Ship\Components\Tools\ToolGroup.cs" />
+    <Compile Include="src\Entities\Ship\IShip.cs" />
+    <Compile Include="src\Entities\Ship\Ship.cs" />
+    <Compile Include="src\structs\RGB.cs" />
+    <Compile Include="src\structs\MinMax.cs" />
+    <Compile Include="src\Entities\Ship\Shape\Shape.cs" />
+    <Compile Include="src\structs\Size2D.cs" />
+    <Compile Include="src\IWindow.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Stateless, Version=4.0.0.0, Culture=neutral, PublicKeyToken=93038f0927583c9a, processorArchitecture=MSIL">
+      <HintPath>packages\Stateless.4.2.1\lib\net45\Stateless.dll</HintPath>
+    </Reference>
+    <Reference Include="SwinGame">
+      <HintPath>lib\SwinGame.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <WinLibs Include="lib\win32\*.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Factories\Ship\Shape\" />
+    <Folder Include="src\Factories\WHGame\product\" />
+  </ItemGroup>
+  <Target Name="CopyLibsToOut">
+    <Copy SourceFiles="@(WinLibs)" DestinationFolder="$(OutDir)" />
+  </Target>
+</Project>

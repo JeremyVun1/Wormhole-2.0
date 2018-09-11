@@ -1,0 +1,18 @@
+{
+	"id": "Asteroid",
+	"baseHealth": 10,
+	"rgb": [
+		255,
+		255,
+		255
+	],
+	"scale": 1,
+	"shape": {
+		"Lines": [],
+		"boxes": [],
+		"triangles": [
+			[0, 0],
+			[1, 0]
+		]
+	}
+}
