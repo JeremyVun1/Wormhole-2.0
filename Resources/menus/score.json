@@ -1,5 +1,5 @@
 {
-	"MenuId": "ScoreScreen",
+	"MenuId": "Score",
 	"Title": "Game Over",
 	"FontColor":{
 		"R": 255,

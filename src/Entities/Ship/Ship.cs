@@ -11,6 +11,10 @@ namespace Wormhole
 	{
 		//general
 		public int Cost { get; private set; }
+		public float Condition
+		{
+			get { return (Health / BaseHealth); }
+		}
 
 		//components
 		private ComponentGroup Engines { get; set; }

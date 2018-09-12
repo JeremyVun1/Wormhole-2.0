@@ -22,6 +22,8 @@ namespace Wormhole
 
 		public ShipList BuildShipList()
 		{
+			shipList.Clear();
+
 			//get list of all files
 			string buffer;
 			fileList = Directory.GetFiles(resourceDir);

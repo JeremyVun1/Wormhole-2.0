@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace Wormhole
 {
-	public class ButtonHandler
+	public class ShootCommand : ICommand
 	{
-		//stack of events
+		IControllableShip ship;
 
-
-		public ButtonHandler()
+		public ShootCommand(IControllableShip s)
 		{
-
+			ship = s;
 		}
 
-		public void ButtonClicked(BtnAction action, string payload)
+		public void Execute()
 		{
+			ship.Shoot();
 		}
 	}
 }

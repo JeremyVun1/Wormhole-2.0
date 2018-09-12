@@ -1,5 +1,5 @@
 {
-	"MenuID": "HighScores",
+	"MenuId": "HighScores",
 	"Title": "High Scores",
 	"FontColor":{
 		"R": 255,

@@ -2,8 +2,10 @@
 {
 	public interface IShip
 	{
+		string Id { get; }
 		int Cost { get; }
 		int Mass { get; }
+		float Condition { get; }
 
 		int RepairCost();
 

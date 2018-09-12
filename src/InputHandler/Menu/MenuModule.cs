@@ -11,11 +11,11 @@ namespace Wormhole
 		//public enum Trigger { CHANGE};
 		//StateMachine<Menu.State, Menu.Trigger> stateMachine;
 
-		private ButtonHandler btnHandler;
-
 		private Dictionary<string, Menu> menus;
 		public Menu currMenu { get; private set; }
 		public Player PlayerProgress { get; set; }
+		private ShipList shipList;
+		private LevelList levelList;
 
 		public bool Ended { get; }
 
@@ -27,33 +27,33 @@ namespace Wormhole
 			//3 player level progress
 			//4 list of levels
 			//5 difficulty options (and what the player has selected)
-			//initialise
-			menus = new Dictionary<string, Menu>();
-			UpdateProgress(player, shipList, levelList);
 
-			btnHandler = new ButtonHandler();
+			menus = new Dictionary<string, Menu>(); //init menu dictionary
+			UpdateProgress(player, shipList, levelList); //information for displaying menu according to player progress
 
-			ChangeMenu("main");
+
 		}
 
 		public void UpdateProgress(Player player, ShipList shipList, LevelList levelList)
 		{
-
+			PlayerProgress = player;
+			this.shipList = shipList;
+			this.levelList = levelList;
 		}
 
-		public void AddMenu(string key, Menu value)
+		public void AddMenu(string menuId, Menu menu)
 		{
-			if (menus.ContainsKey(key))
-				menus[key] = value;
+			if (menus.ContainsKey(menuId))
+				menus[menuId] = menu;
 			else
-				menus.Add(key, value);
+				menus.Add(menuId, menu);
 		}
 
 		public void ChangeMenu(string target)
 		{
 			if (menus.ContainsKey(target))
 				currMenu = menus[target];
-			else Log.Msg("I CANT FIND THE MENU OMG NPE");
+			else Console.WriteLine("I CANT FIND THE MENU NAMED " + target);
 		}
 
 		public void Run()

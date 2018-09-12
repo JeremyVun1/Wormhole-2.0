@@ -19,7 +19,7 @@ namespace Wormhole
 		}
 
 		//clamp for floats
-		public static double Clamp(this double x, float min, float max)
+		public static float Clamp(this float x, float min, float max)
 		{
 			if (x < min)
 				return min;

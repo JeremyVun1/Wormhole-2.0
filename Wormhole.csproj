@@ -53,20 +53,35 @@
     <Compile Include="src\Factories\Level\product\LevelList.cs" />
     <Compile Include="src\Factories\Level\product\Star.cs" />
     <Compile Include="src\Game\IModule.cs" />
-    <Compile Include="src\Menu\buttons\ButtonHandler.cs" />
-    <Compile Include="src\Menu\buttons\NavButton.cs" />
-    <Compile Include="src\Menu\IMenuModule.cs" />
+    <Compile Include="src\InputHandler\Game\Commands\ActivatePowerupCommand.cs" />
+    <Compile Include="src\InputHandler\Game\Commands\BackwardCommand.cs" />
+    <Compile Include="src\InputHandler\Game\Commands\ForwardCommand.cs" />
+    <Compile Include="src\InputHandler\ICommand.cs" />
+    <Compile Include="src\InputHandler\Game\Commands\StrafeLeftCommand.cs" />
+    <Compile Include="src\InputHandler\Game\Commands\StrafeRightCommand.cs" />
+    <Compile Include="src\InputHandler\Game\Commands\ShootCommand.cs" />
+    <Compile Include="src\InputHandler\Game\Commands\TurnLeftCommand.cs" />
+    <Compile Include="src\InputHandler\Game\Commands\TurnRightCommand.cs" />
+    <Compile Include="src\InputHandler\Game\IControllableShip.cs" />
+    <Compile Include="src\InputHandler\InputHandler.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\MenuCommandFactory.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\NavCommands\NavToCommand.cs" />
+    <Compile Include="src\InputHandler\Menu\IControllableMenu.cs" />
+    <Compile Include="src\InputHandler\Menu\Buttons\ButtonFactory.cs" />
+    <Compile Include="src\InputHandler\Menu\Buttons\MenuButton.cs" />
+    <Compile Include="src\InputHandler\Menu\TextBox\TextBox.cs" />
+    <Compile Include="src\InputHandler\Menu\TextBox\TextBoxFactory.cs" />
+    <Compile Include="src\InputHandler\Menu\IMenuModule.cs" />
     <Compile Include="src\Extensions\MoveExtensions.cs" />
     <Compile Include="src\Extensions\RotateExtensions.cs" />
     <Compile Include="src\enums\Enums.cs" />
     <Compile Include="src\Extensions\UtilExtensions.cs" />
-    <Compile Include="src\Menu\buttons\Button.cs" />
-    <Compile Include="src\Menu\MenuModule.cs" />
-    <Compile Include="src\Menu\textbox\TextBox.cs" />
+    <Compile Include="src\InputHandler\Menu\Buttons\Button.cs" />
+    <Compile Include="src\InputHandler\Menu\MenuModule.cs" />
     <Compile Include="src\Factories\Level\LevelFactory.cs" />
     <Compile Include="src\Factories\Level\product\Level.cs" />
-    <Compile Include="src\Menu\MenuFactory.cs" />
-    <Compile Include="src\Menu\Menu.cs" />
+    <Compile Include="src\InputHandler\Menu\MenuFactory.cs" />
+    <Compile Include="src\InputHandler\Menu\Menu.cs" />
     <Compile Include="src\Game\WHGameModule.cs" />
     <Compile Include="src\Game\WHGameFactory.cs" />
     <Compile Include="src\Factories\Ship\ShipFactory.cs" />
@@ -74,6 +89,7 @@
     <Compile Include="src\GameController.cs" />
     <Compile Include="src\log\Log.cs" />
     <Compile Include="src\Main.cs" />
+    <Compile Include="src\Progress\ownedShips.cs" />
     <Compile Include="src\Progress\Player.cs" />
     <Compile Include="src\Entities\Ship\Components\Ammo\Ammo.cs" />
     <Compile Include="src\Entities\Ship\Components\Ammo\AmmoGroup.cs" />
@@ -123,6 +139,7 @@
   <ItemGroup>
     <Folder Include="src\Factories\Ship\Shape\" />
     <Folder Include="src\Factories\WHGame\product\" />
+    <Folder Include="src\Menu\" />
   </ItemGroup>
   <Target Name="CopyLibsToOut">
     <Copy SourceFiles="@(WinLibs)" DestinationFolder="$(OutDir)" />

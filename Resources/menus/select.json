@@ -1,5 +1,5 @@
 {
-	"MenuID": "Select",
+	"MenuId": "Select",
 	"Title": "Select",
 	"FontColor":{
 		"R": 255,

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SwinGameSDK;
+using System.IO;
+using Newtonsoft.Json;
 using Stateless;
 
 namespace Wormhole
@@ -74,7 +76,7 @@ namespace Wormhole
 			LoadResources();
 
 			//Player profile
-			player = new Player();
+			player = new Player(resourcePath + "\\progress\\progress.json");
 
 			//Factories
 			levelFac = new LevelFactory(resourcePath + "\\levels");
@@ -82,8 +84,7 @@ namespace Wormhole
 			menuFac = new MenuFactory(resourcePath + "\\menus");
 			shipFac = new ShipFactory(resourcePath + "\\entities\\ships");
 
-			menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList());
-			menuModule.ChangeMenu("Main");
+			menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList());			
 			gameModule = gameFac.Create(player, shipFac.Fetch("testShip"), levelFac.Fetch("Level1"));
 
 			//State
@@ -91,45 +92,21 @@ namespace Wormhole
 			stateMachine.Configure(State.MENU)
 				.Permit(Trigger.TOGGLE, State.GAME)
 				.OnExit(() => FetchModuleProgress(menuModule)) //get progress information from module
-				.OnEntry(() => CreateGameModule()); //send updated progress information to module
-			stateMachine.Configure(State.GAME).Permit(Trigger.TOGGLE, State.MENU)
-				.OnExit(() => FetchModuleProgress(menuModule)) //get progress information from module
-				.OnEntry(() => CreateMenuModule()); //send progress information to module
-		}
-
-		private void FetchModuleProgress(IModule m)
-		{
-			player = m.PlayerProgress;
-		}
-
-		private void CreateMenuModule()
-		{
-			menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList());
-		}
-
-		private void CreateGameModule()
-		{
-			gameModule = gameFac.Create(player, shipFac.Fetch("testShip"), levelFac.Fetch("1"));
-		}
-
-		private void HandleModuleTransition(IModule module)
-		{
-			if (module.Ended)
-				stateMachine.Fire(Trigger.TOGGLE);
+				.OnEntry(() => CreateMenuModule()); //send updated progress information to module
+			stateMachine.Configure(State.GAME)
+				.Permit(Trigger.TOGGLE, State.MENU)
+				.OnExit(() => FetchModuleProgress(gameModule)) //get progress information from module
+				.OnEntry(() => CreateGameModule()); //send progress information to module
 		}
 
 		public void Run()
 		{
 			Init();
-			int i = 0;
 
 			while (!SwinGame.WindowCloseRequested())
 			{
 				SwinGame.ClearScreen(Clr);
 				SwinGame.ProcessEvents();
-
-				i++;
-				Console.WriteLine(i);
 
 				Update();
 				Draw();
@@ -162,7 +139,48 @@ namespace Wormhole
 
 		public void Draw()
 		{
-			
+			switch (stateMachine.State)
+			{
+				case (State.GAME):
+					//gameModule.Draw();
+					break;
+				case (State.MENU):
+					menuModule.Draw();
+					break;
+			}
+
+			SwinGame.DrawText(player.Balance().ToString(), Color.White, 50, 50);
+		}
+
+		//state on exit, on entry functions
+		private void FetchModuleProgress(IModule m)
+		{
+			player = m.PlayerProgress;
+			player.RemoveMoney(5);
+			player.SaveProgress();
+			Log.Msg("fetching module progress");
+		}
+
+		private void CreateMenuModule()
+		{
+			menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList());
+			Log.Msg("Creating menu module");
+		}
+
+		private void CreateGameModule()
+		{
+			gameModule = gameFac.Create(player, shipFac.Fetch("testShip"), levelFac.Fetch("Level1"));
+			Log.Msg("Creating game module");
+		}
+
+		private void HandleModuleTransition(IModule module)
+		{
+			if (module.Ended || SwinGame.KeyTyped(KeyCode.SpaceKey))
+			{
+				Log.Msg("/////////////////");
+				stateMachine.Fire(Trigger.TOGGLE);
+				Console.WriteLine("module state triggered to " + stateMachine.State);
+			}
 		}
 	}
 }

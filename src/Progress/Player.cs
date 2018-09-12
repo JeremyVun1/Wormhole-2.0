@@ -11,41 +11,55 @@ namespace Wormhole
 {
 	public class Player
 	{
-		private int _money;
-		private Dictionary<IShip, int> _ownedShips; //list of ships that the player owns and their condition in %
-		private int _levelProgress;
-		private DifficultyType _difficulty;
-		private string _filePath;
+		[JsonProperty]
+		public string Id;
+		[JsonProperty]
+		private int money;
+		[JsonProperty]
+		private Dictionary<string, float> ownedShips; //list of ships that the player owns and their condition in %
+		[JsonProperty]
+		private int levelProgress;
+		[JsonProperty]
+		private DifficultyType difficulty;
+		private string progressPath;
 
-		public void AddMoney(int x) => _money += x;
-		public void RemoveMoney(int x) => _money -= x;
-		public int Balance() { return _money; }
+		public void AddMoney(int x) => money += x;
+		public void RemoveMoney(int x) => money -= x;
+
+
+		public int Balance() { return money; }
+
+		public void TestAddShip(string id, float condition)
+		{
+			ownedShips.Add(id, condition);
+		}
 
 		public void AddShip(IShip ship)
 		{
 			if (!Owned(ship))
-				_ownedShips.Add(ship, 100);
+				ownedShips.Add(ship.Id, ship.Condition);
 		}
 
-		public void SetShipCondition(IShip ship, int cond)
+		public void SetShipCondition(IShip ship, float cond)
 		{
 			if (Owned(ship))
-				_ownedShips[ship] = cond.Clamp(0, 100);
+				ownedShips[ship.Id] = cond.Clamp(0, 1);
 		}
 
-		public void IncLevelProgress(int x) => _levelProgress = x;
+		public void IncLevelProgress(int x) => levelProgress = x;
 
-		public void SetDifficulty(DifficultyType d) => _difficulty = d;
+		public void SetDifficulty(DifficultyType d) => difficulty = d;
 
 		//load progress from file
 		private void LoadProgress()
 		{
-			if (File.Exists(_filePath))
+			if (File.Exists(progressPath))
 			{
 				try
 				{
-					string buffer = File.ReadAllText(_filePath);
+					string buffer = File.ReadAllText(progressPath);
 					JsonConvert.PopulateObject(buffer, this);
+					//PopulateFields(JsonConvert.DeserializeObject(buffer));
 				}
 				catch (Exception e)
 				{
@@ -59,27 +73,56 @@ namespace Wormhole
 		//save progress to file
 		public void SaveProgress()
 		{
-			try
+			if (File.Exists(progressPath))
 			{
-				string buffer = JsonConvert.SerializeObject(this);
-				File.WriteAllText(_filePath, buffer);
-			} catch (Exception e)
-			{
-				Log.Ex(e, "error saving player progress to file");
-			}
+				try
+				{
+					string buffer = JsonConvert.SerializeObject(this);
+					Console.WriteLine(buffer);
+					JsonSerializerSettings a = new JsonSerializerSettings();
+					string path = SwinGame.AppPath() + "\\testSave.json";
+					File.WriteAllText(path, buffer);
+				}
+				catch (Exception e)
+				{
+					Log.Ex(e, "error saving player progress to file");
+				}
+			}			
 		}
 
-		public Player()
+		public Player(dynamic obj)
 		{
-			//set filepath
-			_filePath = SwinGame.AppPath() + "\\Resources\\player.json";
-
+			PopulateFields(obj);
+		}
+		public Player(string path)
+		{
+			progressPath = path;
 			LoadProgress();
+		}
+
+		private void PopulateFields(dynamic obj)
+		{
+			Id = obj.id;
+			money = obj.money;
+
+			if (ownedShips == null)
+			{
+				ownedShips = new Dictionary<string, float>();
+			}
+
+			foreach (var s in obj.ownedShips)
+			{
+				Console.WriteLine(s.id);
+				Console.WriteLine(s.condition);
+				ownedShips.Add((string)s.id, (float)s.condition);
+			}
+			levelProgress = obj.levelProgress;
+			difficulty = (DifficultyType) Enum.Parse(typeof(DifficultyType), (string)obj.difficulty);
 		}
 
 		private bool Owned(IShip ship)
 		{
-			return _ownedShips.ContainsKey(ship);
+			return ownedShips.ContainsKey(ship.Id);
 		}
 	}
 }

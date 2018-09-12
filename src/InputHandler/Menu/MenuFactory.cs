@@ -11,6 +11,8 @@ namespace Wormhole
 	public class MenuFactory
 	{
 		private readonly string dirPath;
+		private ButtonFactory buttonFac;
+		private TextBoxFactory txtBoxFac;
 
 		public MenuFactory(string dir)
 		{
@@ -20,15 +22,20 @@ namespace Wormhole
 		private void ReadMenuData(string file, MenuModule menus)
 		{
 			string buffer = File.ReadAllText(dirPath + file);
-			Menu result = JsonConvert.DeserializeObject<Menu>(buffer);
-			menus.AddMenu(result.MenuID, result);
+			dynamic menuObj = JsonConvert.DeserializeObject(buffer);
+			Menu result = new Menu(menuJObj, buttonFac.CreateList(menuObj.Buttons), txtBoxFac.CreateList(menuObj));
+
+
+			//Menu result = JsonConvert.DeserializeObject<Menu>(buffer);
+			Console.WriteLine(buffer);
+			Console.WriteLine(result.Buttons.Count);
+
+			menus.AddMenu(result.MenuId, result);
 		}
 
 		public MenuModule Create(Player player, ShipList shipList, LevelList levelList)
 		{
 			MenuModule result = new MenuModule(player, shipList, levelList);
-
-			//IShipList shipList, ILevelList levelList, int money, IDiffList diff
 
 			//help
 			ReadMenuData("\\help.json", result);
@@ -42,6 +49,8 @@ namespace Wormhole
 			ReadMenuData("\\scorescreen.json", result);
 			//select
 			ReadMenuData("\\select.json", result);
+
+			result.ChangeMenu("Main");
 
 			return result;
 		}

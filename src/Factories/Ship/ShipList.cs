@@ -24,5 +24,10 @@ namespace Wormhole
 		{
 			return List[id];
 		}
+
+		public void Clear()
+		{
+			List.Clear();
+		}
 	}
 }
