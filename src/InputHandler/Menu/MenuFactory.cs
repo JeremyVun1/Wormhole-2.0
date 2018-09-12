@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Wormhole
 {
 	public class MenuFactory
 	{
 		private readonly string dirPath;
-		private ButtonFactory buttonFac;
+		private CommandButtonFactory buttonFac;
 		private TextBoxFactory txtBoxFac;
 
 		public MenuFactory(string dir)
@@ -23,12 +24,11 @@ namespace Wormhole
 		{
 			string buffer = File.ReadAllText(dirPath + file);
 			dynamic menuObj = JsonConvert.DeserializeObject(buffer);
-			Menu result = new Menu(menuJObj, buttonFac.CreateList(menuObj.Buttons), txtBoxFac.CreateList(menuObj));
 
-
-			//Menu result = JsonConvert.DeserializeObject<Menu>(buffer);
-			Console.WriteLine(buffer);
-			Console.WriteLine(result.Buttons.Count);
+			//create buttons and textboxes to inject into menu
+			List<IMenuElement> btns = buttonFac.CreateList(menuObj.Buttons, menuObj.ElementColors);
+			List<IMenuElement> txtboxes = txtBoxFac.CreateList(menuObj.TextBoxes, menuObj.ElementColors);
+			Menu result = new Menu(buffer, btns, txtboxes);
 
 			menus.AddMenu(result.MenuId, result);
 		}
@@ -36,6 +36,9 @@ namespace Wormhole
 		public MenuModule Create(Player player, ShipList shipList, LevelList levelList)
 		{
 			MenuModule result = new MenuModule(player, shipList, levelList);
+
+			buttonFac = new CommandButtonFactory(result);
+			txtBoxFac = new TextBoxFactory();
 
 			//help
 			ReadMenuData("\\help.json", result);

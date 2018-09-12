@@ -13,9 +13,9 @@ namespace Wormhole
 	public class GameController : IWindow
 	{
 		//window
-		public Size2D<int> Size { get; private set; }
-		public string Title { get; private set; }
-		public Color Clr { get; private set; }
+		public Size2D<int> WindowSize { get; private set; }
+		public string WindowTitle { get; private set; }
+		public Color WindowColor { get; private set; }
 
 		//resource path
 		private readonly string resourcePath;
@@ -48,32 +48,34 @@ namespace Wormhole
 
 		public GameController(string t, int w, int h, Color c)
 		{
-			Size = new Size2D<int>(w, h);
-			Title = t;
-			Clr = c;
+			WindowSize = new Size2D<int>(w, h);
+			WindowTitle = t;
+			WindowColor = c;
 
 			resourcePath = SwinGame.AppPath() + "\\Resources"; //TODO CHANGE THIS TO RESOURCE FOLDER
 
-			SwinGame.OpenGraphicsWindow(Title, Size.W, Size.H);
+			SwinGame.OpenGraphicsWindow(WindowTitle, WindowSize.W, WindowSize.H);
 		}
-		public GameController() : this("NoName", 400, 400, Color.Black) { }
+		public GameController() : this("NoName", 1000, 700, Color.Black) { }
 
 		//resize the window
 		public void SetWindow(int w, int h)
 		{
-			SwinGame.ChangeWindowSize(Title, w, h);
-			Size = new Size2D<int>(w, h);
+			SwinGame.ChangeWindowSize(WindowTitle, w, h);
+			WindowSize = new Size2D<int>(w, h);
 		}
 
 		private void LoadResources()
 		{
-			SwinGame.OpenAudio();
-			//load music and other stuff
+			SwinGame.LoadResourceBundleNamed("GameBundle", "Game_Bundle.txt", true);
 		}
 
 		private void Init()
 		{
+			SwinGame.OpenAudio();
+			SwinGame.SetMusicVolume(0.1f);
 			LoadResources();
+			//SwinGame.PlayMusic();
 
 			//Player profile
 			player = new Player(resourcePath + "\\progress\\progress.json");
@@ -105,7 +107,7 @@ namespace Wormhole
 
 			while (!SwinGame.WindowCloseRequested())
 			{
-				SwinGame.ClearScreen(Clr);
+				SwinGame.ClearScreen(WindowColor);
 				SwinGame.ProcessEvents();
 
 				Update();
@@ -142,7 +144,7 @@ namespace Wormhole
 			switch (stateMachine.State)
 			{
 				case (State.GAME):
-					//gameModule.Draw();
+					gameModule.Draw();
 					break;
 				case (State.MENU):
 					menuModule.Draw();

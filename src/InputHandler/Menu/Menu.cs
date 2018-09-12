@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SwinGameSDK;
 
 namespace Wormhole
 {
@@ -13,18 +14,15 @@ namespace Wormhole
 		public string MenuId { get; private set; }
 		[JsonProperty]
 		private string Title;
-		[JsonProperty]
-		private int FontSize;
 		[JsonIgnore]
-		private List<TextBox> TextBoxes { get; set; }
-		[JsonIgnore]
-		public List<MenuButton> Buttons { get; set; }
+		private List<IMenuElement> elements { get; set; }
 
-		public Menu(string json, List<MenuButton> b, List<TextBox> t)
+		public Menu(string json, List<IMenuElement> b, List<IMenuElement> t)
 		{
 			JsonConvert.PopulateObject(json, this);
-			Buttons = b;
-			TextBoxes = t;
+			elements = new List<IMenuElement>();
+			elements.AddRange(t);
+			elements.AddRange(b);
 		}
 
 		//transition
@@ -35,22 +33,21 @@ namespace Wormhole
 
 		public void Update()
 		{
+			foreach (IMenuElement e in elements)
+			{
+				e.Update();
+			}
 		}
-
-		/*private void ActivateButton(BtnAction action, string payload)
-		{
-			
-		}*/
 
 		public void Draw()
 		{
-			foreach (TextBox t in TextBoxes)
+			//draw title
+			Rectangle window = SwinGame.CreateRectangle(0, 0, SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
+			SwinGame.DrawText(Title, Color.White, Color.Transparent, "MenuTitle", FontAlignment.AlignCenter, window);
+
+			foreach (IMenuElement e in elements)
 			{
-				t.Draw();
-			}
-			foreach(Button b in Buttons)
-			{
-				b.Draw();
+				e.Draw();
 			}
 		}
 	}

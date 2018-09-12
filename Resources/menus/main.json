@@ -11,49 +11,45 @@
 		},
 		{
 			"FillColor":{
-				"R": 130,
-				"G": 130,
-				"B": 130
+				"R": 90,
+				"G": 90,
+				"B": 90
 			}
 		},
 		{
 			"BorderColor":{
-				"R": 20,
-				"G": 20,
-				"B": 20
+				"R": 255,
+				"G": 255,
+				"B": 255
 			}
 		},
 		{
 			"HoverColor": {
-				"R": 200,
-				"G": 200,
-				"B": 0
+				"R": 180,
+				"G": 180,
+				"B": 90
 			}
 		}
 	],
-	"FontSize": 12,
 	"TextBoxes": [
 		{
 			"Pos": {"X": 0.4, "Y": 0.38},
-			"Text": "Lorem Ipsum capsicum"
-		},
-		{
-			"Pos": {"X": 0.4, "Y": 0.38},
+			"Size": {"W": 0.5, "H": 0.5},
 			"Text": "Lorem Ipsum capsicum"
 		}
 	],
 	"Buttons": [
 		{
-			"Label": "TestButton",
-			"Pos": {"X": 0, "Y": 0},
-			"Size": {"W": 0.2, "H": 0.1},
+			"Label": "TestButton1",
+			"Pos": {"X": 0.2, "Y": 0.8},
+			"Size": {"W": 0.1, "H": 0.05},
 			"Action": "NavTo",
 			"Payload": "Options"
 		},
 		{
-			"Label": "TestButton",
-			"Pos": {"X": 0, "Y": 0},
-			"Size": {"W": 0.2, "H": 0.1},
+			"Label": "TestButton2",
+			"Pos": {"X": 0.7, "Y": 0.8},
+			"Size": {"W": 0.1, "H": 0.05},
 			"Action": "NavTo",
 			"Payload": "HighScores"
 		}

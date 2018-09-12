@@ -53,13 +53,14 @@ namespace Wormhole
 		//load progress from file
 		private void LoadProgress()
 		{
+			Console.WriteLine(File.Exists(progressPath));
 			if (File.Exists(progressPath))
 			{
 				try
 				{
 					string buffer = File.ReadAllText(progressPath);
 					JsonConvert.PopulateObject(buffer, this);
-					//PopulateFields(JsonConvert.DeserializeObject(buffer));
+					PopulateFields(JsonConvert.DeserializeObject(buffer));
 				}
 				catch (Exception e)
 				{
@@ -78,7 +79,6 @@ namespace Wormhole
 				try
 				{
 					string buffer = JsonConvert.SerializeObject(this);
-					Console.WriteLine(buffer);
 					JsonSerializerSettings a = new JsonSerializerSettings();
 					string path = SwinGame.AppPath() + "\\testSave.json";
 					File.WriteAllText(path, buffer);
@@ -110,6 +110,7 @@ namespace Wormhole
 				ownedShips = new Dictionary<string, float>();
 			}
 
+			Log.Msg("hi");
 			foreach (var s in obj.ownedShips)
 			{
 				Console.WriteLine(s.id);

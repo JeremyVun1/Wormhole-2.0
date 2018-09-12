@@ -35,8 +35,6 @@ C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\o
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\obj\x86\Debug-Windows\Wormhole.exe
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\obj\x86\Debug-Windows\Wormhole.pdb
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\animations\startup.txt
-C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\bundles\FileDialog.txt
-C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\bundles\splash.txt
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\fonts\arial.ttf
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\fonts\cour.ttf
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\fonts\maven_pro_regular.ttf
@@ -80,5 +78,6 @@ C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\b
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\menus\options.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\menus\select.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\menus\scorescreen.json
-C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\obj\x86\Debug-Windows\Wormhole.csprojAssemblyReference.cache
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\progress\progress.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\bundles\Game_Bundle.txt
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\Wormhole\bin\Debug\Resources\menus\score.json

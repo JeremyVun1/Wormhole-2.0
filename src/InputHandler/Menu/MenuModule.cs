@@ -30,8 +30,6 @@ namespace Wormhole
 
 			menus = new Dictionary<string, Menu>(); //init menu dictionary
 			UpdateProgress(player, shipList, levelList); //information for displaying menu according to player progress
-
-
 		}
 
 		public void UpdateProgress(Player player, ShipList shipList, LevelList levelList)
@@ -75,6 +73,36 @@ namespace Wormhole
 		public bool IsEnded()
 		{
 			throw new NotImplementedException();
+		}
+
+		public void Exit()
+		{
+			//exit game here
+		}
+
+		public void LoadProgress()
+		{
+			//load progress from file here
+		}
+
+		public void SaveProgress()
+		{
+			//save progress to file here
+		}
+
+		public void SelectLevel(string levelId)
+		{
+
+		}
+
+		public void SelectShip(string shipId)
+		{
+
+		}
+
+		public void SelectDifficulty(string diffId)
+		{
+
 		}
 	}
 }

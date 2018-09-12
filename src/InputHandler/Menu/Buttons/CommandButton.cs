@@ -8,16 +8,20 @@ using Newtonsoft.Json.Linq;
 
 namespace Wormhole
 {
-	public class MenuButton : Button
+	public class CommandButton : Button
 	{
 		ICommand command;
 
-		public MenuButton(ICommand c, JObject btnJObj, JObject colors) : base(btnJObj, colors)
+		public CommandButton(ICommand c, JToken btnJObj, JArray colors) : base(btnJObj, colors)
 		{
 			command = c;
 
 			stateMachine.Configure(State.CLICKED)
-				.OnEntry(() => command.Execute());
+				.OnEntry(() =>
+				{
+					stateMachine.Fire(Trigger.CLICK);
+					command.Execute();
+				});
 		}
 	}
 }

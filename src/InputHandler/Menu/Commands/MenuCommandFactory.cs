@@ -17,17 +17,25 @@ namespace Wormhole
 
 		public ICommand Create(string action, string payload)
 		{
-			switch((BtnAction)Enum.Parse(typeof(BtnAction), action))
+			switch(action.ToLower())
 			{
-				case BtnAction.NavTo:
+				case "navto" :
 					return new NavToCommand(menuModule, payload);
-				case BtnAction.Exit:
-					return null; //new ExitCommand();
-				case BtnAction.Save:
-					return null; //new SaveCommand();
+				case "exit":
+					return new ExitCommand(menuModule);
+				case "save":
+					return new SaveCommand(menuModule);
+				case "load":
+					return new LoadCommand(menuModule);
+				case "selectship":
+					return new SelectShipCommand(menuModule, payload);
+				case "selectlevel":
+					return new SelectLevelCommand(menuModule, payload);
+				case "selectdifficulty":
+					return new SelectDifficultyCommand(menuModule, payload);
+				default:
+					return null;
 			}
-
-			return null;
 		}
 	}
 }

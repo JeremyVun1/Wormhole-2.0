@@ -8,7 +8,13 @@ namespace Wormhole
 {
 	public interface IControllableMenu
 	{
-		void ChangeMenu();
+		void ChangeMenu(string id);
+		void SaveProgress();
+		void LoadProgress();
+		void SelectShip(string id);
+		void SelectDifficulty(string id);
+		void SelectLevel(string id);
+		void Exit();
 	}
 }
 

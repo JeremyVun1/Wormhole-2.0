@@ -42,5 +42,8 @@ namespace Wormhole
 			Level.Update();
 			playerShip.Update();
 		}
+
+		//device controls the ship
+		//use command pattern
 	}
 }

@@ -2,8 +2,8 @@
 {
 	public interface IWindow
 	{
-		Size2D<int> Size { get; }
-		string Title { get; }
+		Size2D<int> WindowSize { get; }
+		string WindowTitle { get; }
 
 		void SetWindow(int w, int h);
 

@@ -64,11 +64,20 @@
     <Compile Include="src\InputHandler\Game\Commands\TurnRightCommand.cs" />
     <Compile Include="src\InputHandler\Game\IControllableShip.cs" />
     <Compile Include="src\InputHandler\InputHandler.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\LoadCommand.cs" />
     <Compile Include="src\InputHandler\Menu\Commands\MenuCommandFactory.cs" />
-    <Compile Include="src\InputHandler\Menu\Commands\NavCommands\NavToCommand.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\ExitCommand.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\NavToCommand.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\SaveCommand.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\SelectDifficultyCommand.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\SelectLevelCommand.cs" />
+    <Compile Include="src\InputHandler\Menu\Commands\SelectShipCommand.cs" />
     <Compile Include="src\InputHandler\Menu\IControllableMenu.cs" />
-    <Compile Include="src\InputHandler\Menu\Buttons\ButtonFactory.cs" />
-    <Compile Include="src\InputHandler\Menu\Buttons\MenuButton.cs" />
+    <Compile Include="src\InputHandler\Menu\Buttons\CommandButtonFactory.cs" />
+    <Compile Include="src\InputHandler\Menu\Buttons\CommandButton.cs" />
+    <Compile Include="src\InputHandler\Menu\IMenuElement.cs" />
+    <Compile Include="src\InputHandler\Menu\MenuElement.cs" />
+    <Compile Include="src\InputHandler\Menu\MenuElementFactory.cs" />
     <Compile Include="src\InputHandler\Menu\TextBox\TextBox.cs" />
     <Compile Include="src\InputHandler\Menu\TextBox\TextBoxFactory.cs" />
     <Compile Include="src\InputHandler\Menu\IMenuModule.cs" />
@@ -139,7 +148,6 @@
   <ItemGroup>
     <Folder Include="src\Factories\Ship\Shape\" />
     <Folder Include="src\Factories\WHGame\product\" />
-    <Folder Include="src\Menu\" />
   </ItemGroup>
   <Target Name="CopyLibsToOut">
     <Copy SourceFiles="@(WinLibs)" DestinationFolder="$(OutDir)" />
