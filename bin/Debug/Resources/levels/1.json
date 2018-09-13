@@ -1,39 +1,54 @@
 {
-	"id": "Level1",
+	"Id": "Level1",
 	"Size": {"W": 1500, "H": 1500},
-	"LevelNumber": 1,
-	"EnvironMods": [],
+	"Playable": false,
+	"LevelNumber": 0,
+	"EnvironMods": [
+		"Nebula",
+		"Blackhole",
+		"Radioactive"
+	],
 	"Entities": [
 		{
-			"pathId": "\\entities\\asteroid.json",
+			"path": "\\entities\\asteroid.json",
 			"Pos": {"X": 200, "Y": 200}
 		},
 		{
-			"pathId": "\\entities\\asteroid.json",
+			"path": "\\entities\\asteroid.json",
 			"Pos": {"X": 200, "Y": 200}
 		}
 	],
 	"Background": {
 		"StarCount": 50,
-		"StarColor": {
-			"Color": [
-				{
-					"R": 255,
-					"G": 0,
-					"B": 0
-				},
-				{
-					"R": 255,
-					"G": 255,
-					"B": 255
-				},
-				{
-					"R": 0,
-					"G": 0,
-					"B": 255
-				}
-			]
+		"Size": {
+			"Min": 2,
+			"Max": 6
 		},
+		"DimRate": {
+			"Min": 2,
+			"Max": 4
+		},
+		"FlareRate": {
+			"Min": 0.1,
+			"Max": 0.2
+		},
+		"Colors": [
+			{
+				"R": 255,
+				"G": 0,
+				"B": 0
+			},
+			{
+				"R": 255,
+				"G": 255,
+				"B": 255
+			},
+			{
+				"R": 0,
+				"G": 0,
+				"B": 255
+			}
+		],
 		"BackgroundColor": {
 			"R": 0,
 			"G": 0,

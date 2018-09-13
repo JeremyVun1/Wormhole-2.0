@@ -5,8 +5,9 @@
 //Loads Fonts
 FONT,MenuText,maven_pro_regular.ttf,24
 FONT,MenuTitle,maven_pro_regular.ttf,42
-FONT,ButtonText,maven_pro_regular.ttf,20
+FONT,ButtonText,maven_pro_regular.ttf,14
 
 //Loads Sounds
+SOUND,Error,error.wav
 
 //Loads Music

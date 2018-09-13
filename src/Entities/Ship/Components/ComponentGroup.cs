@@ -28,8 +28,6 @@ namespace Wormhole
 		{
 			resourcePath = SwinGame.AppPath() + "\\resources";
 			components = new List<IComponent>();
-
-			//add components to the component list
 		}
 
 		public void InitComponents()
@@ -37,7 +35,6 @@ namespace Wormhole
 			foreach (IComponent c in components)
 			{
 				//get json obj and inject it into component for easier testing
-
 				string buffer = File.ReadAllText(resourcePath + c.Path);
 				dynamic obj = JsonConvert.DeserializeObject(buffer);
 

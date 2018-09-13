@@ -11,6 +11,7 @@ namespace Wormhole
 		public Player PlayerProgress { get; private set; }
 		private IShip playerShip { get; set; }
 		private Level Level { get; set; }
+		private CollisionHandler collisionHandler { get; set; }
 
 		public bool Ended { get; }
 

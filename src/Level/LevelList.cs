@@ -8,26 +8,26 @@ namespace Wormhole
 {
 	public class LevelList
 	{
-		public Dictionary<string, Level> List { get; private set; } //<levelID><level obj>
+		public Dictionary<string, Level> levelList { get; private set; } //<levelID><level obj>
 
 		public LevelList()
 		{
-			List = new Dictionary<string, Level>();
+			levelList = new Dictionary<string, Level>();
 		}
 
 		public void Add(Level l)
 		{
-			List.Add(l.id, l);
+			levelList.Add(l.Id, l);
 		}
 
 		public Level Fetch(string id)
 		{
-			return List[id];
+			return levelList[id];
 		}
 
 		public void Clear()
 		{
-			List.Clear();
+			levelList.Clear();
 		}
 	}
 }

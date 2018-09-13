@@ -14,6 +14,7 @@ namespace Wormhole
 		void SelectShip(string id);
 		void SelectDifficulty(string id);
 		void SelectLevel(string id);
+		void Play();
 		void Exit();
 	}
 }

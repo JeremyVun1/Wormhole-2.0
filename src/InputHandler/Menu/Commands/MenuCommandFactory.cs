@@ -33,6 +33,8 @@ namespace Wormhole
 					return new SelectLevelCommand(menuModule, payload);
 				case "selectdifficulty":
 					return new SelectDifficultyCommand(menuModule, payload);
+				case "play":
+					return new PlayCommand(menuModule);
 				default:
 					return null;
 			}

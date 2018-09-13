@@ -1,6 +1,6 @@
 {
-	"Id": "Level1",
-	"Size": {"W": 1500, "H": 1500},
+	"Id": "MenuScene",
+	"Size": {"W": 1000, "H": 700},
 	"Playable": false,
 	"LevelNumber": 0,
 	"EnvironMods": [
@@ -19,33 +19,33 @@
 		}
 	],
 	"Background": {
-		"StarCount": 50,
+		"StarCount": 80,
 		"Size": {
-			"Min": 2,
-			"Max": 6
+			"Min": 1,
+			"Max": 3
 		},
 		"DimRate": {
-			"Min": 2,
-			"Max": 4
+			"Min": 1,
+			"Max": 9
 		},
 		"FlareRate": {
-			"Min": 0.1,
-			"Max": 0.2
+			"Min": 0.05,
+			"Max": 0.7
 		},
 		"Colors": [
-			{
-				"R": 255,
-				"G": 0,
-				"B": 0
-			},
 			{
 				"R": 255,
 				"G": 255,
 				"B": 255
 			},
 			{
+				"R": 100,
+				"G": 150,
+				"B": 255
+			},
+			{
 				"R": 0,
-				"G": 0,
+				"G": 150,
 				"B": 255
 			}
 		],

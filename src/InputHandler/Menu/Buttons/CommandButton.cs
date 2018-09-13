@@ -17,11 +17,7 @@ namespace Wormhole
 			command = c;
 
 			stateMachine.Configure(State.CLICKED)
-				.OnEntry(() =>
-				{
-					stateMachine.Fire(Trigger.CLICK);
-					command.Execute();
-				});
+				.OnEntry(() => command.Execute());
 		}
 	}
 }

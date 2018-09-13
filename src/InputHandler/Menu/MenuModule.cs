@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Stateless;
+using SwinGameSDK;
+using Wormhole.Delegates;
 
 namespace Wormhole
 {
@@ -16,11 +18,14 @@ namespace Wormhole
 		public Player PlayerProgress { get; set; }
 		private ShipList shipList;
 		private LevelList levelList;
+		public bool Ended { get; private set; }
+		private Selections selections { get; set; }
 
-		public bool Ended { get; }
+		//delegate from game controller to exit the game
+		ExitGame ExitDelegate;
 
 		public MenuModule() { }
-		public MenuModule(Player player, ShipList shipList, LevelList levelList)
+		public MenuModule(Player player, ShipList shipList, LevelList levelList, ExitGame Exit)
 		{
 			//1 money
 			//2 ship list to display (dictionary<ship, boolean>)
@@ -28,8 +33,15 @@ namespace Wormhole
 			//4 list of levels
 			//5 difficulty options (and what the player has selected)
 
+			ExitDelegate = Exit;
+			selections = new Selections();
 			menus = new Dictionary<string, Menu>(); //init menu dictionary
 			UpdateProgress(player, shipList, levelList); //information for displaying menu according to player progress
+		}
+
+		public void Exit()
+		{
+			ExitDelegate();
 		}
 
 		public void UpdateProgress(Player player, ShipList shipList, LevelList levelList)
@@ -50,8 +62,11 @@ namespace Wormhole
 		public void ChangeMenu(string target)
 		{
 			if (menus.ContainsKey(target))
+			{
+				currMenu?.ResetButtons();
 				currMenu = menus[target];
-			else Console.WriteLine("I CANT FIND THE MENU NAMED " + target);
+			}
+			else Log.Msg(String.Format("Can't find menu of id: {0}", target));
 		}
 
 		public void Run()
@@ -70,16 +85,6 @@ namespace Wormhole
 			currMenu.Draw();
 		}
 
-		public bool IsEnded()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Exit()
-		{
-			//exit game here
-		}
-
 		public void LoadProgress()
 		{
 			//load progress from file here
@@ -92,17 +97,36 @@ namespace Wormhole
 
 		public void SelectLevel(string levelId)
 		{
-
+			selections.SetLevel(levelId);
 		}
 
 		public void SelectShip(string shipId)
 		{
-
+			selections.SetShip(shipId);
 		}
 
 		public void SelectDifficulty(string diffId)
 		{
+			selections.SetDifficulty(diffId);
+		}
 
+		public Selections FetchSelections()
+		{
+			return selections;
+		}
+		
+		public void Play()
+		{
+			//check if everything is selected
+			if (selections.AllSelected())
+			{
+				Ended = true;
+			}
+			else
+			{
+				SwinGame.PlaySoundEffect("Error");
+				currMenu.ResetButtons();
+			}
 		}
 	}
 }

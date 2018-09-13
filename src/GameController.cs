@@ -16,6 +16,7 @@ namespace Wormhole
 		public Size2D<int> WindowSize { get; private set; }
 		public string WindowTitle { get; private set; }
 		public Color WindowColor { get; private set; }
+		private bool exitRequested;
 
 		//resource path
 		private readonly string resourcePath;
@@ -77,17 +78,23 @@ namespace Wormhole
 			LoadResources();
 			//SwinGame.PlayMusic();
 
-			//Player profile
-			player = new Player(resourcePath + "\\progress\\progress.json");
+			//try
+			//{
+				//Player profile
+				player = new Player(resourcePath + "\\progress\\progress.json");
 
-			//Factories
-			levelFac = new LevelFactory(resourcePath + "\\levels");
-			gameFac = new WHGameFactory(resourcePath + "\\WHGame");
-			menuFac = new MenuFactory(resourcePath + "\\menus");
-			shipFac = new ShipFactory(resourcePath + "\\entities\\ships");
+				//Factories
+				levelFac = new LevelFactory(resourcePath + "\\levels");
+				gameFac = new WHGameFactory(resourcePath + "\\WHGame");
+				menuFac = new MenuFactory(resourcePath + "\\menus");
+				shipFac = new ShipFactory(resourcePath + "\\entities\\ships");
 
-			menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList());			
-			gameModule = gameFac.Create(player, shipFac.Fetch("testShip"), levelFac.Fetch("Level1"));
+				menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList(), Exit);
+				gameModule = gameFac.Create(player, shipFac.Fetch("testShip"), levelFac.Fetch("Level1"));
+			//} catch (Exception e)
+			//{
+				//Log.Ex(e, "error initialising the game");
+			//}
 
 			//State
 			stateMachine = new StateMachine<State, Trigger>(State.MENU);
@@ -105,7 +112,7 @@ namespace Wormhole
 		{
 			Init();
 
-			while (!SwinGame.WindowCloseRequested())
+			while (!ExitRequested())
 			{
 				SwinGame.ClearScreen(WindowColor);
 				SwinGame.ProcessEvents();
@@ -165,7 +172,7 @@ namespace Wormhole
 
 		private void CreateMenuModule()
 		{
-			menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList());
+			menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList(), Exit);
 			Log.Msg("Creating menu module");
 		}
 
@@ -183,6 +190,16 @@ namespace Wormhole
 				stateMachine.Fire(Trigger.TOGGLE);
 				Console.WriteLine("module state triggered to " + stateMachine.State);
 			}
+		}
+
+		private bool ExitRequested()
+		{
+			return (SwinGame.WindowCloseRequested() || exitRequested);
+		}
+
+		public void Exit()
+		{
+			exitRequested = true;
 		}
 	}
 }

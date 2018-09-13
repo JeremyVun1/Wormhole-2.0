@@ -30,14 +30,21 @@ namespace Wormhole
 
 			foreach(string file in fileList)
 			{
-				buffer = File.ReadAllText(file);
-				dynamic obj = JsonConvert.DeserializeObject(buffer);
+				try
+				{
+					buffer = File.ReadAllText(file);
+					dynamic obj = JsonConvert.DeserializeObject(buffer);
 
-				//build ship
-				Ship s = new Ship(obj);
+					//build ship
+					Ship s = new Ship(obj);
 
-				//add ship to list
-				shipList.Add(s);
+					//add ship to list
+					shipList.Add(s);
+				} catch (Exception e)
+				{
+					Log.Ex(e, "error reading ship from file");
+				}
+				
 			}
 
 			return shipList;

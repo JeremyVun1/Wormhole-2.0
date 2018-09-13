@@ -13,6 +13,6 @@ namespace Wormhole
 	public enum ControllerType { Player1, Player2, Player3, Player4 };
 	public enum FactoryType { PlayerShip, AIShip, Shape, MovementAttributes, ActionBinding };
 	public enum BtnAction { NavTo, Exit, Save };
-	public enum EnvMods { Blackhole, Cloudy, Slipstream };
+	public enum EnvMods { Blackhole, Nebula, Radioactive };
 	public enum MenuType { Main, Help, Highscores, Options, ScoreScreen, Select};
 }

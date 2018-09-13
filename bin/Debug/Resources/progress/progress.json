@@ -4,6 +4,5 @@
 	"ownedShips": {
 		"testShip": 0.5
 	},
-	"levelProgress": 1,
-	"difficulty": 0
+	"levelProgress": 1
 }

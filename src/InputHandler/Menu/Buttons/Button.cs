@@ -16,7 +16,7 @@ namespace Wormhole
 
 		//state machine
 		protected enum State { HOVERED, CLICKED, REST }
-		protected enum Trigger { CLICK, HOVER, UNHOVER };
+		protected enum Trigger { CLICK, HOVER, UNHOVER, RESET };
 		protected StateMachine<State, Trigger> stateMachine;
 
 		public Button(JToken btnJObj, JArray colorsObj)
@@ -63,15 +63,18 @@ namespace Wormhole
 		{
 			stateMachine.Configure(State.CLICKED)
 				.Permit(Trigger.CLICK, State.REST)
+				.Permit(Trigger.RESET, State.REST)
 				.Ignore(Trigger.HOVER)
 				.Ignore(Trigger.UNHOVER);
 			stateMachine.Configure(State.REST)
 				.Permit(Trigger.CLICK, State.CLICKED)
 				.Permit(Trigger.HOVER, State.HOVERED)
+				.Ignore(Trigger.RESET)
 				.Ignore(Trigger.UNHOVER);
 			stateMachine.Configure(State.HOVERED)
 				.Permit(Trigger.CLICK, State.CLICKED)
 				.Permit(Trigger.UNHOVER, State.REST)
+				.Permit(Trigger.RESET, State.REST)
 				.Ignore(Trigger.HOVER);
 		}
 
@@ -83,6 +86,11 @@ namespace Wormhole
 		private bool ButtonClicked()
 		{
 			return (ButtonHovered() && SwinGame.MouseClicked(MouseButton.LeftButton));
+		}
+
+		public void Reset()
+		{
+			stateMachine.Fire(Trigger.RESET);
 		}
 	}
 }

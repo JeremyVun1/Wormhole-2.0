@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using SwinGameSDK;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Wormhole
 {
@@ -19,8 +20,7 @@ namespace Wormhole
 		private Dictionary<string, float> ownedShips; //list of ships that the player owns and their condition in %
 		[JsonProperty]
 		private int levelProgress;
-		[JsonProperty]
-		private DifficultyType difficulty;
+		[JsonIgnore]
 		private string progressPath;
 
 		public void AddMoney(int x) => money += x;
@@ -48,8 +48,6 @@ namespace Wormhole
 
 		public void IncLevelProgress(int x) => levelProgress = x;
 
-		public void SetDifficulty(DifficultyType d) => difficulty = d;
-
 		//load progress from file
 		private void LoadProgress()
 		{
@@ -60,7 +58,7 @@ namespace Wormhole
 				{
 					string buffer = File.ReadAllText(progressPath);
 					JsonConvert.PopulateObject(buffer, this);
-					PopulateFields(JsonConvert.DeserializeObject(buffer));
+					PopulateFields(JsonConvert.DeserializeObject<JObject>(buffer));
 				}
 				catch (Exception e)
 				{
@@ -100,25 +98,17 @@ namespace Wormhole
 			LoadProgress();
 		}
 
-		private void PopulateFields(dynamic obj)
+		private void PopulateFields(JObject obj)
 		{
-			Id = obj.id;
-			money = obj.money;
+			Id = obj.Value<string>("id");
+			money = obj.Value<int>("money");
 
 			if (ownedShips == null)
 			{
 				ownedShips = new Dictionary<string, float>();
+				ownedShips = obj.Value<Dictionary<string, float>>("ownedShips");
 			}
-
-			Log.Msg("hi");
-			foreach (var s in obj.ownedShips)
-			{
-				Console.WriteLine(s.id);
-				Console.WriteLine(s.condition);
-				ownedShips.Add((string)s.id, (float)s.condition);
-			}
-			levelProgress = obj.levelProgress;
-			difficulty = (DifficultyType) Enum.Parse(typeof(DifficultyType), (string)obj.difficulty);
+			levelProgress = obj.Value<int>("levelProgress");
 		}
 
 		private bool Owned(IShip ship)

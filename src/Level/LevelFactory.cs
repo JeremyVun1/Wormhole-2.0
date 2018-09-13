@@ -30,7 +30,10 @@ namespace Wormhole
 			foreach (string file in fileList)
 			{
 				buffer = File.ReadAllText(file);
-				levelList.Add(JsonConvert.DeserializeObject<Level>(buffer));
+				Level level = new Level(buffer);
+				levelList.Add(level);
+
+				Console.WriteLine("level added");
 			}
 
 			return levelList;

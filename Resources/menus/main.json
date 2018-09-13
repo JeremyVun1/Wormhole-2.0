@@ -40,18 +40,38 @@
 	],
 	"Buttons": [
 		{
-			"Label": "TestButton1",
-			"Pos": {"X": 0.2, "Y": 0.8},
-			"Size": {"W": 0.1, "H": 0.05},
+			"Label": "Play",
+			"Pos": {"X": 0.4, "Y": 0.3},
+			"Size": {"W": 0.2, "H": 0.07},
+			"Action": "NavTo",
+			"Payload": "Select"
+		},
+		{
+			"Label": "Options",
+			"Pos": {"X": 0.4, "Y": 0.4},
+			"Size": {"W": 0.2, "H": 0.07},
 			"Action": "NavTo",
 			"Payload": "Options"
 		},
 		{
-			"Label": "TestButton2",
-			"Pos": {"X": 0.7, "Y": 0.8},
-			"Size": {"W": 0.1, "H": 0.05},
+			"Label": "HighScores",
+			"Pos": {"X": 0.4, "Y": 0.5},
+			"Size": {"W": 0.2, "H": 0.07},
 			"Action": "NavTo",
 			"Payload": "HighScores"
+		},
+		{
+			"Label": "Help",
+			"Pos": {"X": 0.4, "Y": 0.6},
+			"Size": {"W": 0.2, "H": 0.07},
+			"Action": "NavTo",
+			"Payload": "Help"
+		},
+		{
+			"Label": "Exit",
+			"Pos": {"X": 0.4, "Y": 0.7},
+			"Size": {"W": 0.2, "H": 0.07},
+			"Action": "Exit"
 		}
 	]
 }
