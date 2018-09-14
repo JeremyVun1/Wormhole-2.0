@@ -37,27 +37,27 @@
 	"engines": [
 		{
 			"path": "\\entities\\engines\\light.json",
-			"pos": {"X": 0, "Y": 1}
+			"Pos": {"X": 0, "Y": 1}
 		},
 		{
-			"path": "\\entities\\engines\\light.json",
-			"pos": {"X": 1, "Y": 1}
+			"path": "\\entities\\engines\\heavy.json",
+			"Pos": {"X": 1, "Y": 1}
 		}
 	],
 	"tools": [
 		{
 			"path": "\\entities\\tools\\railgun.json",
-			"pos": {"X": 0, "Y": -1}
+			"Pos": {"X": 0, "Y": 1}
 		},
 		{
 			"path": "\\entities\\tools\\railgun.json",
-			"pos": {"X": 1, "Y": -1}
+			"Pos": {"X": 0, "Y": 1}
 		}
 	],
 	"emitters": [
 		{
 			"path": "\\entities\\emitters\\disco.json",
-			"pos": {"X": 1, "Y": 1}
+			"Pos": {"X": 5, "Y": 5}
 		}
 	]
 }

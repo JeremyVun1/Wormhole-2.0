@@ -16,16 +16,15 @@ namespace Wormhole
 		private Dictionary<string, Menu> menus;
 		public Menu currMenu { get; private set; }
 		public Player PlayerProgress { get; set; }
-		private ShipList shipList;
+		private Dictionary<string, Shape> shipShapeRegistry;
 		private LevelList levelList;
 		public bool Ended { get; private set; }
 		private Selections selections { get; set; }
 
-		//delegate from game controller to exit the game
-		ExitGame ExitDelegate;
+		private ExitGame ExitDelegate;
 
 		public MenuModule() { }
-		public MenuModule(Player player, ShipList shipList, LevelList levelList, ExitGame Exit)
+		public MenuModule(Player player, Dictionary<string, Shape> shipShapeRegistry, LevelList levelList, ExitGame Exit)
 		{
 			//1 money
 			//2 ship list to display (dictionary<ship, boolean>)
@@ -36,7 +35,7 @@ namespace Wormhole
 			ExitDelegate = Exit;
 			selections = new Selections();
 			menus = new Dictionary<string, Menu>(); //init menu dictionary
-			UpdateProgress(player, shipList, levelList); //information for displaying menu according to player progress
+			UpdateProgress(player, shipShapeRegistry, levelList); //information for displaying menu according to player progress
 		}
 
 		public void Exit()
@@ -44,10 +43,10 @@ namespace Wormhole
 			ExitDelegate();
 		}
 
-		public void UpdateProgress(Player player, ShipList shipList, LevelList levelList)
+		public void UpdateProgress(Player player, Dictionary<string, Shape> shipShapeRegistry, LevelList levelList)
 		{
 			PlayerProgress = player;
-			this.shipList = shipList;
+			this.shipShapeRegistry = shipShapeRegistry;
 			this.levelList = levelList;
 		}
 

@@ -38,14 +38,6 @@ namespace Wormhole
 		//modules
 		private IMenuModule menuModule;
 		private IGameModule gameModule;
-		//what to pass to the game
-		//selected ship
-		//selected level(difficulty)
-		/////////////////////////////
-		//what to get from the game
-		//money
-		//ship status
-		//level status/score
 
 		public GameController(string t, int w, int h, Color c)
 		{
@@ -89,8 +81,8 @@ namespace Wormhole
 				menuFac = new MenuFactory(resourcePath + "\\menus");
 				shipFac = new ShipFactory(resourcePath + "\\entities\\ships");
 
-				menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList(), Exit);
-				gameModule = gameFac.Create(player, shipFac.Fetch("testShip"), levelFac.Fetch("Level1"));
+				CreateMenuModule();
+				//CreateGameModule();
 			//} catch (Exception e)
 			//{
 				//Log.Ex(e, "error initialising the game");
@@ -172,19 +164,20 @@ namespace Wormhole
 
 		private void CreateMenuModule()
 		{
-			menuModule = menuFac.Create(player, shipFac.BuildShipList(), levelFac.BuildLevelList(), Exit);
+			menuModule = menuFac.Create(player, shipFac.ShapeRegistry, levelFac.BuildLevelList(), Exit);
+			Camera.MoveCameraTo(SwinGame.PointAt(0, 0));
 			Log.Msg("Creating menu module");
 		}
 
 		private void CreateGameModule()
 		{
-			gameModule = gameFac.Create(player, shipFac.Fetch("testShip"), levelFac.Fetch("Level1"));
+			gameModule = gameFac.Create(player, shipFac.CreatePlayerShip("testShip"), levelFac.Fetch("Level1"));
 			Log.Msg("Creating game module");
 		}
 
 		private void HandleModuleTransition(IModule module)
 		{
-			if (module.Ended || SwinGame.KeyTyped(KeyCode.SpaceKey))
+			if (module.Ended || SwinGame.KeyTyped(KeyCode.RKey))
 			{
 				Log.Msg("/////////////////");
 				stateMachine.Fire(Trigger.TOGGLE);

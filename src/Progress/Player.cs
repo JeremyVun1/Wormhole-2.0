@@ -34,13 +34,13 @@ namespace Wormhole
 			ownedShips.Add(id, condition);
 		}
 
-		public void AddShip(IShip ship)
+		public void AddShip(Ship ship)
 		{
 			if (!Owned(ship))
 				ownedShips.Add(ship.Id, ship.Condition);
 		}
 
-		public void SetShipCondition(IShip ship, float cond)
+		public void SetShipCondition(Ship ship, float cond)
 		{
 			if (Owned(ship))
 				ownedShips[ship.Id] = cond.Clamp(0, 1);
@@ -111,7 +111,7 @@ namespace Wormhole
 			levelProgress = obj.Value<int>("levelProgress");
 		}
 
-		private bool Owned(IShip ship)
+		private bool Owned(Ship ship)
 		{
 			return ownedShips.ContainsKey(ship.Id);
 		}

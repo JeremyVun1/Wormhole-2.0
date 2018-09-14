@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Wormhole
 {
-	public class InputHandler
+	public interface IHasTeam
 	{
+		void SetTeam(Team team);
 	}
 }

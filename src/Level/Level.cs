@@ -22,10 +22,14 @@ namespace Wormhole
 		[JsonProperty]
 		private int LevelNumber { get; set; }
 
-		[JsonIgnore]
-		private List<Mob> Entities { get; set; }
-		[JsonIgnore]
-		private Background Background { get; set; }		
+		private List<Entity> entities;
+		private Background background;
+		private DifficultyType difficulty;
+		public bool Ended { get; private set; }
+		public Size2D<int> PlaySize
+		{
+			get { return background.playSize; }
+		}
 
 		public Level(string json)
 		{
@@ -34,18 +38,28 @@ namespace Wormhole
 			dynamic obj = JsonConvert.DeserializeObject(json);
 
 			//build background
-			Background = new Background(obj.Background, Size);
+			background = new Background(obj.Background, Size);
 
 			//build entity list
 			//TODO
-			Entities = new List<Mob>();
+			entities = new List<Entity>();
+		}
+
+		public void AddEntity(Entity e)
+		{
+			entities.Add(e);
+		}
+
+		public void SetDifficulty(DifficultyType d)
+		{
+			difficulty = d;	
 		}
 
 		public void Update()
 		{
-			Background.Update();
+			background.Update();
 
-			foreach(Entity e in Entities)
+			foreach(Entity e in entities)
 			{
 				e.Update();
 			}
@@ -53,8 +67,8 @@ namespace Wormhole
 
 		public void Draw()
 		{
-			Background.Draw();
-			foreach(Entity e in Entities)
+			background.Draw();
+			foreach(Entity e in entities)
 			{
 				e.Draw();
 			}

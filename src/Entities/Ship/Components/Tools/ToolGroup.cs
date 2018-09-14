@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using SwinGameSDK;
+using Newtonsoft.Json;
 
 namespace Wormhole
 {
@@ -10,15 +13,23 @@ namespace Wormhole
 	{
 		protected string toolDir;
 
-		public ToolGroup(dynamic toolsJArr) : base()
+		public ToolGroup(dynamic toolsJArr, AmmoHandler handler) : base()
 		{
-			toolDir = resourcePath + "\\tools";
+			toolDir = resourcePath + "entities\\tools";
 
-			//deserialise the json object into a list of component skeletons
-			List<Tool> temp = toolsJArr.ToObject<List<Tool>>();
-			components = temp.ToList<IComponent>();
+			foreach(JObject t in toolsJArr)
+			{
+				Weapon result = new Weapon(handler);
+
+				string json = JsonConvert.SerializeObject(t);
+				JsonConvert.PopulateObject(json, result);
+
+				components.Add(result);
+			}
 
 			InitComponents();
+
+			Console.WriteLine("AHHH");
 		}
 	}
 }

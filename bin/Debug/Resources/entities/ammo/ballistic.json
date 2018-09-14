@@ -11,12 +11,18 @@
 	"damage": 1,
 	"lifetime": 2,
 	"vel": 5,
+	"turnRate": 0,
 	"scale": 1,
 	"shape": {
-		"Lines": [
-			{"X": 0, "Y": 0}
+		"lines": [
+			{
+				"StartPoint":
+					{"X": 0, "Y": 1},
+				"EndPoint":
+					{"X": 0, "Y": 2}
+			},
 		],
-		"Boxes": [],
-		"Triangles": []
+		"boxes": [],
+		"triangles": []
 	}
 }

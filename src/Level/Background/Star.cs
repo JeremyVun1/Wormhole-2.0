@@ -52,8 +52,8 @@ namespace Wormhole
 			//timing and rates
 			flareRate = new MinMax<float>(fRateMinMax.Value<float>("Min"), fRateMinMax.Value<float>("Max"));
 			dimRate = new MinMax<float>(dRateMinMax.Value<float>("Min"), dRateMinMax.Value<float>("Max"));
-			flareTrigger = RandomTrigger(flareRate);
-			dimTrigger = RandomTrigger(dimRate);
+			flareTrigger = 1 / (Util.RandomRange(flareRate) / 1000000);
+			dimTrigger = 1 / (Util.RandomRange(dimRate) / 1000000);
 
 			timer = SwinGame.CreateTimer();
 			timer.Start();
@@ -126,17 +126,9 @@ namespace Wormhole
 		private void Reset()
 		{
 			currColorIndex = 0;
-			flareTrigger = RandomTrigger(flareRate);
-			dimTrigger = RandomTrigger(dimRate);
+			flareTrigger = 1 / (Util.RandomRange(flareRate) / 1000000);
+			dimTrigger = 1 / (Util.RandomRange(dimRate) / 1000000);
 			timer.Reset();
-		}
-
-		private float RandomTrigger(MinMax<float> minMax)
-		{
-			float result = rng.Next((int)(minMax.Min * 1000), (int)(minMax.Max * 1000));
-			result = 1 / (result / 1000000);
-
-			return result;
 		}
 	}
 }

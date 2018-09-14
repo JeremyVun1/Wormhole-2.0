@@ -8,7 +8,7 @@ namespace Wormhole
 		public static void Main()
 		{
 			GameController game = new GameController();
-			game.Run();
+			game.Run();			
 		}
 	}
 }

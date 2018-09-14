@@ -13,7 +13,7 @@ namespace Wormhole
 	{
 		private Color backgroundColor;
 		private Star[] stars;
-		private Size2D<int> size;
+		public Size2D<int> playSize { get; private set; }
 
 		public Background(JObject b, Size2D<int> s)
 		{
@@ -32,7 +32,7 @@ namespace Wormhole
 			}
 
 			//Canvas color and size
-			size = s;
+			playSize = s;
 			JToken bkgrdClr = b.GetValue("BackgroundColor");
 			backgroundColor = SwinGame.RGBColor(bkgrdClr.Value<byte>("R"), bkgrdClr.Value<byte>("G"), bkgrdClr.Value<byte>("B"));
 		}

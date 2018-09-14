@@ -6,7 +6,7 @@
 	"mass": 5,
 	"scale": 0.3,
 	"shape": {
-		"Lines": [],
+		"lines": [],
 		"boxes": [
 			{"X": 0, "Y": 0}
 		],

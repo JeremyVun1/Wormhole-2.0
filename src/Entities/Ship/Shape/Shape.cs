@@ -9,27 +9,71 @@ using Newtonsoft.Json.Linq;
 
 namespace Wormhole
 {
-	public class Shape
+	public class Shape : ITeleports
 	{
+		//We only move the bounding box to check for positional collisions
+		//linesegments are always at origin for easier transformations
+		//linesegments are always drawn at offset to the current ships position
 		private List<LineSegment> shape;
-		private float length;
+		private float length;		
+		public Rectangle BoundingBox { get; private set; }
 
 		public int Mass
 		{
 			get { return shape.Count; }
 		}
 
-		public Shape(dynamic s, float scale)
+		public Shape(dynamic shapeJObj, float scale)
 		{
 			shape = new List<LineSegment>();
 			length = 10 * scale;
 
-			if (s.lines != null)
-				AddLines(s.lines.ToObject<List<LineSegment>>());
-			if (s.boxes != null)
-				AddBoxes(s.boxes.ToObject<List<Point2D>>());
-			if (s.triangles != null)
-				AddTriangles(s.triangles.ToObject<List<Point2D>>());
+			if (shapeJObj?.lines != null)
+				AddLines(shapeJObj.lines.ToObject<List<LineSegment>>());
+			if (shapeJObj?.boxes != null)
+				AddBoxes(shapeJObj.boxes.ToObject<List<Point2D>>());
+			if (shapeJObj?.triangles != null)
+				AddTriangles(shapeJObj.triangles.ToObject<List<Point2D>>());
+
+			UpdateBoundingBox(SwinGame.PointAt(0, 0));
+		}
+
+		public void TeleportTo(Point2D target)
+		{
+			Point2D currPos = BoundingBox.CenterLeft.Add(BoundingBox.CenterRight).Multiply(0.5f);
+			Vector moveBy = target.Add(currPos.Multiply(-1));
+			BoundingBox = BoundingBox.RectangleAfterMove(moveBy);
+		}
+
+		public void Move(Vector v)
+		{
+			BoundingBox = BoundingBox.RectangleAfterMove(v);
+		}
+
+		public void UpdateBoundingBox(Point2D pos)
+		{
+			float xMin = 0, xMax = 0, yMin = 0, yMax = 0;
+
+			foreach(LineSegment l in shape)
+			{
+				FindFromPoint2D(l.StartPoint);
+				FindFromPoint2D(l.EndPoint);
+			}
+
+			void FindFromPoint2D(Point2D linePos)
+			{
+				if (linePos.X < xMin)
+					xMin = linePos.X;
+				if (linePos.X > xMax)
+					xMax = linePos.X;
+				if (linePos.Y < yMin)
+					yMin = linePos.Y;
+				if (linePos.Y > yMax)
+					yMax = linePos.Y;
+			}
+
+			BoundingBox = SwinGame.CreateRectangle(xMin, yMin, xMin + xMax, yMin + yMax);
+			TeleportTo(pos);
 		}
 
 		private void AddLine(LineSegment l)

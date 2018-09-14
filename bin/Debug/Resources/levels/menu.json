@@ -10,11 +10,11 @@
 	],
 	"Entities": [
 		{
-			"path": "\\entities\\asteroid.json",
+			"path": "\\entities\\asteroids\\asteriod.json",
 			"Pos": {"X": 200, "Y": 200}
 		},
 		{
-			"path": "\\entities\\asteroid.json",
+			"path": "\\entities\\asteroid\\asteroid.json",
 			"Pos": {"X": 200, "Y": 200}
 		}
 	],

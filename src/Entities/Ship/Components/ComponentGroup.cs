@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using SwinGameSDK;
 using Newtonsoft.Json;
@@ -42,6 +43,23 @@ namespace Wormhole
 			}
 		}
 
+		public void Activate<T>()
+		{
+			foreach(IComponent component in components.OfType<T>())
+			{
+				component.Activate();
+			}
+		}
+
+		public void Activate<T>(string id)
+		{
+			foreach(IComponent component in components.OfType<T>())
+			{
+				if (component.AreYou(id))
+					component.Activate();
+			}
+		}
+
 		public void Update()
 		{
 			foreach(IComponent c in components)
@@ -49,11 +67,11 @@ namespace Wormhole
 				c.Update();
 			}
 		}
-		public void Draw()
+		public void Draw(Point2D pos, Color color)
 		{
 			foreach(IComponent c in components)
 			{
-				c.Draw();
+				c.Draw(pos, color);
 			}
 		}
 
@@ -61,14 +79,19 @@ namespace Wormhole
 
 		public void RemoveComponent() { }
 
-		public IComponent FetchComponent(string id)
+		public IComponent FetchComponent<T>(string id)
 		{
-			foreach(IComponent c in components)
+			foreach(IComponent c in components.OfType<T>())
 			{
 				if (c.AreYou(id))
 					return c;
 			}
 			return null;
+		}
+
+		public IComponent FetchComponent(string id)
+		{
+			return FetchComponent<IComponent>(id);
 		}
 	}
 }

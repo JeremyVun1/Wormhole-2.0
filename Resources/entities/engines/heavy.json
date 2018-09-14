@@ -1,0 +1,23 @@
+{
+	"id": "Heavy",
+	"thrust": 4,
+	"maxVel": 20,
+	"turnRate": 0.2,
+	"mass": 2,
+	"scale": 2,
+	"shape": {
+		"lines": [],
+		"boxes": [
+			{"X": 0, "Y": 0}
+		],
+		"triangles": [
+			{"X": 0, "Y": -1}
+		]
+	},
+	"emitters": [
+		{
+		"path": "\\entities\\emitters\\disco.json",
+		"pos": {"X": 0, "Y": 0}
+		}
+	]
+}

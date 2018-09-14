@@ -40,9 +40,9 @@ namespace Wormhole
 			}
 		}
 
-		public MenuModule Create(Player player, ShipList shipList, LevelList levelList, ExitGame Exit)
+		public MenuModule Create(Player player, Dictionary<string, Shape> shipShapeRegistry, LevelList levelList, ExitGame Exit)
 		{
-			MenuModule result = new MenuModule(player, shipList, levelList, Exit);
+			MenuModule result = new MenuModule(player, shipShapeRegistry, levelList, Exit);
 
 			buttonFac = new CommandButtonFactory(result);
 			txtBoxFac = new TextBoxFactory();

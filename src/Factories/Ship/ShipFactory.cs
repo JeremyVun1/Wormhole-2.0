@@ -4,55 +4,66 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 
 namespace Wormhole
 {
 	public class ShipFactory
 	{
+		public Dictionary<string, Shape> ShapeRegistry { get; private set; } //<ship Id, ship shape> for drawing ship objects to menu
+		private Dictionary<string, string> fileRegistry; //<ship Id, filename>
+
 		string[] fileList;
-		private string resourceDir { get; set; }
-		private ShipList shipList { get; set; }
+		private string resourceDir;
 
 		public ShipFactory(string dir)
 		{
 			resourceDir = dir;
-			shipList = new ShipList();
-		}
-
-		public ShipList BuildShipList()
-		{
-			shipList.Clear();
-
-			//get list of all files
-			string buffer;
 			fileList = Directory.GetFiles(resourceDir);
-
-			foreach(string file in fileList)
-			{
-				try
-				{
-					buffer = File.ReadAllText(file);
-					dynamic obj = JsonConvert.DeserializeObject(buffer);
-
-					//build ship
-					Ship s = new Ship(obj);
-
-					//add ship to list
-					shipList.Add(s);
-				} catch (Exception e)
-				{
-					Log.Ex(e, "error reading ship from file");
-				}
-				
-			}
-
-			return shipList;
+			ShapeRegistry = new Dictionary<string, Shape>();
+			fileRegistry = new Dictionary<string, string>();
+			RegisterShips();
 		}
 
-		public IShip Fetch(string shipId)
+		//populate ship id and filepath for creation later
+		public void RegisterShips()
 		{
-			return shipList.Fetch(shipId);
+			BuildFileRegistry();
+			BuildShapeRegistry();
+		}
+
+		private void BuildFileRegistry()
+		{
+			fileRegistry.Clear();
+			
+			foreach (string file in fileList)
+			{
+				JObject obj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(file));
+				fileRegistry.Add(obj.Value<string>("id"), file);
+			}
+		}
+
+		private void BuildShapeRegistry()
+		{
+			ShapeRegistry.Clear();
+
+			foreach (string file in fileList)
+			{
+				JObject obj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(file));
+				ShapeRegistry.Add(
+					obj.Value<string>("id"),
+					new Shape(obj.Value<JObject>("shape"), obj.Value<float>("scale"))
+				);
+			}
+		}
+
+		public IControllableShip CreatePlayerShip(string shipId)
+		{
+			string buffer = File.ReadAllText(fileRegistry[shipId]);
+			dynamic obj = JsonConvert.DeserializeObject(buffer);
+
+			return new PlayerShip(obj);
 		}
 	}
 }
