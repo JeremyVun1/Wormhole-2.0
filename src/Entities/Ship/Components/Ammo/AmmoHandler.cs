@@ -28,6 +28,7 @@ namespace Wormhole
 			Vector spawnDir = parentShooter.Dir;
 			a.TurnTo(spawnDir);
 
+			a.StartLifetime();
 			ammoList.Add(a);
 		}
 
@@ -45,6 +46,7 @@ namespace Wormhole
 			for (int i = ammoList.Count-1; i >= 0; --i)
 			{
 				ammoList[i].Update();
+				Log.Pos(ammoList[i].Pos);
 				if (ammoList[i].Dead) {
 					ammoList.Remove(ammoList[i]);
 					Console.WriteLine("ammo removed");

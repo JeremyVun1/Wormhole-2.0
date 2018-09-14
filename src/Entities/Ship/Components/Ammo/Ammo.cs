@@ -5,15 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using SwinGameSDK;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Wormhole
 {
-	public class Ammo : Component, ITeleports
+	public class Ammo : Component, ITeleports, IAmmo
 	{
 		private int damage;
 		private float lifetime;
 		private float vel;
 		private IAIStrategy aiStrategy;
+		public JObject jObj;
 
 		public override void Init(JObject obj)
 		{
@@ -25,12 +27,9 @@ namespace Wormhole
 			cdHandler = new CooldownHandler(lifetime);
 			vel = obj.Value<float>("vel");
 
-			base.Init(obj);
-		}
+			jObj = obj;
 
-		public Ammo Clone()
-		{
-			return (Ammo)MemberwiseClone();
+			base.Init(obj);
 		}
 
 		public override void Update()
@@ -58,6 +57,11 @@ namespace Wormhole
 		public void TurnTo(Vector dir)
 		{
 			TargetDir = dir;
+		}
+
+		public void StartLifetime()
+		{
+			cdHandler.StartCooldown();
 		}
 	}
 }

@@ -62,6 +62,7 @@
     <Compile Include="src\Entities\Interfaces\IShoots.cs" />
     <Compile Include="src\Entities\Interfaces\ITeleports.cs" />
     <Compile Include="src\Entities\Ship\Components\Ammo\AmmoHandler.cs" />
+    <Compile Include="src\Entities\Ship\Components\Ammo\IAmmo.cs" />
     <Compile Include="src\Entities\Ship\Components\Particles\ParticleHandler.cs" />
     <Compile Include="src\Entities\Ship\CooldownHandler.cs" />
     <Compile Include="src\Entities\Ship\Components\Tools\Weapon.cs" />

@@ -23,10 +23,12 @@ namespace Wormhole
 
 			//fetch template ammo
 			Ammo templateAmmo = (Ammo)ChildComponents.FetchComponent<Ammo>(ammoId);
-			//deep copy
-			Ammo newAmmo = Util.DeepClone(templateAmmo);
+			//recreate from json object to make another copy
+			Ammo newAmmo = new Ammo();
+			newAmmo.Init(templateAmmo.jObj);
 
 			ammoHandler.AddAmmo(newAmmo);
+
 			cdHandler.StartCooldown();
 		}
 	}
