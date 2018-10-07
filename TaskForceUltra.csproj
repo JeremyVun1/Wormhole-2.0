@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug-Windows</Configuration>
+    <ProjectGuid>{A9DCAC72-BC77-4C33-BE70-BBFD31D7C798}</ProjectGuid>
+    <RootNamespace>TaskForceUltra</RootNamespace>
+    <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
+    <AssemblyName>TaskForceUltra</AssemblyName>
+    <SuppressXamMacUpsell>True</SuppressXamMacUpsell>
+    <SuppressXamMacMigration>True</SuppressXamMacMigration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputType>Exe</OutputType>
+    <ApplicationIcon>Resources\SwinGame.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Windows|x86' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnableCodeSigning>false</EnableCodeSigning>
+    <CreatePackage>false</CreatePackage>
+    <EnablePackageSigning>false</EnablePackageSigning>
+    <IncludeMonoRuntime>false</IncludeMonoRuntime>
+    <UseSGen>false</UseSGen>
+    <UseRefCounting>false</UseRefCounting>
+    <Profiling>false</Profiling>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>TaskForceUltra.GameMain</StartupObject>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyLibsToOut</PrepareForRunDependsOn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src\GameModule\AI\IAIEntity.cs" />
+    <Compile Include="src\GameModule\AI\strategies\AIStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\ChaseStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\ErraticStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\StaticStrategy.cs" />
+    <Compile Include="src\GameModule\Entities\AIShip.cs" />
+    <Compile Include="src\GameModule\Entities\BoundaryStrategies\BoundaryStrategy.cs" />
+    <Compile Include="src\GameModule\Entities\BoundaryStrategies\WrapBoundaryBehaviour.cs" />
+    <Compile Include="src\GameModule\Entities\Components\Ammo.cs" />
+    <Compile Include="src\GameModule\Entities\Components\Component.cs" />
+    <Compile Include="src\GameModule\Entities\Components\Emitter.cs" />
+    <Compile Include="src\GameModule\Entities\Components\Engine.cs" />
+    <Compile Include="src\GameModule\Entities\Components\Particle.cs" />
+    <Compile Include="src\GameModule\Entities\Components\SeekAmmo.cs" />
+    <Compile Include="src\GameModule\Entities\Components\Tool.cs" />
+    <Compile Include="src\GameModule\Entities\Debris.cs" />
+    <Compile Include="src\GameModule\Entities\Mover.cs" />
+    <Compile Include="src\GameModule\Entities\PlayerShip.cs" />
+    <Compile Include="src\GameModule\GameSendData.cs" />
+    <Compile Include="src\GameModule\Handlers\ActionBinding.cs" />
+    <Compile Include="src\GameModule\AI\AISpawner.cs" />
+    <Compile Include="src\GameModule\Commands\ActivatePowerupCommand.cs" />
+    <Compile Include="src\GameModule\Commands\BackwardCommand.cs" />
+    <Compile Include="src\GameModule\Commands\ForwardCommand.cs" />
+    <Compile Include="src\GameModule\Commands\GameCommandFactory.cs" />
+    <Compile Include="src\GameModule\Handlers\IActionBinding.cs" />
+    <Compile Include="src\GameModule\IControllable.cs" />
+    <Compile Include="src\GameModule\Commands\ShootCommand.cs" />
+    <Compile Include="src\GameModule\Commands\StrafeLeftCommand.cs" />
+    <Compile Include="src\GameModule\Commands\StrafeRightCommand.cs" />
+    <Compile Include="src\GameModule\Commands\TurnLeftCommand.cs" />
+    <Compile Include="src\GameModule\Commands\TurnRightCommand.cs" />
+    <Compile Include="src\GameModule\Handlers\Node.cs" />
+    <Compile Include="src\GameModule\Entities\ICollides.cs" />
+    <Compile Include="src\GameModule\Entities\PositionedObject.cs" />
+    <Compile Include="src\GameModule\Scoresheet.cs" />
+    <Compile Include="src\IModuleInterface.cs" />
+    <Compile Include="src\MenuModule\Commands\DecreaseVolumeCommand.cs" />
+    <Compile Include="src\MenuModule\Commands\IncreaseVolumeCommand.cs" />
+    <Compile Include="src\MenuModule\Commands\ISelectCommand.cs" />
+    <Compile Include="src\MenuModule\HighscoreMenu.cs" />
+    <Compile Include="src\MenuModule\MenuElements\NonStickButton.cs" />
+    <Compile Include="src\MenuModule\MenuElements\SelectButton.cs" />
+    <Compile Include="src\MenuModule\MenuElements\SelectionGroup.cs" />
+    <Compile Include="src\MenuModule\SelectionMenu.cs" />
+    <Compile Include="src\Shared\Structs\Difficulty.cs" />
+    <Compile Include="src\GameModule\Entities\Entity.cs" />
+    <Compile Include="src\GameModule\Handlers\CameraHandler.cs" />
+    <Compile Include="src\GameModule\Handlers\CollisionHandler.cs" />
+    <Compile Include="src\GameModule\Handlers\EntityHandler.cs" />
+    <Compile Include="src\GameModule\GameModule.cs" />
+    <Compile Include="src\GameModule\IHandlesEntities.cs" />
+    <Compile Include="src\GameModule\Handlers\InputController.cs" />
+    <Compile Include="src\Shared\Bank.cs" />
+    <Compile Include="src\Enums\Enums.cs" />
+    <Compile Include="src\Main.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="src\GameController.cs" />
+    <Compile Include="src\MenuModule\MenuElements\Button.cs" />
+    <Compile Include="src\MenuModule\Commands\SelectShipCommand.cs" />
+    <Compile Include="src\MenuModule\Commands\SelectLevelCommand.cs" />
+    <Compile Include="src\MenuModule\Commands\SelectDifficultyCommand.cs" />
+    <Compile Include="src\MenuModule\Commands\ExitMenuCommand.cs" />
+    <Compile Include="src\MenuModule\Commands\NavToCommand.cs" />
+    <Compile Include="src\MenuModule\Commands\PlayCommand.cs" />
+    <Compile Include="src\MenuModule\IMenuModule.cs" />
+    <Compile Include="src\MenuModule\Menu.cs" />
+    <Compile Include="src\MenuModule\Commands\MenuCommandFactory.cs" />
+    <Compile Include="src\MenuModule\MenuElements\MenuElement.cs" />
+    <Compile Include="src\MenuModule\MenuModule.cs" />
+    <Compile Include="src\MenuModule\MenuSendData.cs" />
+    <Compile Include="src\MenuModule\MenuElements\TextBox.cs" />
+    <Compile Include="src\Shared\Background.cs" />
+    <Compile Include="src\Shared\CooldownHandler.cs" />
+    <Compile Include="src\Shared\ICommand.cs" />
+    <Compile Include="src\Shared\Level.cs" />
+    <Compile Include="src\Shared\Shape.cs" />
+    <Compile Include="src\GameModule\Entities\Ship.cs" />
+    <Compile Include="src\Shared\Star.cs" />
+    <Compile Include="src\Shared\Structs\MinMax.cs" />
+    <Compile Include="src\Shared\Structs\Size2D.cs" />
+    <Compile Include="src\Shared\Utility\Log.cs" />
+    <Compile Include="src\Shared\Utility\MoveExtensions.cs" />
+    <Compile Include="src\Shared\Utility\RotateExtensions.cs" />
+    <Compile Include="src\Shared\Utility\Util.cs" />
+    <Compile Include="src\Shared\Utility\UtilExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Stateless, Version=4.0.0.0, Culture=neutral, PublicKeyToken=93038f0927583c9a, processorArchitecture=MSIL">
+      <HintPath>packages\Stateless.4.2.1\lib\net45\Stateless.dll</HintPath>
+    </Reference>
+    <Reference Include="SwinGame">
+      <HintPath>lib\SwinGame.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Resources\animations\startup.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\bundles\Game_Bundle.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ammo\ballistic.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ammo\missile.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\asteroids\asteroid.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\bindings\Player1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\bindings\Player2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\bindings\Player3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\bindings\Player4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\difficulty\easy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\difficulty\hard.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\difficulty\medium.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\emitters\disco.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\emitters\fiery.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\engines\heavy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\engines\light.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\engines\supunsengine.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\levels\1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\levels\menu.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\menus\help.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\menus\highscores.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\menus\main.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\menus\options.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\menus\scorescreen.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\menus\select.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\particles\fiery.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\particles\rainbow.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\progress.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\scores.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ships\cube.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ships\hammerhead.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ships\test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\launcher.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\railgun.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\fonts\arial.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\fonts\cour.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\fonts\maven_pro_regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\fdFile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\fdFolder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\FileDialog_Active.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\FileDialog_Background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\FileDialog_Inactive.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\FileDialog_Scroll.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\FileDialog_ScrollSmall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\Swinburne.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\images\SwinGameAni.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\panels\FileDialog.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\sounds\error.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\SwinGame.icns">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\SwinGame.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <WinLibs Include="lib\win32\*.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\sounds\ChampionshipFanfare.mid">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\sounds\ZombieMarch.mid">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Target Name="CopyLibsToOut">
+    <Copy SourceFiles="@(WinLibs)" DestinationFolder="$(OutDir)" />
+  </Target>
+</Project>

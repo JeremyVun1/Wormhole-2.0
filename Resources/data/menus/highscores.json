@@ -1,0 +1,50 @@
+{
+	"id": "Highscores",
+	"title": "Highscores",
+	"elementColors" : [
+		{
+			"fontColor":{
+				"R": 255,
+				"G": 255,
+				"B": 255
+			}
+		},
+		{
+			"fillColor":{
+				"R": 90,
+				"G": 90,
+				"B": 90
+			}
+		},
+		{
+			"borderColor":{
+				"R": 255,
+				"G": 255,
+				"B": 255
+			}
+		},
+		{
+			"hoverColor": {
+				"R": 180,
+				"G": 180,
+				"B": 90
+			}
+		}
+	],
+	"textBoxes": [
+		{
+			"path": "\\resources\\data\\scores.json",
+		}
+	],
+	"buttons": [
+		{
+			"id": "back",
+			"label": "Back",
+			"pos": {"X": 0.4, "Y": 0.75},
+			"size": {"W": 0.2, "H": 0.07},
+			"action": "NavTo",
+			"type": "NonStick",
+			"payload": "Main"
+		}
+	]
+}

@@ -1,0 +1,7 @@
+{
+	"difficultyId": "hard",
+	"spawnTimer": 10,
+	"aiMod": 2,
+	"shootCooldown": 4,
+	"difficultyLevel": 30
+}

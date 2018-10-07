@@ -1,0 +1,13 @@
+{
+	"id": "Player1",
+	"Bindings": {
+		"Forward": "WKey",
+		"Backward": "SKey",
+		"StrafeLeft": "QKey",
+		"StrafeRight": "EKey",
+		"TurnRight": "DKey",
+		"TurnLeft": "AKey",
+		"Shoot": "SpaceKey",
+		"ActivatePowerup": "XKey"
+	}
+}

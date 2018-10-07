@@ -3,110 +3,79 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SwinGameSDK;
-using System.IO;
-using Newtonsoft.Json;
 using Stateless;
+using SwinGameSDK;
+using TaskForceUltra.src.GameModule;
+using TaskForceUltra.src.MenuModule;
 
-namespace Wormhole
+namespace TaskForceUltra
 {
-	public class GameController : IWindow
+	public class GameController : IModuleInterface
 	{
-		//window
-		public Size2D<int> WindowSize { get; private set; }
-		public string WindowTitle { get; private set; }
-		public Color WindowColor { get; private set; }
-		private bool exitRequested;
-
-		//resource path
 		private readonly string resourcePath;
+		private Color windowColor;
 
-		//States
-		private enum State { MENU, GAME };
-		private enum Trigger { TOGGLE };
-		private StateMachine<State, Trigger> stateMachine;
+		//MenuModule
+		private MenuModule menuModule;
+		private MenuModuleFactory menuModuleFac;
 
-		//player profile
-		private Player player;
+		//GameModule
+		private GameModule gameModule;
+		private GameModuleFactory gameModuleFac;
 
-		//factories
+		//helper factories
 		private LevelFactory levelFac;
-		private WHGameFactory gameFac;
-		private MenuFactory menuFac;
 		private ShipFactory shipFac;
 
-		//modules
-		private IMenuModule menuModule;
-		private IGameModule gameModule;
+		//State
+		private Bank bank;
+		private enum State { MENU, GAME, EXIT };
+		private enum Trigger { TOGGLE, EXIT };
+		private StateMachine<State, Trigger> stateMachine;
 
-		public GameController(string t, int w, int h, Color c)
+		public GameController(string title, int width, int height, Color color)
 		{
-			WindowSize = new Size2D<int>(w, h);
-			WindowTitle = t;
-			WindowColor = c;
+			SwinGame.OpenGraphicsWindow(title, width, height);
+			windowColor = color;
+			resourcePath = SwinGame.AppPath() + "\\Resources";
 
-			resourcePath = SwinGame.AppPath() + "\\Resources"; //TODO CHANGE THIS TO RESOURCE FOLDER
-
-			SwinGame.OpenGraphicsWindow(WindowTitle, WindowSize.W, WindowSize.H);
+			Init();
 		}
 		public GameController() : this("NoName", 1000, 700, Color.Black) { }
 
-		//resize the window
-		public void SetWindow(int w, int h)
-		{
-			SwinGame.ChangeWindowSize(WindowTitle, w, h);
-			WindowSize = new Size2D<int>(w, h);
-		}
-
-		private void LoadResources()
-		{
-			SwinGame.LoadResourceBundleNamed("GameBundle", "Game_Bundle.txt", true);
-		}
-
-		private void Init()
-		{
-			SwinGame.OpenAudio();
-			SwinGame.SetMusicVolume(0.1f);
-			LoadResources();
-			//SwinGame.PlayMusic();
-
-			//try
-			//{
-				//Player profile
-				player = new Player(resourcePath + "\\progress\\progress.json");
-
-				//Factories
-				levelFac = new LevelFactory(resourcePath + "\\levels");
-				gameFac = new WHGameFactory(resourcePath + "\\WHGame");
-				menuFac = new MenuFactory(resourcePath + "\\menus");
-				shipFac = new ShipFactory(resourcePath + "\\entities\\ships");
-
-				CreateMenuModule();
-				//CreateGameModule();
-			//} catch (Exception e)
-			//{
-				//Log.Ex(e, "error initialising the game");
-			//}
-
-			//State
-			stateMachine = new StateMachine<State, Trigger>(State.MENU);
+		private void ConfigureStateMachine() {
 			stateMachine.Configure(State.MENU)
 				.Permit(Trigger.TOGGLE, State.GAME)
-				.OnExit(() => FetchModuleProgress(menuModule)) //get progress information from module
-				.OnEntry(() => CreateMenuModule()); //send updated progress information to module
+				.Permit(Trigger.EXIT, State.EXIT);
 			stateMachine.Configure(State.GAME)
 				.Permit(Trigger.TOGGLE, State.MENU)
-				.OnExit(() => FetchModuleProgress(gameModule)) //get progress information from module
-				.OnEntry(() => CreateGameModule()); //send progress information to module
+				.Permit(Trigger.EXIT, State.EXIT);
 		}
 
-		public void Run()
-		{
-			Init();
+		private void Init() {
+			SwinGame.OpenAudio();
+			SwinGame.SetMusicVolume(0.1f);
+			SwinGame.LoadResourceBundleNamed("GameBundle", "Game_Bundle.txt", true);
 
-			while (!ExitRequested())
-			{
-				SwinGame.ClearScreen(WindowColor);
+			SwinGame.PlayMusic("GameMusic");
+
+			bank = new Bank(resourcePath + "\\data\\progress.json");
+
+			//create MenuModule
+			shipFac = new ShipFactory(resourcePath + "\\data\\ships");
+			levelFac = new LevelFactory(resourcePath + "\\data\\levels");
+			menuModuleFac = new MenuModuleFactory(resourcePath + "\\data\\menus");
+			gameModuleFac = new GameModuleFactory();
+
+			menuModule = menuModuleFac.Create(bank, shipFac.ShapeRegistry, levelFac.levelList, this, Exit);
+
+			stateMachine = new StateMachine<State, Trigger>(State.MENU);
+			ConfigureStateMachine();
+		}
+
+		public void Run() {
+			while (!ExitRequested()) {
+				SwinGame.ClearScreen(windowColor);
 				SwinGame.ProcessEvents();
 
 				Update();
@@ -117,31 +86,19 @@ namespace Wormhole
 			}
 		}
 
-		public void UpdateProgress(Player p)
-		{
-			player = p;
-		}
-
-		public void Update()
-		{
-			//run updates and check for state change
-			switch (stateMachine.State)
-			{
+		public void Update() {
+			switch (stateMachine.State) {
 				case (State.GAME):
 					gameModule.Update();
-					HandleModuleTransition(gameModule);
 					break;
 				case (State.MENU):
 					menuModule.Update();
-					HandleModuleTransition(menuModule);
 					break;
 			}
 		}
 
-		public void Draw()
-		{
-			switch (stateMachine.State)
-			{
+		public void Draw() {
+			switch (stateMachine.State) {
 				case (State.GAME):
 					gameModule.Draw();
 					break;
@@ -149,50 +106,34 @@ namespace Wormhole
 					menuModule.Draw();
 					break;
 			}
-
-			SwinGame.DrawText(player.Balance().ToString(), Color.White, 50, 50);
 		}
 
-		//state on exit, on entry functions
-		private void FetchModuleProgress(IModule m)
-		{
-			player = m.PlayerProgress;
-			player.RemoveMoney(5);
-			player.SaveProgress();
-			Log.Msg("fetching module progress");
+		private bool ExitRequested() {
+			return (SwinGame.WindowCloseRequested() || stateMachine.State == State.EXIT);
 		}
 
-		private void CreateMenuModule()
-		{
-			menuModule = menuFac.Create(player, shipFac.ShapeRegistry, levelFac.BuildLevelList(), Exit);
-			Camera.MoveCameraTo(SwinGame.PointAt(0, 0));
-			Log.Msg("Creating menu module");
+		public void Exit() {
+			stateMachine.Fire(Trigger.EXIT);
 		}
 
-		private void CreateGameModule()
-		{
-			gameModule = gameFac.Create(player, shipFac.CreatePlayerShip("testShip"), levelFac.Fetch("Level1"));
-			Log.Msg("Creating game module");
+		//methods that receive data from modules
+		public void ReceiveMenuData(Dictionary<SelectionType, string> receiveData) {
+			Difficulty diff = DifficultySetting.Fetch(receiveData[SelectionType.Difficulty]);
+			Level level = levelFac.Fetch(receiveData[SelectionType.Level]);
+			string shipId = receiveData[SelectionType.Ship];
+
+			GameSendData gameSendData = new GameSendData(this);
+			gameModule = gameModuleFac.Create(shipId, diff, level, shipFac, gameSendData);
+			stateMachine.Fire(Trigger.TOGGLE);
 		}
 
-		private void HandleModuleTransition(IModule module)
-		{
-			if (module.Ended || SwinGame.KeyTyped(KeyCode.RKey))
-			{
-				Log.Msg("/////////////////");
-				stateMachine.Fire(Trigger.TOGGLE);
-				Console.WriteLine("module state triggered to " + stateMachine.State);
-			}
-		}
+		public void ReceiveGameData(Dictionary<GameResultType, int> receiveData) {
+			menuModule.SetupScoreScreen(receiveData);
+			menuModule.UpdateHighscores(bank.PlayerName, receiveData[GameResultType.Points]);
+			menuModule.ChangeMenu("scorescreen");
+			Camera.MoveCameraTo(0, 0);
 
-		private bool ExitRequested()
-		{
-			return (SwinGame.WindowCloseRequested() || exitRequested);
-		}
-
-		public void Exit()
-		{
-			exitRequested = true;
+			stateMachine.Fire(Trigger.TOGGLE);
 		}
 	}
 }

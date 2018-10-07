@@ -1,0 +1,34 @@
+{
+	"id": "Missile",
+	"colors": [
+		{
+			"R": 255,
+			"G": 255,
+			"B": 255
+		}
+	],
+	"mass": 20,
+	"damage": 2,
+	"lifetime": 5,
+	"vel": 2,
+	"maxVel": 10,
+	"turnRate": 2,
+	"scale": 0.6,
+	"shape": {
+		"boxes": [
+			{"X": 0, "Y": -1},
+			{"X": 0, "Y": 0},
+			{"X": 0, "Y": 1}
+		],
+		"triangles": [
+			{"X": 0, "Y": -2}
+		]
+	},
+	"behaviour": "seek",
+	"emitters": [
+		{
+		"path": "\\resources\\data\\emitters\\fiery.json",
+		"pos": {"X": 0, "Y": 0}
+		}
+	]
+}

@@ -11,3 +11,4 @@ FONT,ButtonText,maven_pro_regular.ttf,14
 SOUND,Error,error.wav
 
 //Loads Music
+MUSIC,GameMusic,ChampionshipFanfare.mid

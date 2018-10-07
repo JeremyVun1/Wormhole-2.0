@@ -1,0 +1,7 @@
+{
+	"id": "Disco",
+	"rate": 5,
+	"particle": {
+		"path": "\\resources\\data\\particles\\fiery.json"
+	}
+}

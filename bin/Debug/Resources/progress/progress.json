@@ -1,8 +1,0 @@
-{
-	"id": "Bob",
-	"money": 50,
-	"ownedShips": {
-		"testShip": 0.5
-	},
-	"levelProgress": 1
-}
