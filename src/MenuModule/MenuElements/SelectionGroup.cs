@@ -10,7 +10,6 @@ namespace TaskForceUltra.src.MenuModule
 	{
 		public SelectionType selectionGroup { get; private set; }
 		private List<Button> childButtons;
-		private Button lastClicked;
 
 		public SelectionGroup(SelectionType type) {
 			selectionGroup = type;

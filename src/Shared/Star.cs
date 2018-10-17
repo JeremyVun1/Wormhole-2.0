@@ -29,7 +29,7 @@ namespace TaskForceUltra
 		//state
 		private enum State { REST, DIMMING }
 		private enum Trigger { FLARE, RESET }
-		StateMachine<State, Trigger> stateMachine;
+		private StateMachine<State, Trigger> stateMachine;
 
 		public Star(List<Color> colors, MinMax<int> sizeMinMax, MinMax<float> dimRateMinMax,MinMax<float> flareRateMinMax, Rectangle playArea) {
 			this.colors = colors;

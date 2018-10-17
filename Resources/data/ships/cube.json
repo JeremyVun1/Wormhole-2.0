@@ -51,7 +51,7 @@
 			"pos": {"X": -2, "Y": 2}
 		},
 		{
-			"path": "\\resources\\data\\engines\\fiery.json",
+			"path": "\\resources\\data\\engines\\light.json",
 			"pos": {"X": -1, "Y": 2}
 		},
 		{
@@ -59,7 +59,7 @@
 			"pos": {"X": 0, "Y": 2}
 		},
 		{
-			"path": "\\resources\\data\\engines\\fiery.json",
+			"path": "\\resources\\data\\engines\\light.json",
 			"pos": {"X": 1, "Y": 2}
 		},
 		{

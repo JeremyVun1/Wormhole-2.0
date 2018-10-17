@@ -8,7 +8,7 @@ namespace TaskForceUltra.src.MenuModule
 {
 	public class MenuCommandFactory
 	{
-		IMenuModule menuModule;
+		private IMenuModule menuModule;
 
 		public MenuCommandFactory(IMenuModule m) {
 			menuModule = m;

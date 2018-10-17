@@ -18,12 +18,11 @@ namespace TaskForceUltra
 		[JsonIgnore]
 		private string filePath;
 
-		public Bank(int credits, string filePath) {
+		public Bank(string filePath, int credits = 0) {
 			Credits = credits;
 			this.filePath = filePath;
 			Load();
 		}
-		public Bank(string filePath) : this(0, filePath) { }
 
 		public void AddCredits(int credits) {
 			Credits += credits;

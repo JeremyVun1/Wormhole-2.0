@@ -56,7 +56,7 @@ namespace TaskForceUltra.src.GameModule
 			Damage = 1;
 			hurtTimer = SwinGame.CreateTimer();
 			isHurting = false;
-			this.hurtThreshhold = threshhold;
+			hurtThreshhold = threshhold;
 		}
 
 		public override void Update() {
@@ -97,8 +97,6 @@ namespace TaskForceUltra.src.GameModule
 
 			if (health <= 0)
 				Kill(collider);
-
-			Console.WriteLine($"health: {health}");
 		}
 
 

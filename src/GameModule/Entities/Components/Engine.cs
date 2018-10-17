@@ -34,12 +34,12 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		//return clamped vector modified by vDir
-		public Vector ApplyForce(Vector vDir, Vector vel, int Mass) {
+		public Vector ApplyForce(Vector vDir, Vector vel, int mass) {
 			//apply force to the vector
 			Vector modified = vel;
 			Vector force = new Vector {
-				X = vDir.X * (Thrust / Mass),
-				Y = vDir.Y * (Thrust / Mass)
+				X = vDir.X * (Thrust / mass),
+				Y = vDir.Y * (Thrust / mass)
 			};
 			modified += force;
 

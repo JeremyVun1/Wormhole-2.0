@@ -69,11 +69,11 @@ namespace TaskForceUltra.src.GameModule.Entities
 				base.Draw();
 		}
 
-		public virtual void Init(Point2D pos, Vector dir, Vector Vel) {
+		public virtual void Init(Point2D pos, Vector dir, Vector vel) {
 			TeleportTo(pos);
 			theta = Dir.AngleTo(dir) * Math.PI / 180;
 
-			maxVel += Vel.Magnitude;
+			maxVel += vel.Magnitude;
 			thrustForce = maxVel;
 			cdHandler = new CooldownHandler(lifetime * 1000);
 			cdHandler.StartCooldown();

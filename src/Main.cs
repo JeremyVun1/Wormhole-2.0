@@ -1,5 +1,6 @@
 ﻿using System;
 using SwinGameSDK;
+using TaskForceUltra.src;
 
 namespace TaskForceUltra
 {
@@ -7,6 +8,9 @@ namespace TaskForceUltra
 	{
 		public static void Main()
 		{
+			DoubtfireConcat concat = new DoubtfireConcat();
+			concat.Run();
+
 			GameController TaskForceUltra = new GameController();
 			TaskForceUltra.Run();
 		}

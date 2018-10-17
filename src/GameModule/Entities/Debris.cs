@@ -11,7 +11,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 	{
 		private float friction;
 		private float turnRate;
-		CooldownHandler cdHandler;
+		private CooldownHandler cdHandler;
 		public override List<LineSegment> DebrisLines { get { return null; } }
 
 		public Debris(string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,

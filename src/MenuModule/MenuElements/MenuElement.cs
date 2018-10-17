@@ -15,7 +15,6 @@ namespace TaskForceUltra.src.MenuModule
 		private Color borderColor;
 		protected Color fontColor { get; private set; }
 
-		private int borderWidth;
 		[JsonProperty("text")]
 		public string text;
 		protected string fontId { get; private set; }
@@ -40,7 +39,8 @@ namespace TaskForceUltra.src.MenuModule
 
 		public MenuElement(string id, Rectangle bounds, Color hover, Color fill, Color border,
 			Color font, string text, string fontId, FontAlignment alignment
-		) {
+		)
+		{
 			this.id = id;
 			hoverColor = hover;
 			fillColor = fill;
@@ -58,10 +58,8 @@ namespace TaskForceUltra.src.MenuModule
 			SwinGame.DrawText(text, fontColor, Color.Transparent, fontId, alignment, bounds);
 		}
 
-		protected void DrawOutline() {
-			if (borderWidth > 0) {
+		protected virtual void DrawOutline() {
 				SwinGame.DrawRectangle(borderColor, bounds);
-			}
 		}
 	}
 
@@ -70,7 +68,6 @@ namespace TaskForceUltra.src.MenuModule
 	/// </summary>
 	public class MenuElementFactory
 	{
-
 		public List<MenuElement> Create(JArray textBoxesObj, JArray buttonsObj, JArray colorsObj, IMenuModule menuModule) {
 			List<MenuElement> result = new List<MenuElement>();
 

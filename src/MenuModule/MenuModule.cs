@@ -76,11 +76,11 @@ namespace TaskForceUltra.src.MenuModule
 		}
 
 		public void AddSelection(SelectionType selection, string id) {
-			this.selections.Add(selection, id);
+			selections.Add(selection, id);
 		}
 
 		public void RemoveSelection(SelectionType selection) {
-			this.selections.Remove(selection);
+			selections.Remove(selection);
 		}
 
 		public void Send() {

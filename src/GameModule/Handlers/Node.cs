@@ -72,9 +72,9 @@ namespace TaskForceUltra.src.GameModule.Handlers
 		/// <summary>
 		/// Checks collision between line segments
 		/// </summary>
-		private bool Colliding(List<LineSegment> bounds1, List<LineSegment> bound2) {
+		private bool Colliding(List<LineSegment> bounds1, List<LineSegment> bounds2) {
 			foreach(LineSegment l1 in bounds1) {
-				foreach(LineSegment l2 in bound2) {
+				foreach(LineSegment l2 in bounds2) {
 					if (SwinGame.LineSegmentsIntersect(l1, l2))
 						return true;
 				}

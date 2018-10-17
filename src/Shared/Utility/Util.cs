@@ -80,7 +80,7 @@ namespace TaskForceUltra
 		public static Color DeserializeKeyedColor(JArray colorObj, string key) {
 			foreach (JObject c in colorObj) {
 				if (c.ContainsKey(key))
-					return Util.GetRGBColor(c.GetValue(key));
+					return GetRGBColor(c.GetValue(key));
 			}
 			return Color.White;
 		}

@@ -15,17 +15,9 @@ namespace TaskForceUltra
 		private readonly string resourcePath;
 		private Color windowColor;
 
-		//MenuModule
+		//Modules
 		private MenuModule menuModule;
-		private MenuModuleFactory menuModuleFac;
-
-		//GameModule
 		private GameModule gameModule;
-		private GameModuleFactory gameModuleFac;
-
-		//helper factories
-		private LevelFactory levelFac;
-		private ShipFactory shipFac;
 
 		//State
 		private Bank bank;
@@ -53,22 +45,22 @@ namespace TaskForceUltra
 		}
 
 		private void Init() {
+			//audio and resources
 			SwinGame.OpenAudio();
 			SwinGame.SetMusicVolume(0.1f);
 			SwinGame.LoadResourceBundleNamed("GameBundle", "Game_Bundle.txt", true);
-
 			SwinGame.PlayMusic("GameMusic");
 
+			//player bank
 			bank = new Bank(resourcePath + "\\data\\progress.json");
 
 			//create MenuModule
-			shipFac = new ShipFactory(resourcePath + "\\data\\ships");
-			levelFac = new LevelFactory(resourcePath + "\\data\\levels");
-			menuModuleFac = new MenuModuleFactory(resourcePath + "\\data\\menus");
-			gameModuleFac = new GameModuleFactory();
-
+			ShipFactory shipFac = new ShipFactory(resourcePath + "\\data\\ships");
+			LevelFactory levelFac = new LevelFactory(resourcePath + "\\data\\levels");
+			MenuModuleFactory menuModuleFac = new MenuModuleFactory(resourcePath + "\\data\\menus");
 			menuModule = menuModuleFac.Create(bank, shipFac.ShapeRegistry, levelFac.levelList, this, Exit);
 
+			//state machine
 			stateMachine = new StateMachine<State, Trigger>(State.MENU);
 			ConfigureStateMachine();
 		}
@@ -118,11 +110,16 @@ namespace TaskForceUltra
 
 		//methods that receive data from modules
 		public void ReceiveMenuData(Dictionary<SelectionType, string> receiveData) {
+			LevelFactory levelFac = new LevelFactory(resourcePath + "\\data\\levels");
+			ShipFactory shipFac = new ShipFactory(resourcePath + "\\data\\ships");
+			GameModuleFactory gameModuleFac = new GameModuleFactory();
+
 			Difficulty diff = DifficultySetting.Fetch(receiveData[SelectionType.Difficulty]);
 			Level level = levelFac.Fetch(receiveData[SelectionType.Level]);
 			string shipId = receiveData[SelectionType.Ship];
 
 			GameSendData gameSendData = new GameSendData(this);
+			
 			gameModule = gameModuleFac.Create(shipId, diff, level, shipFac, gameSendData);
 			stateMachine.Fire(Trigger.TOGGLE);
 		}

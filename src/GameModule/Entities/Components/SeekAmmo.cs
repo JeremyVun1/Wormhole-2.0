@@ -57,9 +57,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 			}
 		}
 
-		public override void Init(Point2D pos, Vector dir, Vector Vel) {
+		public override void Init(Point2D pos, Vector dir, Vector vel) {
 			emitters.TeleportTo(pos);
-			base.Init(pos, dir, Vel);
+			base.Init(pos, dir, vel);
 			thrustForce = accel;
 		}
 

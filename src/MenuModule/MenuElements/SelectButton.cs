@@ -9,14 +9,14 @@ namespace TaskForceUltra.src.MenuModule
 {
 	public class SelectButton : Button
 	{
-		public SelectionType selectionGroup { get; private set; }
+		public SelectionType groupType { get; private set; }
 		private SelectionGroup parent;
 
 		public SelectButton(string id, ICommand command, Rectangle bounds, Color hover,
 			Color fill, Color border, Color font, string text, SelectionGroup parent, SelectionType selectionType
 		) : base(id, command, bounds, hover, fill, border, font, text)
 		{
-			selectionGroup = selectionType;
+			groupType = selectionType;
 			this.parent = parent;
 		}
 

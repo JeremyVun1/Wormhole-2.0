@@ -39,6 +39,7 @@
     <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyLibsToOut</PrepareForRunDependsOn>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="src\DoubtfireConcat.cs" />
     <Compile Include="src\GameModule\AI\IAIEntity.cs" />
     <Compile Include="src\GameModule\AI\strategies\AIStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ChaseStrategy.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="src\IModuleInterface.cs" />
     <Compile Include="src\MenuModule\Commands\DecreaseVolumeCommand.cs" />
     <Compile Include="src\MenuModule\Commands\IncreaseVolumeCommand.cs" />
-    <Compile Include="src\MenuModule\Commands\ISelectCommand.cs" />
     <Compile Include="src\MenuModule\HighscoreMenu.cs" />
     <Compile Include="src\MenuModule\MenuElements\NonStickButton.cs" />
     <Compile Include="src\MenuModule\MenuElements\SelectButton.cs" />
@@ -197,7 +197,7 @@
     <None Include="Resources\data\engines\light.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\engines\supunsengine.json">
+    <None Include="Resources\data\engines\slowengine.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\levels\1.json">

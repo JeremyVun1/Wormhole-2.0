@@ -1,6 +1,6 @@
 {
-	"id": "SupunsEngine",
-	"thrust": 5,
+	"id": "SlowEngine",
+	"thrust": 0.2,
 	"maxVel": 100,
 	"turnRate": 0.05,
 	"mass": 5,

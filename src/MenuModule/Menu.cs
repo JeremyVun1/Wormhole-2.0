@@ -76,9 +76,9 @@ namespace TaskForceUltra.src.MenuModule
 	/// </summary>
 	public class MenuFactory
 	{
-		public string dirPath;
-		public IMenuModule menuModule;
-		public MenuElementFactory menuElementFac;
+		private string dirPath;
+		private IMenuModule menuModule;
+		private MenuElementFactory menuElementFac;
 
 		public MenuFactory(string dirPath, IMenuModule menuModule) {
 			this.dirPath = dirPath;
