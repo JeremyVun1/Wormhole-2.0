@@ -7,11 +7,16 @@ using SwinGameSDK;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Extension methods for rotating stuff
+	/// </summary>
 	public static class RotateExtensions
 	{
-		///////////////
-		// Rotation math
-		///////////////
+		/// <summary>
+		/// Rotate Vector
+		/// </summary>
+		/// <param name="v">Vector</param>
+		/// <param name="theta">radians</param>
 		public static Vector Rotate(this Vector v, double theta) {
 			Vector result = SwinGame.VectorTo(0, 0);
 			result.X = (float)(v.X * Math.Cos(theta) - v.Y * Math.Sin(theta));
@@ -20,11 +25,13 @@ namespace TaskForceUltra
 			return result;
 		}
 
+		/// <summary>
+		/// Rotate a point around an anchor of rotation
+		/// </summary>
+		/// <param name="p">point</param>
+		/// <param name="pos">anchor of rotation</param>
+		/// <param name="theta">radians</param>
 		public static Point2D Rotate(this Point2D p, Point2D pos, double theta) {
-			//rotate by formula
-			//x'=x*Cos(t) - y*Sin(t)
-			//y'=y*Cos(t) + x*Sin(t)
-
 			Point2D temp = new Point2D {
 				X = p.X - pos.X,
 				Y = p.Y - pos.Y
@@ -38,6 +45,12 @@ namespace TaskForceUltra
 			return result;
 		}
 
+		/// <summary>
+		/// Rotate Linesegment around an anchor of rotation
+		/// </summary>
+		/// <param name="l">linesegment</param>
+		/// <param name="pos">anchor of rotation</param>
+		/// <param name="theta">radians</param>
 		public static LineSegment Rotate(this LineSegment l, Point2D pos, double theta) {
 			LineSegment result = l;
 			result.StartPoint = result.StartPoint.Rotate(pos, theta);
@@ -46,6 +59,12 @@ namespace TaskForceUltra
 			return result;
 		}
 
+		/// <summary>
+		/// Rotate List of line segments
+		/// </summary>
+		/// <param name="s">list of linesegments</param>
+		/// <param name="pos">anchor of rotation</param>
+		/// <param name="theta">radians</param>
 		public static List<LineSegment> Rotate(this List<LineSegment> s, Point2D pos, double theta) {
 			if (s == null) return null;
 

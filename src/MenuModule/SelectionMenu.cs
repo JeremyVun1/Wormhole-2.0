@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Menu which allows player to select game options
+	/// </summary>
 	public class SelectionMenu : Menu
 	{
 		private SelectionGroup selectShipButtons;

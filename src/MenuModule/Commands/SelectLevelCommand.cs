@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Command to select a level to play on
+	/// </summary>
 	public class SelectLevelCommand : ICommand
 	{
 		private IMenuModule menuModule;

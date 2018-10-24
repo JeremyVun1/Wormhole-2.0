@@ -1,5 +1,8 @@
 ﻿namespace TaskForceUltra
 {
+	/// <summary>
+	/// struct that defines width and height
+	/// </summary>
 	public struct Size2D<T>
 	{
 		public T W { get; set; }

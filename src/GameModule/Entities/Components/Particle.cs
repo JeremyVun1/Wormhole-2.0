@@ -10,6 +10,10 @@ using Newtonsoft.Json.Linq;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// Particle object that doesn't really interact with anything else
+	/// Impacts performance if too many of these things are on screen
+	/// </summary>
 	public class Particle : Component
 	{
 		private MinMax<float> lifetimeRange;
@@ -40,17 +44,12 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		public override void Update() {
-			//particle will have a cooldown handler if we have initiated this, else do nothing
 			if (cdHandler != null) {
 				if (cdHandler.OnCooldown()) {
-					//apply friction to velocity and turnrate
 					Vel = Vel.Multiply(friction);
 					turnRate *= friction;
-
-					//set rotation amount for this tick
 					theta = turnRate;
 
-					//random color
 					colorIndex = SwinGame.Rnd(colors.Count);
 				}
 				else Kill(Team.None);
@@ -64,6 +63,11 @@ namespace TaskForceUltra.src.GameModule.Entities
 				base.Draw();
 		}
 
+		/// <summary>
+		/// Initialise the particle
+		/// </summary>
+		/// <param name="pos">spawning position</param>
+		/// <param name="dir">spawning direction</param>
 		public void Init(Point2D pos, Vector dir) {
 			thrustForce = Util.RandomInRange(velRange);
 			turnRate = Util.RandomInRange(turnRateRange);

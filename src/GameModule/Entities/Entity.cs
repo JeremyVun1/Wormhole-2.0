@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// Base entity object handles object shape, team, health, state
+	/// </summary>
 	public abstract class Entity : PositionedObject
 	{
 		public string Id { get; private set; }
@@ -25,8 +28,6 @@ namespace TaskForceUltra.src.GameModule
 		public virtual List<LineSegment> DebrisLines { get { return Shape.GetLines(); } }
 		protected List<Color> colors;
 		protected int colorIndex;
-
-		protected bool debugMode;
 		
 		public List<LineSegment> BoundingBox { get { return Shape?.BoundingBox; } }
 		public virtual int Mass {
@@ -49,48 +50,44 @@ namespace TaskForceUltra.src.GameModule
 			Shape = shape;
 			this.colors = colors;
 			colorIndex = 0;
-
-			debugMode = false;
 			IsDead = false;
 		}
 
 		public virtual void Update() {
-			DebugMode();
 		}
 
 		public virtual void Draw() {
 			Shape?.Draw(colors[colorIndex]);
 
-			if (debugMode) {
+			if (DebugMode.IsOn) {
 				Debug();
 			}
 		}
 
-		private void DebugMode() {
-			if (SwinGame.KeyTyped(KeyCode.TKey)) {
-				debugMode = !debugMode;
-				Console.WriteLine("DEBUG TOGGLED");
-			}
-		}
-
+		/// <summary>
+		/// Teleport Entity to the target position
+		/// </summary>
+		/// <param name="target">x, y position</param>
 		public override void TeleportTo(Point2D target) {
 			base.TeleportTo(target);
 			Shape?.TeleportTo(target);
 		}
 
+		/// <summary>
+		/// Kill the entity and record which team scored the skill
+		/// </summary>
+		/// <param name="killer">team which scored killing blow</param>
 		public virtual void Kill(Team killer) {
 			IsDead = true;
 			KilledBy = killer;
 		}
 
+		/// <summary>
+		/// Debugging visuals
+		/// </summary>
 		protected virtual void Debug() {
 			Shape?.Debug(Color.Red);
 			SwinGame.FillRectangle(Color.Blue, refPos.X, refPos.Y, 5, 5);
-
-
-			//Log.Pos($"{Id}: refPos", refPos);
-			//Log.Pos("offsetPos", offsetPos);
-			//Log.Pos("RealPos", RealPos);
 		}
 	}
 }

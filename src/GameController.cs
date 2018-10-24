@@ -65,6 +65,9 @@ namespace TaskForceUltra
 			ConfigureStateMachine();
 		}
 
+		/// <summary>
+		/// run the game
+		/// </summary>
 		public void Run() {
 			while (!ExitRequested()) {
 				SwinGame.ClearScreen(windowColor);
@@ -78,7 +81,7 @@ namespace TaskForceUltra
 			}
 		}
 
-		public void Update() {
+		private void Update() {
 			switch (stateMachine.State) {
 				case (State.GAME):
 					gameModule.Update();
@@ -89,7 +92,7 @@ namespace TaskForceUltra
 			}
 		}
 
-		public void Draw() {
+		private void Draw() {
 			switch (stateMachine.State) {
 				case (State.GAME):
 					gameModule.Draw();
@@ -108,7 +111,10 @@ namespace TaskForceUltra
 			stateMachine.Fire(Trigger.EXIT);
 		}
 
-		//methods that receive data from modules
+		/// <summary>
+		/// receives data from the menu module and starts the game module
+		/// </summary>
+		/// <param name="receiveData">Selected Game Options</param>
 		public void ReceiveMenuData(Dictionary<SelectionType, string> receiveData) {
 			LevelFactory levelFac = new LevelFactory(resourcePath + "\\data\\levels");
 			ShipFactory shipFac = new ShipFactory(resourcePath + "\\data\\ships");
@@ -124,6 +130,10 @@ namespace TaskForceUltra
 			stateMachine.Fire(Trigger.TOGGLE);
 		}
 
+		/// <summary>
+		/// Receives data from the game module and starts the menu module
+		/// </summary>
+		/// <param name="receiveData">Results of the game battle</param>
 		public void ReceiveGameData(Dictionary<GameResultType, int> receiveData) {
 			menuModule.SetupScoreScreen(receiveData);
 			menuModule.UpdateHighscores(bank.PlayerName, receiveData[GameResultType.Points]);

@@ -8,6 +8,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// base class manages the position of game objects
+	/// </summary>
 	public abstract class PositionedObject
 	{
 		protected Point2D refPos;
@@ -18,12 +21,15 @@ namespace TaskForceUltra.src.GameModule
 			this.refPos = refPos;
 			this.offsetPos = offsetPos;
 		}
-
+		
 		public virtual void TeleportTo(Point2D target) {
 			refPos = target;
 		}
 
-		protected bool OnScreen() {
+		/// <summary>
+		/// Returns whether the object is on the screen or not
+		/// </summary>
+		protected bool IsOnScreen() {
 			Rectangle cameraBox = SwinGame.CreateRectangle(Camera.CameraPos(), SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
 			return SwinGame.PointInRect(RealPos, cameraBox);
 		}

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Command to select a difficulty to play at
+	/// </summary>
 	public class SelectDifficultyCommand : ICommand
 	{
 		private IMenuModule menuModule;

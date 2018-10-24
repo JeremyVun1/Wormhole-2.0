@@ -1,5 +1,8 @@
 ﻿namespace TaskForceUltra
 {
+	/// <summary>
+	/// Struct that defines min and max values
+	/// </summary>
 	public struct MinMax<T>
 	{
 		public T Min { get; set; }

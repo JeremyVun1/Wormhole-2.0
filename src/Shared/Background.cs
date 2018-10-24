@@ -9,6 +9,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Manage's the stars and background colour of a level
+	/// </summary>
 	public class Background
 	{
 		private List<Star> stars;

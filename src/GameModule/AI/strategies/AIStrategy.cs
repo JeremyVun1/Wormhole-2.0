@@ -9,6 +9,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.AI
 {
+	/// <summary>
+	/// base class for AI strategy
+	/// </summary>
 	public abstract class AIStrategy
 	{
 		protected IAIEntity controlled;
@@ -18,7 +21,6 @@ namespace TaskForceUltra.src.GameModule.AI
 		public AIStrategy(IAIEntity controlled, int shootCd) {
 			this.controlled = controlled;
 
-			//set random initial direction
 			targetDir = Util.RandomUnitVector();
 			shootCooldown = new CooldownHandler(shootCd * 1000);
 		}
@@ -46,9 +48,7 @@ namespace TaskForceUltra.src.GameModule.AI
 
 	/// <summary>
 	/// returns a randomised ai strategy based on some probability curve from a difficulty level
-	/// </summary>
-	/// /
-	
+	/// </summary>	
 	public class AIStrategyFactory
 	{
 		private int difficultyLevel;

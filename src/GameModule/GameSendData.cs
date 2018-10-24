@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// bundles game result data to send to the game controller
+	/// </summary>
 	public class GameSendData
 	{
 		private IReceiveGameData receiver;

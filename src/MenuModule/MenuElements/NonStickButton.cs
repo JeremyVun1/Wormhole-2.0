@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// a button without sticky clicking behaviour
+	/// </summary>
 	public class NonStickButton : Button
 	{
 		public NonStickButton(string id, ICommand command, Rectangle bounds, Color hover,

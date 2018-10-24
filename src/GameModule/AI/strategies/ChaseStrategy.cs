@@ -8,6 +8,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.AI.strategies
 {
+	/// <summary>
+	/// chases ship's on the other team if they come within range of it
+	/// </summary>
 	public class ChaseStrategy : ErraticStrategy
 	{
 		private IHandlesEntities entHandler;
@@ -23,22 +26,21 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 			if (controlled == null || controlled.IsDead)
 				return;
 
-			//seek nearest enemy target
 			target = FetchNearestTarget();
 
-			//run static strategy if no target found
+			//run erratic strategy if no target found
 			if (target == null) {
 				base.ExecuteStrategy();
 			}
 			//chase strategy
 			else {
-				//get steering vector
+				//steering vector
 				Vector DesiredVec = target.RealPos.Subtract(controlled.RealPos);
 				DesiredVec = DesiredVec.LimitToMagnitude(controlled.MaxVel);
-				
 				Vector SteeringVec = DesiredVec.SubtractVector(controlled.Vel);
 				targetDir = SteeringVec.UnitVector;
 
+				//rotate
 				controlled.TurnTo(targetDir);
 
 				//thrust
@@ -52,6 +54,7 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 		/// <summary>
 		/// Find nearest entity within agro range
 		/// </summary>
+		/// <returns>target ship</returns>
 		private Ship FetchNearestTarget() {
 			Ship result = null;
 			float distanceToTarget = agroRange;

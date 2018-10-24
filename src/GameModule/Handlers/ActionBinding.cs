@@ -10,6 +10,9 @@ using System.IO;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// Allows different player inputs to trigger the same ship action
+	/// </summary>
 	public class ActionBinding : IActionBinding
 	{
 		private Dictionary<ShipAction, KeyCode> bindings;
@@ -57,6 +60,10 @@ namespace TaskForceUltra.src.GameModule
 			this.dirPath = dirPath;
 		}
 
+		/// <summary>
+		/// Returns the unique bindings for the specified player / controller
+		/// </summary>
+		/// <returns>Action bindings</returns>
 		public IActionBinding Create(ControllerType controller) {
 			switch(controller) {
 				case ControllerType.Player1:

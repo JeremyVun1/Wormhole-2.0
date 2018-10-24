@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// a button that is part of a selection group. Player can only select one of these buttons within the group
+	/// </summary>
 	public class SelectButton : Button
 	{
 		public SelectionType groupType { get; private set; }

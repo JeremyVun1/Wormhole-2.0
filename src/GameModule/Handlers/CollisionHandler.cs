@@ -9,6 +9,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// Handles collisions between collideable entities
+	/// </summary>
 	public class CollisionHandler
 	{
 		private Node quadTree;
@@ -20,11 +23,13 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		public void Update() {
-			//Lazy grid management
 			RegisterAll();
 			CollideEntities();
 		}
 
+		/// <summary>
+		/// Register all entities being tracked by the passed in entity handler into the collision tree
+		/// </summary>
 		public void RegisterAll() {
 			quadTree.Clear();
 			foreach (ICollides c in entityHandler.EntityList.OfType<ICollides>()) {
@@ -32,11 +37,14 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		/// <summary>
+		/// Run collision checking on all entities
+		/// </summary>
 		private void CollideEntities() {
 			quadTree.CheckedList.Clear();
-			//check for collisions betwene entities in node collision list
+			
 			foreach (ICollides self in entityHandler.EntityList.OfType<ICollides>()) {
-				ICollides other = quadTree.Collide(self);
+				ICollides other = quadTree.CollidingWith(self);
 
 				//returns
 				if (other != null) {

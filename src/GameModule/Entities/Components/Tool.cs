@@ -10,6 +10,9 @@ using System.IO;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// Ship tool that fires ammo
+	/// </summary>
 	public class Tool : Component
 	{
 		private float cooldown;
@@ -34,8 +37,10 @@ namespace TaskForceUltra.src.GameModule.Entities
 			cdHandler = new CooldownHandler(cooldown*1000);
 		}
 
+		/// <summary>
+		/// activate the tool and fire it's ammo
+		/// </summary>
 		public void Activate() {
-			//create new ammo, init it, track it
 			if (!cdHandler.OnCooldown()) {
 				JObject ammoObj = Util.Deserialize(Ammo.FilePath);
 
@@ -59,6 +64,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 	}
 
+	/// <summary>
+	/// Tool factory
+	/// </summary>
 	public class ToolFactory : ComponentFactory
 	{
 		public override Component CreateFromReference(JObject toolObj, IHandlesEntities entHandler, BoundaryStrategy boundaryStrat, Team team, Point2D parentPos, float mod =1) {

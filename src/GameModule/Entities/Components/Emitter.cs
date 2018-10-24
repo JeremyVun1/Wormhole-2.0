@@ -10,6 +10,9 @@ using System.IO;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// An emitter that creates particles
+	/// </summary>
 	public class Emitter : Component
 	{
 		public Particle Particle { get { return childComponents.OfType<Particle>().First(); } }
@@ -30,8 +33,10 @@ namespace TaskForceUltra.src.GameModule.Entities
 			this.entHandler = entHandler;
 		}
 
+		/// <summary>
+		/// Create, initialise, and track new particle
+		/// </summary>
 		public void Activate() {
-			//create new particle, init it, track it
 			if (!cdHandler.OnCooldown()) {
 				JObject particleObj = Util.Deserialize(Particle.FilePath);
 

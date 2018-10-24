@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// action bindings interface
+	/// </summary>
 	public interface IActionBinding
 	{
 		bool ActivatePowerup();

@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// Player ship that can be controlled by an input controller
+	/// </summary>
 	public class PlayerShip : Ship, IControllable
 	{
 		public PlayerShip(
@@ -23,7 +26,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		/// <summary>
-		/// basic public receiver control implementations
+		/// receiver command implementations
 		/// </summary>
 		public void ForwardCommand() {
 			Thrust(SwinGame.VectorTo(1, 0));

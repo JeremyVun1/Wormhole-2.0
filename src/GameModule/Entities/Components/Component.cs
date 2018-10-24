@@ -10,6 +10,9 @@ using System.IO;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// Base class for ship components
+	/// </summary>
 	public abstract class Component : Mover
 	{
 		protected List<Component> childComponents;
@@ -38,11 +41,19 @@ namespace TaskForceUltra.src.GameModule.Entities
 			childComponents?.Draw();
 		}
 
+		/// <summary>
+		/// Ask component to move with specified velocity vector
+		/// </summary>
+		/// <param name="v">velocity vector</param>
 		public void SetVel(Vector v) {
 			Vel = v;
 			childComponents?.SetVel(v);
 		}
 
+		/// <summary>
+		/// Ask component to turn by specified radians
+		/// </summary>
+		/// <param name="theta"></param>
 		public void Turn(double theta) {
 			this.theta = theta;
 			childComponents?.Turn(theta);
@@ -58,6 +69,15 @@ namespace TaskForceUltra.src.GameModule.Entities
 	/// </summary>
 	public abstract class ComponentFactory
 	{
+		/// <summary>
+		/// Create component from a filepath
+		/// </summary>
+		/// <param name="refObj">Json object containing the filepath</param>
+		/// <param name="entHandler">entity handler</param>
+		/// <param name="boundaryStrat">play area boundary behaviour</param>
+		/// <param name="parentPos">position of object component is attached to</param>
+		/// <param name="mod">modifier</param>
+		/// <returns></returns>
 		public virtual Component CreateFromReference(JObject refObj, IHandlesEntities entHandler, BoundaryStrategy boundaryStrat, Team team, Point2D parentPos, float mod = 1) {
 			string path = SwinGame.AppPath() + refObj.Value<string>("path");
 

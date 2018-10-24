@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Command to decrease swingame music volume
+	/// </summary>
 	public class DecreaseVolumeCommand : ICommand
 	{
 		public DecreaseVolumeCommand() { }

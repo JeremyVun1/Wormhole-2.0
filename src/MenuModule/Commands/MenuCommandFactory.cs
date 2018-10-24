@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// factory for creating command objects for the menu module
+	/// </summary>
 	public class MenuCommandFactory
 	{
 		private IMenuModule menuModule;

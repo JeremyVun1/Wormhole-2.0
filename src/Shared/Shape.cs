@@ -10,6 +10,9 @@ using TaskForceUltra.src.GameModule;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Manages the shape of the parent object as a bunch of line segments
+	/// </summary>
 	public class Shape
 	{
 		private List<LineSegment> shape;
@@ -52,12 +55,17 @@ namespace TaskForceUltra
 		public void Debug(Color clr) {
 			if (BoundingBox == null)
 				return;
-
-			foreach (LineSegment l in BoundingBox) {
-				SwinGame.DrawLine(clr, l);
+			else if (DebugMode.IsShapeDebugging) {
+				foreach (LineSegment l in BoundingBox) {
+					SwinGame.DrawLine(clr, l);
+				}
 			}
 		}
 
+		/// <summary>
+		/// Returns line segments that it is managing
+		/// </summary>
+		/// <returns>List of line segments</returns>
 		public List<LineSegment> GetLines() {
 			return shape;
 		}

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Interface for implementing Command pattern
+	/// </summary>
 	public interface ICommand
 	{
 		void Execute();

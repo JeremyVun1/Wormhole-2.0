@@ -8,6 +8,9 @@ using Stateless;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Management of a swingame timer
+	/// </summary>
 	public class CooldownHandler
 	{
 		private Timer timer;
@@ -46,16 +49,27 @@ namespace TaskForceUltra
 			}
 		}
 
+		/// <summary>
+		/// Start the cooldown
+		/// </summary>
 		public void StartCooldown() {
 			if (stateMachine.State == State.READY)
 				stateMachine.Fire(Trigger.TOGGLE);
 		}
 
-		public bool OnCooldown() {
+		/// <summary>
+		/// checks whether the timer is on cooldown or not
+		/// </summary>
+		/// <returns>true or false</returns>
+		public bool IsOnCooldown() {
 			Update();
 			return (stateMachine.State == State.COOLDOWN);
 		}
 
+		/// <summary>
+		/// Start the timer with a new cooldown threshhold
+		/// </summary>
+		/// <param name="ms">milliseconds</param>
 		public void StartNewThreshhold(float ms) {
 			threshhold = ms;
 			stateMachine.Fire(Trigger.RESET);

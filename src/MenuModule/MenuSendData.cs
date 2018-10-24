@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Selected Game options for sending to the game controller to start a game
+	/// </summary>
 	public class MenuSendData
 	{
 		private IReceiveMenuData receiver;

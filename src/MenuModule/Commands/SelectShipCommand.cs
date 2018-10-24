@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Command to select a ship to play as
+	/// </summary>
 	public class SelectShipCommand : ICommand
 	{
 		private IMenuModule menuModule;

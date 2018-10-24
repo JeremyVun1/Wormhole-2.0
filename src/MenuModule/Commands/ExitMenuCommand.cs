@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Command to exit the game
+	/// </summary>
 	public class ExitMenuCommand : ICommand
 	{
 		private IMenuModule menuModule;

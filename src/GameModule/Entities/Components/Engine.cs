@@ -10,6 +10,9 @@ using System.IO;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// A ship engine for moving the ship around
+	/// </summary>
 	public class Engine : Component
 	{
 		public float Thrust { get; private set; }
@@ -33,7 +36,13 @@ namespace TaskForceUltra.src.GameModule.Entities
 			childComponents = components;
 		}
 
-		//return clamped vector modified by vDir
+		/// <summary>
+		/// Ask the engine to thrust
+		/// </summary>
+		/// <param name="vDir">Direction of thrust</param>
+		/// <param name="vel">ship's current velocity</param>
+		/// <param name="mass">ship's mass</param>
+		/// <returns>velocity clamped to engine's max velocity</returns>
 		public Vector ApplyForce(Vector vDir, Vector vel, int mass) {
 			//apply force to the vector
 			Vector modified = vel;

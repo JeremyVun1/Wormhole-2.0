@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// The entity will wrap around to the other side if it goes outside of the play area
+	/// </summary>
 	public class WrapBoundaryBehaviour : BoundaryStrategy
 	{
 		public WrapBoundaryBehaviour(Rectangle playArea) : base(playArea) { }
@@ -14,7 +17,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override void Run(Entity entity) {
 			int padding = 10;
 
-			if (!InPlay(entity)) {
+			if (!IsInPlay(entity)) {
 				Point2D target = entity.RealPos;
 
 				if (entity.RealPos.X < playArea.Left)

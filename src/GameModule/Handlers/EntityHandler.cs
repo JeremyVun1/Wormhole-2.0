@@ -8,6 +8,10 @@ using TaskForceUltra.src.GameModule.Entities;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// Keeps track of game entities to update and draw them 
+	/// Entity handler is used by many other objects
+	/// </summary>
 	public class EntityHandler : IHandlesEntities
 	{
 		public List<Entity> EntityList { get; private set; }
@@ -59,6 +63,9 @@ namespace TaskForceUltra.src.GameModule
 			EntityList.Remove(entity);
 		}
 
+		/// <summary>
+		/// returns how many AI ships are still alive
+		/// </summary>
 		public int AIShipCount() {
 			int result = 0;
 

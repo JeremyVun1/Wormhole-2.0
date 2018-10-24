@@ -19,7 +19,7 @@ namespace TaskForceUltra.src.MenuModule
 			highscores = new List<KeyValuePair<string, int>>();
 			scoresFile = SwinGame.AppPath() + "\\resources\\data\\scores.json";
 
-			PopulateHighscores();
+			InitHighscores();
 
 			Load();
 		}
@@ -28,7 +28,10 @@ namespace TaskForceUltra.src.MenuModule
 			base.Update();
 		}
 
-		private void PopulateHighscores() {
+		/// <summary>
+		/// Initialise the highscores keyvaluepair list to keep track of highscores in memory
+		/// </summary>
+		private void InitHighscores() {
 			string key = "";
 			int count = 0, i = 0, value = 0;
 
@@ -52,6 +55,9 @@ namespace TaskForceUltra.src.MenuModule
 			}
 		}
 
+		/// <summary>
+		/// update the textboxes based on highscore data
+		/// </summary>
 		private void UpdateTextBoxes() {
 			for (int i = 0; i < highscores.Count; ++i) {
 				InsertText($"name{i}", highscores.ElementAt(i).Key);
@@ -59,6 +65,11 @@ namespace TaskForceUltra.src.MenuModule
 			}
 		}
 
+		/// <summary>
+		/// checks whether the score is a high score
+		/// </summary>
+		/// <param name="points">player score</param>
+		/// <returns>true or false</returns>
 		private bool IsHighscore(int points) {
 			if (highscores.Count < 10)
 				return true;
@@ -112,21 +123,6 @@ namespace TaskForceUltra.src.MenuModule
 
 			string jsonString = JsonConvert.SerializeObject(textBoxes, Formatting.Indented);
 			File.WriteAllText(scoresFile, jsonString);
-		}
-
-		/// <summary>
-		/// load dictionary from file
-		/// </summary>
-		private void Load() {
-			string jsonString = File.ReadAllText(scoresFile);
-			JArray obj = JArray.Parse(jsonString);
-
-			/*highscores.Clear();
-			foreach (JObject entry in obj.Children<JObject>()) {
-				foreach (JProperty p in entry.Properties()) {
-					highscores.Add(p.Name, (int)p.Value);
-				}
-			}*/
 		}
 	}
 }

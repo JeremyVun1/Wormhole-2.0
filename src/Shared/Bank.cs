@@ -9,6 +9,9 @@ using System.IO;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Player moneys and id
+	/// </summary>
 	public class Bank
 	{
 		[JsonProperty("id")]
@@ -33,7 +36,9 @@ namespace TaskForceUltra
 			Credits = credits.Clamp(0, Credits);
 		}
 
-		//load bank from file
+		/// <summary>
+		/// Load from file
+		/// </summary>
 		public void Load() {
 			try {
 				string jsonStr = File.ReadAllText(filePath);
@@ -44,7 +49,9 @@ namespace TaskForceUltra
 			}
 		}
 
-		//save bank to file
+		/// <summary>
+		/// Save to file
+		/// </summary>
 		public void Save() {
 			try {
 				string jsonStr = JsonConvert.SerializeObject(this);

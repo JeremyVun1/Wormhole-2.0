@@ -8,6 +8,9 @@ using TaskForceUltra.src.GameModule.Entities;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// handles spawning of AI ships based on a cooldown modified by difficulty
+	/// </summary>
 	public class AISpawner
 	{
 		private IHandlesEntities entityHandler;
@@ -36,15 +39,14 @@ namespace TaskForceUltra.src.GameModule
 				Spawn();
 		}
 
+		/// <summary>
+		/// Spawn a random AI ship
+		/// </summary>
 		private void Spawn() {
-			//get random position
 			Point2D pos = Util.RandomPointInRect(playArea);
 			BoundaryStrategy boundaryStrat = new WrapBoundaryBehaviour(playArea);
 
-			//create ai ship
 			Ship aiShip = shipFac.CreateRandomShip(SwinGame.ToWorld(SwinGame.MousePosition()), boundaryStrat, ControllerType.Computer, difficulty, entityHandler);
-
-			//add it to the entity handler
 			entityHandler.Track(aiShip);
 
 			cdHandler.StartCooldown();

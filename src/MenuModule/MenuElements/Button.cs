@@ -8,6 +8,9 @@ using Stateless;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// generic button - has sticky clicking behaviour
+	/// </summary>
 	public class Button : MenuElement
 	{
 		private ICommand command;
@@ -76,14 +79,23 @@ namespace TaskForceUltra.src.MenuModule
 			else base.Draw();
 		}
 
+		/// <summary>
+		/// reset button state
+		/// </summary>
 		public void Reset() {
 			stateMachine.Fire(Trigger.RESET);
 		}
 
+		/// <summary>
+		/// click the button
+		/// </summary>
 		public virtual void Click() {
 			stateMachine.Fire(Trigger.CLICK);
 		}
 
+		/// <summary>
+		/// execute button command
+		/// </summary>
 		protected virtual void Execute() {
 			command.Execute();
 		}

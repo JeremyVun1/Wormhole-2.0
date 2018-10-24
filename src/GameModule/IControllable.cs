@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.GameModule
 {
-	//receiver interface
+	/// <summary>
+	/// Receiver interface for a controllable game object
+	/// </summary>
 	public interface IControllable
 	{
 		void ForwardCommand();

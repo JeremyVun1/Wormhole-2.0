@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// interface for tracking and untracking entities from an entity handler
+	/// </summary>
 	public interface IHandlesEntities
 	{
 		List<Entity> EntityList { get; }

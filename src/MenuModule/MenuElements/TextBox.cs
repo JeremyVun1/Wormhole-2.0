@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// textbox for holding text
+	/// </summary>
 	public class TextBox : MenuElement
 	{
 		public TextBox(string id, Rectangle bounds, Color hover, Color fill,

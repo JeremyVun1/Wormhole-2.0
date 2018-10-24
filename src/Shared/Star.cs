@@ -10,6 +10,9 @@ using Newtonsoft.Json.Linq;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// A star object that dims and flares randomly
+	/// </summary>
 	public class Star
 	{
 		private List<Color> colors;
@@ -34,9 +37,8 @@ namespace TaskForceUltra
 		public Star(List<Color> colors, MinMax<int> sizeMinMax, MinMax<float> dimRateMinMax,MinMax<float> flareRateMinMax, Rectangle playArea) {
 			this.colors = colors;
 			currColorIndex = 0;
-
-			//Create star at random position
 			rng = new Random(Guid.NewGuid().GetHashCode());
+
 			pos = Util.RandomPointInRect(playArea);
 			sizeRange = sizeMinMax;
 			size = sizeRange.Min;
@@ -52,8 +54,6 @@ namespace TaskForceUltra
 			//state machine
 			stateMachine = new StateMachine<State, Trigger>(State.REST);
 			ConfigureStateMachine();
-
-			//start in random state
 			stateMachine.Fire((Trigger)Util.Rand(2));
 
 			if (stateMachine.State == State.REST)
@@ -90,12 +90,18 @@ namespace TaskForceUltra
 			}
 		}
 
+		/// <summary>
+		/// Flare the star
+		/// </summary>
 		private void Flare() {
 			cdHandler.StartNewThreshhold(dimTrigger);
 			size = rng.Next(sizeRange.Min, sizeRange.Max + 1);
 			ChangeColor();
 		}
 
+		/// <summary>
+		/// Dim the star
+		/// </summary>
 		private void Dim() {
 			if (!cdHandler.OnCooldown()) {
 				ChangeColor();
@@ -113,6 +119,9 @@ namespace TaskForceUltra
 			else stateMachine.Fire(Trigger.RESET);
 		}
 
+		/// <summary>
+		/// Reset state of the star
+		/// </summary>
 		private void Reset() {
 			currColorIndex = 0;
 			flareTrigger = 1 / (Util.RandomInRange(flareRate) / 1000);

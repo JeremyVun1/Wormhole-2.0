@@ -12,6 +12,9 @@ using TaskForceUltra.src.GameModule.AI;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// Spaceship object that has engines, tools, emitters
+	/// </summary>
 	public abstract class Ship : Mover, ICollides
 	{
 		private List<Component> componentList;
@@ -68,6 +71,9 @@ namespace TaskForceUltra.src.GameModule
 			TeleportTo(RealPos);
 		}
 
+		/// <summary>
+		/// Handles damage timeouts to prevent things from losing all their health really quickly
+		/// </summary>
 		private void HandleHurtingState() {
 			if (isHurting && hurtTimer.Ticks > hurtThreshhold) {
 				hurtTimer.Stop();
@@ -84,7 +90,15 @@ namespace TaskForceUltra.src.GameModule
 			componentList?.Draw();
 		}
 
-		public virtual void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
+		/// <summary>
+		/// Object's reaction to being collided with
+		/// </summary>
+		/// <param name="dmg">incoming damage</param>
+		/// <param name="collidingVel">velocity of other object</param>
+		/// <param name="collidingMass">mass of other object</param>
+		/// <param name="collider">team of other object</param>
+		/// <param name="forceReaction">opt to bypass hurting timeout</param>
+		public virtual void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
 			if (!isHurting || forceReaction) {
 				isHurting = true;
 				hurtTimer.Start();
@@ -96,15 +110,16 @@ namespace TaskForceUltra.src.GameModule
 			}
 
 			if (health <= 0)
-				Kill(collider);
+				Kill(collidingTeam);
 		}
 
 
 		//////////////////////
-		//MOVEMENT API
+		// MOVEMENT API
 		//////////////////////
 		/// <summary>
-		/// thrust along a vector dir clamped to unit vector for throttle amount
+		/// Ask ship engines to thrust ship along a passed in vector direction
+		/// magnitude of vector direction determines thrust scaling
 		/// </summary>
 		public void Thrust(Vector vDir) {
 			vDir = vDir.Rotate(Dir.Angle * (Math.PI / 180));
@@ -116,7 +131,7 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		/// <summary>
-		/// Turn to a certain direction (left/right)
+		/// Ask engines to turn the ship based on a positive or negative value
 		/// </summary>
 		protected void Turn(float turnStrength) {
 			foreach (Engine e in componentList?.OfType<Engine>()) {
@@ -126,8 +141,10 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		/// <summary>
-		/// Turn to the specified direction
+		/// Turn the ship to a specified vector
 		/// </summary>
+		/// <param name="targetDir">vector to turn to</param>
+		/// <param name="turnStrength">opt to modify turn strength</param>
 		public void TurnTo(Vector targetDir, float turnStrength = 1) {
 			//turn towards the target direction as much as our engines will allow us
 			double desiredTheta = Dir.AngleTo(targetDir) * Math.PI/180;
@@ -148,8 +165,9 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		/// <summary>
-		/// Activate the specified tool
+		/// Activate a specific tool
 		/// </summary>
+		/// <param name="toolId">tool id to activate</param>
 		public void Fire(string toolId) {
 			foreach (Tool t in componentList?.OfType<Tool>()) {
 				if (t.Id == toolId)
@@ -167,7 +185,7 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		/// <summary>
-		/// Teleport the ship and it's child components to the target pos
+		/// Teleport the ship to the target position
 		/// </summary>
 		public override void TeleportTo(Point2D target) {
 			base.TeleportTo(target);
@@ -199,11 +217,17 @@ namespace TaskForceUltra.src.GameModule
 			RegisterShips();
 		}
 
+		/// <summary>
+		/// Register ships from file
+		/// </summary>
 		public void RegisterShips() {
 			BuildFileRegistry();
 			BuildShapeRegistry();
 		}
 
+		/// <summary>
+		/// Ship id, filename pairs
+		/// </summary>
 		private void BuildFileRegistry() {
 			try {
 				FileRegistry.Clear();
@@ -219,6 +243,10 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		/// <summary>
+		/// ship id, ship shape pairs
+		/// useful if we only want to draw the shapes
+		/// </summary>
 		private void BuildShapeRegistry() {
 			try {
 				ShapeRegistry.Clear();
@@ -240,6 +268,11 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		/// <summary>
+		/// Return the file path of the specified ship id
+		/// </summary>
+		/// <param name="id">ship id</param>
+		/// <returns>ship file path</returns>
 		public string FetchShipPath(string id) {
 			return FileRegistry?[id];
 		}
@@ -318,6 +351,16 @@ namespace TaskForceUltra.src.GameModule
 			return result;
 		}
 
+		/// <summary>
+		/// Create specified ship
+		/// </summary>
+		/// <param name="shipId">ship id</param>
+		/// <param name="pos">spawn position</param>
+		/// <param name="boundaryStrat">behaviour at the play area boundary</param>
+		/// <param name="controller">computer/players</param>
+		/// <param name="diff">difficulty setting</param>
+		/// <param name="entHandler">entity handler</param>
+		/// <returns>player ship or ai ship depending on controller</returns>
 		public Ship Create(string shipId, Point2D pos, BoundaryStrategy boundaryStrat, ControllerType controller, Difficulty diff, IHandlesEntities entHandler) {
 			if (!FileRegistry.ContainsKey(shipId))
 				return null;
@@ -334,6 +377,10 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		/// <summary>
+		/// Create a random ship!
+		/// </summary>
+		/// <returns>a ship</returns>
 		public Ship CreateRandomShip(Point2D pos, BoundaryStrategy boundaryStrat, ControllerType controller, Difficulty diff, IHandlesEntities entHandler) {
 			int i = Util.Rand(FileRegistry.Count);
 			string randomShipId = FileRegistry.ElementAt(i).Key;

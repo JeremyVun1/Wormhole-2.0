@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Command to increase swingame music volume
+	/// </summary>
 	public class IncreaseVolumeCommand : ICommand
 	{
 		public IncreaseVolumeCommand() { }

@@ -10,6 +10,9 @@ using Newtonsoft.Json.Linq;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// A menu object that handles buttons and textboxes
+	/// </summary>
 	public class Menu
 	{
 		public string Id { get; private set; }
@@ -35,28 +38,42 @@ namespace TaskForceUltra.src.MenuModule
 				e.Draw();
 			}
 
-			//draw title
 			SwinGame.DrawText(title, Color.White, Color.Transparent, "MenuTitle", FontAlignment.AlignCenter, bounds);
 		}
 
+		/// <summary>
+		/// Reset the state of children buttons
+		/// </summary>
 		public void ResetButtons() {
 			foreach(Button b in elements.OfType<Button>()) {
 				b.Reset();
 			}
 		}
 
+		/// <summary>
+		/// Insert text into a textbox on the menu
+		/// </summary>
+		/// <param name="elementId">textbox id</param>
+		/// <param name="text">textbox text</param>
 		public void InsertText(string elementId, string text) {
 			MenuElement e = FetchElement(elementId);
 			if (e != null)
 				e.text = text;
 		}
 
+		/// <summary>
+		/// Remove an element from the menu
+		/// </summary>
 		public void RemoveElement(string elementId) {
 			MenuElement e = FetchElement(elementId);
 			if (e != null)
 				elements.Remove(e);
 		}
 
+		/// <summary>
+		/// fetch an element from the meny by id
+		/// </summary>
+		/// <returns>menu element or null</returns>
 		private MenuElement FetchElement(string id) {
 			if (elements != null) {
 				foreach (MenuElement e in elements) {

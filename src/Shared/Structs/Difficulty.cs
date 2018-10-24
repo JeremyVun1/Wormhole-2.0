@@ -11,6 +11,9 @@ using TaskForceUltra.src.GameModule.AI;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Difficulty object
+	/// </summary>
 	public struct Difficulty
 	{
 		public string Id;

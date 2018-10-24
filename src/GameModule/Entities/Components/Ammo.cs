@@ -11,6 +11,9 @@ using TaskForceUltra.src.GameModule.AI.strategies;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// Ammo object
+	/// </summary>
 	public class Ammo : Component, ICollides
 	{
 		private float lifetime;
@@ -54,6 +57,10 @@ namespace TaskForceUltra.src.GameModule.Entities
 			}
 		}
 
+		/// <summary>
+		/// Accelerate the Ammo object
+		/// </summary>
+		/// <param name="vDir">vector along which to accelerate</param>
 		public virtual void Thrust(Vector vDir) {
 			thrusting = true;
 			Vector deltaV = Dir.Multiply(thrustForce / mass);
@@ -68,6 +75,12 @@ namespace TaskForceUltra.src.GameModule.Entities
 				base.Draw();
 		}
 
+		/// <summary>
+		/// initialise an ammo object
+		/// </summary>
+		/// <param name="pos">spawning position</param>
+		/// <param name="dir">spawning direction</param>
+		/// <param name="vel">spawning velocity</param>
 		public virtual void Init(Point2D pos, Vector dir, Vector vel) {
 			TeleportTo(pos);
 			theta = Dir.AngleTo(dir) * Math.PI / 180;
@@ -82,6 +95,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 			Kill(Team.None);
 		}
 
+		/// <summary>
+		/// Deactivate ammo
+		/// </summary>
 		public void Sleep() {
 			sleep = true;
 		}

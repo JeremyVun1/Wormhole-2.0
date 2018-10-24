@@ -9,6 +9,9 @@ using Newtonsoft.Json;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// base class for buttons and textboxes etc.
+	/// </summary>
 	public abstract class MenuElement {
 		protected Color hoverColor { get; private set; }
 		private Color fillColor;

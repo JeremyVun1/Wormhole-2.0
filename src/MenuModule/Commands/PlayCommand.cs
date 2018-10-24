@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Command to start playing the game
+	/// </summary>
 	public class PlayCommand : ICommand
 	{
 		private IMenuModule menuModule;

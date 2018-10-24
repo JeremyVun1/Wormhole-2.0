@@ -7,6 +7,9 @@ using System.IO;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Utility helper functions
+	/// </summary>
 	public static class Util
 	{
 		//////////////////////////

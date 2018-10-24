@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// base class for entity behaviour when it goes outside of the play area boundaries
+	/// </summary>
 	public abstract class BoundaryStrategy
 	{
 		protected Rectangle playArea;
@@ -15,8 +18,12 @@ namespace TaskForceUltra.src.GameModule.Entities
 			this.playArea = playArea;
 		}
 
-		//check whether entity is in play area or not
-		protected bool InPlay(Entity entity) {
+		/// <summary>
+		/// checks whether entity is in play area or not
+		/// </summary>
+		/// <param name="entity">entity to check</param>
+		/// <returns>true or false</returns>
+		protected bool IsInPlay(Entity entity) {
 			if (entity != null)
 				return entity.RealPos.InRect(playArea);
 			else return false;

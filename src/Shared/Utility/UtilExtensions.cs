@@ -8,11 +8,14 @@ using TaskForceUltra.src.GameModule.Entities;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Utility extension methods
+	/// </summary>
 	public static class UtilExtensions
 	{
-		////////////////////
-		// Math extensions
-		////////////////////
+		/// <summary>
+		/// Clamp float between values
+		/// </summary>
 		public static float Clamp(this float x, float min, float max) {
 			if (x < min)
 				return min;
@@ -21,6 +24,9 @@ namespace TaskForceUltra
 			return x;
 		}
 
+		/// <summary>
+		/// Clamp double between values
+		/// </summary>
 		public static double Clamp(this double x, double min, double max) {
 			if (x < min)
 				return min;
@@ -29,6 +35,9 @@ namespace TaskForceUltra
 			return x;
 		}
 
+		/// <summary>
+		/// clamp int between values
+		/// </summary>
 		public static int Clamp(this int x, int min, int max) {
 			if (x < min)
 				return min;
@@ -37,6 +46,9 @@ namespace TaskForceUltra
 			return x;
 		}
 
+		/// <summary>
+		/// get the sign of a float
+		/// </summary>
 		public static float GetSign(this float x) {
 			if (x < 0)
 				return -1;
@@ -45,6 +57,9 @@ namespace TaskForceUltra
 			return 0;
 		}
 
+		/// <summary>
+		/// get the sign of a double
+		/// </summary>
 		public static double GetSign(this double x) {
 			if (x < 0)
 				return -1;
@@ -53,14 +68,23 @@ namespace TaskForceUltra
 			return 0;
 		}
 
+		/// <summary>
+		/// Multiply point by float
+		/// </summary>
 		public static Point2D Multiply(this Point2D p, float x) {
 			return SwinGame.PointAt(p.X * x, p.Y * x);
 		}
 
+		/// <summary>
+		/// Subtract point from another point
+		/// </summary>
 		public static Point2D Subtract(this Point2D p1, Point2D p2) {
 			return SwinGame.PointAt(p1.X - p2.X, p1.Y - p2.Y);
 		}
 
+		/// <summary>
+		/// Multiply point by an int
+		/// </summary>
 		public static LineSegment Multiply(this LineSegment l, int x) {
 			return SwinGame.CreateLine(l.StartPoint.Multiply(x), l.EndPoint.Multiply(x));
 		}

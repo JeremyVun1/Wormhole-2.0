@@ -8,6 +8,9 @@ using Stateless;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// handles game camera behaviour
+	/// </summary>
 	public class CameraHandler
 	{
 		private Rectangle playArea;
@@ -16,10 +19,9 @@ namespace TaskForceUltra.src.GameModule
 		private Rectangle chaseArea;
 		private List<Rectangle> cornerAreas;
 		private List<Rectangle> sideAreas;
+
 		public Rectangle Viewport {
-			get {
-				return SwinGame.CreateRectangle(Camera.CameraPos(), SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
-			}
+			get { return SwinGame.CreateRectangle(Camera.CameraPos(), SwinGame.ScreenWidth(), SwinGame.ScreenHeight()); }
 		}
 
 		private Entity activeEntity;
@@ -39,16 +41,12 @@ namespace TaskForceUltra.src.GameModule
 			sideAreas = BuildSideAreas();
 		}
 
-		private void DebugArea(List<Rectangle> areas, Color clr) {
-			foreach(Rectangle r in areas) {
-				SwinGame.FillRectangle(clr, r);
-			}
-		}
-
 		public void Update() {
-			//DebugArea(cornerAreas, Color.Red);
-			//DebugArea(sideAreas, Color.Blue);
-			
+			if (DebugMode.IsOn) {
+				DebugArea(cornerAreas, Color.Red);
+				DebugArea(sideAreas, Color.Blue);
+			}
+
 			UpdateState();
 
 			switch (state) {
@@ -65,14 +63,18 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		private void UpdateState() {
-			if (EntityIn(cornerAreas))
+			if (IsEntityIn(cornerAreas))
 				state = State.CORNER;
-			else if (EntityIn(sideAreas))
+			else if (IsEntityIn(sideAreas))
 				state = State.SIDE;
 			else state = State.CHASE;
 		}
 
-		private bool EntityIn(List<Rectangle> rects) {
+		/// <summary>
+		/// checks whether the entity is within the specified rectangle bound
+		/// </summary>
+		/// <param name="rects">a rectangle bound</param>
+		private bool IsEntityIn(List<Rectangle> rects) {
 			for(int i=0; i<4; ++i) {
 				if (SwinGame.PointInRect(activeEntity.RealPos, rects[i])) {
 					rectLoc = i;
@@ -82,8 +84,11 @@ namespace TaskForceUltra.src.GameModule
 			return false;
 		}
 
+		/// <summary>
+		/// Camera behaviour when the player is in the corner of the play area
+		/// lock camera x and y from moving
+		/// </summary>
 		private void CornerCam() {
-			//clamp cam x and y to chaseArea bounds
 			switch (rectLoc) {
 				case 0:
 					Camera.MoveCameraTo(CenterOn(chaseArea.TopLeft));
@@ -100,8 +105,11 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		/// <summary>
+		/// Camera behaviour when the player is on the side of the play area
+		/// clamp either x or y depending on which side the player is on
+		/// </summary>
 		private void SideCam() {
-			//clamp x or y based on which side we are on
 			switch (rectLoc) {
 				case 0: // top - clamp y
 					Camera.MoveCameraTo(CenterOn(SwinGame.PointAt(activeEntity.RealPos.X, chaseArea.Top)));
@@ -118,21 +126,37 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		/// <summary>
+		/// Free chasing camera behaviour when the player is within the middle of the play area
+		/// </summary>
 		private void ChaseCam() {
 			Camera.MoveCameraTo(CenterOn(activeEntity.RealPos));
 		}
 
+		/// <summary>
+		/// Offset camera position so that it is centered on the target point
+		/// </summary>
+		/// <param name="target">point to center camera on</param>
+		/// <returns>Offset camera position</returns>
 		private Point2D CenterOn(Point2D target) {
 			return target.Subtract(camOffset);
 		}
 
+		/// <summary>
+		/// Define the area in which the camera will freely chase the player
+		/// inset of the play area by the camera offset
+		/// </summary>
+		/// <returns>Rectangle</returns>
 		private Rectangle BuildChaseArea() {
-			//inset of playarea by camOffset
 			Point2D TopLeft = playArea.TopLeft.Add(camOffset);
 			Point2D BottomRight = playArea.BottomRight.Subtract(camOffset);
 			return SwinGame.CreateRectangle(TopLeft, BottomRight);
 		}
 
+		/// <summary>
+		/// Define the corner areas of the play area
+		/// </summary>
+		/// <returns>List of rectangles</returns>
 		private List<Rectangle> BuildCornerAreas() {
 			//now that we know the chase cam rectangle
 			return new List<Rectangle>() {
@@ -143,14 +167,23 @@ namespace TaskForceUltra.src.GameModule
 			};
 		}
 
+		/// <summary>
+		/// Build the side areas of the play area
+		/// </summary>
+		/// <returns>List of rectangles</returns>
 		private List<Rectangle> BuildSideAreas() {
-			//now that we know chase area and corner areas
 			return new List<Rectangle>() {
 				SwinGame.CreateRectangle(cornerAreas[0].TopRight, chaseArea.TopRight), //top
 				SwinGame.CreateRectangle(cornerAreas[1].BottomLeft, cornerAreas[2].TopRight), //right
 				SwinGame.CreateRectangle(chaseArea.BottomLeft, cornerAreas[2].BottomLeft), //bottom
 				SwinGame.CreateRectangle(cornerAreas[0].BottomLeft, chaseArea.BottomLeft) //left
 			};
+		}
+
+		private void DebugArea(List<Rectangle> areas, Color clr) {
+			foreach (Rectangle r in areas) {
+				SwinGame.FillRectangle(clr, r);
+			}
 		}
 	}
 }

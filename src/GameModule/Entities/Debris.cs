@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// Moving and spinning debris that doesn't interact with anything
+	/// </summary>
 	public class Debris : Mover
 	{
 		private float friction;
@@ -42,6 +45,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 	}
 
+	/// <summary>
+	/// Creates Debris
+	/// </summary>
 	public class DebrisFactory
 	{
 		public Debris Create(LineSegment l, Point2D pos) {

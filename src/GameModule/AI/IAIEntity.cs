@@ -7,6 +7,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.AI
 {
+	/// <summary>
+	/// AI entity interface for being controlled by an AI strategy
+	/// </summary>
 	public interface IAIEntity
 	{
 		bool IsDead { get; }

@@ -8,6 +8,9 @@ using TaskForceUltra.src.GameModule.AI;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// Ammo that locks onto and chases objects on other teams
+	/// </summary>
 	public class SeekAmmo : Ammo, IAIEntity
 	{
 		public float MaxVel {
@@ -44,6 +47,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		private void HandleEmitters() {
+			if (emitters == null)
+				return;
+
 			if (thrusting && !primingTimer.OnCooldown()) {
 				foreach (Emitter e in emitters) {
 					e.Update();
@@ -54,6 +60,12 @@ namespace TaskForceUltra.src.GameModule.Entities
 			}
 		}
 
+		/// <summary>
+		/// initialise the seeking ammo
+		/// </summary>
+		/// <param name="pos">spawning position</param>
+		/// <param name="dir">spawning direction</param>
+		/// <param name="vel">spawning velocity</param>
 		public override void Init(Point2D pos, Vector dir, Vector vel) {
 			emitters.TeleportTo(pos);
 			base.Init(pos, dir, vel);

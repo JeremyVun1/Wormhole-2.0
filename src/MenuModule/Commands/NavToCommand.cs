@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.MenuModule
 {
+	/// <summary>
+	/// Command to navigate to another menu
+	/// </summary>
 	public class NavToCommand : ICommand
 	{
 		private IMenuModule menuModule;

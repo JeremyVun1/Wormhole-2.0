@@ -8,6 +8,10 @@ using TaskForceUltra.src.GameModule.Entities;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// Something that moves around
+	/// Handles movement logic
+	/// </summary>
 	public abstract class Mover : Entity
 	{
 		public Vector Vel { get; protected set; }
@@ -17,7 +21,7 @@ namespace TaskForceUltra.src.GameModule
 
 		protected BoundaryStrategy boundaryStrat { get; private set; }
 
-		private bool optimisedUpdate; // if true, do not update the object if it is off screen
+		private bool isOptimisedUpdate; // if true, do not update the object if it is off screen
 
 		public Mover(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
@@ -30,11 +34,11 @@ namespace TaskForceUltra.src.GameModule
 			Dir = dir;
 			theta = 0;
 
-			optimisedUpdate = optimiseMe;
+			isOptimisedUpdate = optimiseMe;
 		}
 
 		public override void Update() {
-			if (optimisedUpdate && !OnScreen())
+			if (isOptimisedUpdate && !IsOnScreen())
 				return;
 
 			base.Update();
@@ -43,11 +47,17 @@ namespace TaskForceUltra.src.GameModule
 			boundaryStrat?.Run(this);
 		}
 
+		/// <summary>
+		/// Automatically move based on whatever the current velocity is
+		/// </summary>
 		protected void Move() {
 			refPos += Vel;
 			Shape?.Move(Vel);
 		}
 
+		/// <summary>
+		/// Automatically turn based on whatever theta has been set
+		/// </summary>
 		protected void Rotate() {
 			Dir = Dir.Rotate(theta);
 			Shape?.Rotate(theta);

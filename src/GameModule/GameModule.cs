@@ -8,6 +8,9 @@ using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule
 {
+	/// <summary>
+	/// The space ship shooting part
+	/// </summary>
 	public class GameModule {
 		public Level Level { get; private set; }
 
@@ -63,6 +66,9 @@ namespace TaskForceUltra.src.GameModule
 			entityHandler.Draw(cameraHandler.Viewport);
 		}
 
+		/// <summary>
+		/// End the game module and send game results to game controller
+		/// </summary>
 		public void EndGame() {
 			gameSendData.Add(GameResultType.Points, scoresheet.FetchTeamScore(player.Team));
 			gameSendData.Add(GameResultType.Result, player.IsDead ? 1 : 0);

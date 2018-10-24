@@ -11,6 +11,9 @@ using TaskForceUltra.src.GameModule;
 
 namespace TaskForceUltra
 {
+	/// <summary>
+	/// Level scene with background stars and a defined play area
+	/// </summary>
 	public class Level
 	{
 		public string Id { get; private set; }
@@ -18,17 +21,15 @@ namespace TaskForceUltra
 		private Background background;
 		public Rectangle PlayArea { get; private set; }
 		public bool Playable { get; private set; }
-		public int LevelNumber { get; private set; } //TODO implement
 		public List<string> EntitiesToSpawn { get; private set; }
 
-		public Level(string id, List<EnvMod> EnvMods, int levelNum, List<string> entToSpawn,
+		public Level(string id, List<EnvMod> EnvMods, List<string> entToSpawn,
 			bool playable, Rectangle playArea, Background bkgd)
 		{
 			Id = id;
 			this.EnvMods = EnvMods;
 			background = bkgd;
 			PlayArea = playArea;
-			LevelNumber = levelNum;
 			EntitiesToSpawn = entToSpawn;
 			Playable = playable;
 		}
@@ -69,7 +70,6 @@ namespace TaskForceUltra
 						continue;
 
 					string id = obj.Value<string>("id");
-					int num = obj.Value<int>("levelNumber");
 					bool playable = obj.Value<bool>("playable");
 					string json = JsonConvert.SerializeObject(obj.GetValue("entities"));
 					List<string> entitiesToSpawn = JsonConvert.DeserializeObject<List<string>>(json);
@@ -83,7 +83,7 @@ namespace TaskForceUltra
 					BackgroundFactory backgroundFac = new BackgroundFactory();
 					Background bkgd = backgroundFac.Create(bkgdObj, playArea);
 
-					levelList.Add(id, new Level(id, EnvMods, num, entitiesToSpawn, playable, playArea, bkgd));
+					levelList.Add(id, new Level(id, EnvMods, entitiesToSpawn, playable, playArea, bkgd));
 				}
 				catch(Exception e) {
 					Console.WriteLine($"Cannot read level: {file}");

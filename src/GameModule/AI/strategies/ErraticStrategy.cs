@@ -9,7 +9,7 @@ using SwinGameSDK;
 namespace TaskForceUltra.src.GameModule.AI.strategies
 {
 	/// <summary>
-	/// randomly change our direction about every 5 seconds
+	/// randomly change direction about every 5 seconds
 	/// </summary>
 	public class ErraticStrategy : AIStrategy
 	{

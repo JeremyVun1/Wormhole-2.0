@@ -8,11 +8,12 @@ using TaskForceUltra.src.GameModule.AI;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
+	/// <summary>
+	/// AI ship that utilitises an AI strategy
+	/// </summary>
 	public class AIShip : Ship, IAIEntity
 	{
-		private AIStrategy aiStrategy;
-
-		public AIStrategy AIStrategy { set { aiStrategy = value; } }
+		public AIStrategy AIStrategy { private get; set; }
 
 		public AIShip(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
@@ -24,8 +25,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		public override void Update() {
-			if (aiStrategy != null) {
-				aiStrategy.Update();
+			if (AIStrategy != null) {
+				AIStrategy.Update();
 				base.Update();
 			}
 		}

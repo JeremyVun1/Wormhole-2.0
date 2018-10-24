@@ -9,8 +9,8 @@ using SwinGameSDK;
 namespace TaskForceUltra.src.GameModule
 {
 	/// <summary>
-	/// create controller with commands that control the passted in controllable entity
-	/// invoke commands via loaded in action bindings
+	/// Invoker object that listens for player input on the passed in action bindings
+	/// and activates the relevant commands
 	/// </summary>
 	public class InputController
 	{
