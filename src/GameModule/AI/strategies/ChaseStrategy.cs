@@ -52,7 +52,6 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 		/// <summary>
 		/// Find nearest entity within agro range
 		/// </summary>
-		/// <returns></returns>
 		private Ship FetchNearestTarget() {
 			Ship result = null;
 			float distanceToTarget = agroRange;

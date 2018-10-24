@@ -17,7 +17,6 @@ namespace TaskForceUltra.src.MenuModule
 		protected List<MenuElement> elements;
 		private Rectangle bounds;
 
-		//TODO
 		public Menu(string id, string title, List<MenuElement> elements) {
 			Id = id;
 			this.title = title;
@@ -108,11 +107,12 @@ namespace TaskForceUltra.src.MenuModule
 			JArray textBoxesObj = menuObj.Value<JArray>("textBoxes");
 			string pathname = textBoxesObj[0].Value<string>("path");
 			Console.WriteLine(pathname);
-			string buffer = File.ReadAllText(SwinGame.AppPath() + pathname);
 
-			textBoxesObj = JsonConvert.DeserializeObject<JArray>(buffer);
 			JArray buttonsObj = menuObj.Value<JArray>("buttons");
 			JArray colorsObj = menuObj.Value<JArray>("elementColors");
+
+			string buffer = File.ReadAllText(SwinGame.AppPath() + pathname);
+			textBoxesObj = JsonConvert.DeserializeObject<JArray>(buffer);
 
 			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule);
 
@@ -131,9 +131,9 @@ namespace TaskForceUltra.src.MenuModule
 			int sw = SwinGame.ScreenHeight();
 			int sh = SwinGame.ScreenWidth();
 
-			List<Rectangle> shipSelectionBounds = CreateSelectionBounds(0.3f*sw, 0.15f*sh, 0.05f*sw, 0.01f*sh, 0.2f*sw, 0.04f*sh);
-			List<Rectangle> difficultySelectionBounds = CreateSelectionBounds(0.3f*sw, 0.27f*sh, 0.05f*sw, 0.01f*sh, 0.2f*sw, 0.04f*sh);
-			List<Rectangle> levelSelectionBounds = CreateSelectionBounds(0.3f*sw, 0.39f*sh, 0.05f*sw, 0.01f*sh, 0.2f*sw, 0.04f*sh);
+			List<Rectangle> shipSelectionBounds = CreateSelectionBounds(0.1f*sw, 0.2f*sh, 0.05f*sw, 0.01f*sh, 0.2f*sw, 0.04f*sh);
+			List<Rectangle> difficultySelectionBounds = CreateSelectionBounds(0.1f*sw, 0.32f*sh, 0.05f*sw, 0.01f*sh, 0.2f*sw, 0.04f*sh);
+			List<Rectangle> levelSelectionBounds = CreateSelectionBounds(0.1f*sw, 0.44f*sh, 0.05f*sw, 0.01f*sh, 0.2f*sw, 0.04f*sh);
 
 			SelectionGroup shipSelection = new SelectionGroup(SelectionType.Ship);
 			SelectionGroup difficultySelection = new SelectionGroup(SelectionType.Difficulty);
@@ -150,7 +150,8 @@ namespace TaskForceUltra.src.MenuModule
 			n = levelList.Count > levelSelectionBounds.Count ? levelSelectionBounds.Count : levelList.Count;
 			for (int i = 0; i < n; ++i) {
 				string levelId = levelList.ElementAt(i).Key;
-				levelSelection.Add(menuElementFac.CreateSelectButton(id, levelId, levelSelectionBounds[i], SelectionType.Level, levelId, levelSelection, menuModule));
+				if (levelList.ElementAt(i).Value.Playable) // only allow it to be selected if the level is playable
+					levelSelection.Add(menuElementFac.CreateSelectButton(id, levelId, levelSelectionBounds[i], SelectionType.Level, levelId, levelSelection, menuModule));
 			}
 
 			//difficulty buttons

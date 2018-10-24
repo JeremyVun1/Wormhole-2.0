@@ -33,7 +33,7 @@ namespace TaskForceUltra
 
 			Init();
 		}
-		public GameController() : this("NoName", 1000, 700, Color.Black) { }
+		public GameController() : this("Task Force Ultra", 900, 700, Color.Black) { }
 
 		private void ConfigureStateMachine() {
 			stateMachine.Configure(State.MENU)

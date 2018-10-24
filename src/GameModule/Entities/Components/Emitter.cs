@@ -44,7 +44,6 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		public override void Update() {
-			cdHandler.Update();
 			base.Update();
 		}
 	}

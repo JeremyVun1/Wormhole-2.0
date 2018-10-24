@@ -17,16 +17,20 @@ namespace TaskForceUltra
 		private List<EnvMod> EnvMods; //TODO implement
 		private Background background;
 		public Rectangle PlayArea { get; private set; }
+		public bool Playable { get; private set; }
 		public int LevelNumber { get; private set; } //TODO implement
+		public List<string> EntitiesToSpawn { get; private set; }
 
-		public Level(string id, List<EnvMod> EnvMods, int num,
-			Rectangle playArea, Background bkgd)
+		public Level(string id, List<EnvMod> EnvMods, int levelNum, List<string> entToSpawn,
+			bool playable, Rectangle playArea, Background bkgd)
 		{
 			Id = id;
 			this.EnvMods = EnvMods;
 			background = bkgd;
 			PlayArea = playArea;
-			LevelNumber = num;
+			LevelNumber = levelNum;
+			EntitiesToSpawn = entToSpawn;
+			Playable = playable;
 		}
 
 		public void Update() {
@@ -35,7 +39,6 @@ namespace TaskForceUltra
 
 		public void Draw() {
 			background.Draw();
-			//SwinGame.FillRectangle(SwinGame.RGBAColor(150, 150, 150, 100), PlayArea);
 		}
 	}
 
@@ -60,23 +63,32 @@ namespace TaskForceUltra
 			fileList = Directory.GetFiles(dirPath);
 
 			foreach (string file in fileList) {
-				JObject obj = Util.Deserialize(file);
-				if (obj == null)
-					continue;
+				try {
+					JObject obj = Util.Deserialize(file);
+					if (obj == null)
+						continue;
 
-				string id = obj.Value<string>("id");
-				int num = obj.Value<int>("levelNumber");
+					string id = obj.Value<string>("id");
+					int num = obj.Value<int>("levelNumber");
+					bool playable = obj.Value<bool>("playable");
+					string json = JsonConvert.SerializeObject(obj.GetValue("entities"));
+					List<string> entitiesToSpawn = JsonConvert.DeserializeObject<List<string>>(json);
 
-				Size2D<int> size = obj["size"].ToObject<Size2D<int>>();
-				Rectangle playArea = SwinGame.CreateRectangle(SwinGame.PointAt(0, 0), size.W, size.H);
+					Size2D<int> size = obj["size"].ToObject<Size2D<int>>();
+					Rectangle playArea = SwinGame.CreateRectangle(SwinGame.PointAt(0, 0), size.W, size.H);
 
-				List<EnvMod> EnvMods = obj["environMods"].ToObject<List<EnvMod>>(); //Most likely will not work
+					List<EnvMod> EnvMods = obj["environMods"].ToObject<List<EnvMod>>(); //Most likely will not work
 
-				JObject bkgdObj = obj.Value<JObject>("background");
-				BackgroundFactory backgroundFac = new BackgroundFactory();
-				Background bkgd = backgroundFac.Create(bkgdObj, playArea);
+					JObject bkgdObj = obj.Value<JObject>("background");
+					BackgroundFactory backgroundFac = new BackgroundFactory();
+					Background bkgd = backgroundFac.Create(bkgdObj, playArea);
 
-				levelList.Add(id, new Level(id, EnvMods, num, playArea, bkgd));
+					levelList.Add(id, new Level(id, EnvMods, num, entitiesToSpawn, playable, playArea, bkgd));
+				}
+				catch(Exception e) {
+					Console.WriteLine($"Cannot read level: {file}");
+					Console.WriteLine(e);
+				}
 			}
 		}
 

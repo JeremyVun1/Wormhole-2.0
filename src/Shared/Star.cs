@@ -79,8 +79,6 @@ namespace TaskForceUltra
 		}
 
 		public void Update() {
-			cdHandler.Update();
-
 			switch (stateMachine.State) {
 				case State.REST:
 					if (!cdHandler.OnCooldown())

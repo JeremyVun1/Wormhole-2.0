@@ -39,7 +39,6 @@
     <PrepareForRunDependsOn>$(PrepareForRunDependsOn);CopyLibsToOut</PrepareForRunDependsOn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="src\DoubtfireConcat.cs" />
     <Compile Include="src\GameModule\AI\IAIEntity.cs" />
     <Compile Include="src\GameModule\AI\strategies\AIStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ChaseStrategy.cs" />

@@ -17,7 +17,6 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		public void Send() {
-			//check that all possible selection types are selected
 			if (results.Count() == Enum.GetNames(typeof(SelectionType)).Length)
 				receiver.ReceiveGameData(results);
 		}

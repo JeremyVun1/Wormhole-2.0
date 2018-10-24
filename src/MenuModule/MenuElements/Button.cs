@@ -32,7 +32,6 @@ namespace TaskForceUltra.src.MenuModule
 		}
 
 		public void Update() {
-			//update hover status
 			if (ButtonHovered())
 				stateMachine.Fire(Trigger.HOVER);
 			else stateMachine.Fire(Trigger.UNHOVER);

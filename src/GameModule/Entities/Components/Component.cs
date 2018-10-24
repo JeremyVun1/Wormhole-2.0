@@ -21,9 +21,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override List<LineSegment> DebrisLines { get { return null; } }
 
 		public Component(
-			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
-			List<Color> colors, int health, Vector vel, Vector dir, BoundaryStrategy boundaryStrat, Team team
-		) : base(id, filePath, refPos, offsetPos, shape, colors, health, vel, dir, boundaryStrat, team)
+			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape, List<Color> colors,
+			int health, Vector vel, Vector dir, BoundaryStrategy boundaryStrat, Team team, bool optimiseMe = false
+		) : base(id, filePath, refPos, offsetPos, shape, colors, health, vel, dir, boundaryStrat, team, optimiseMe)
 		{
 			childComponents = new List<Component>();
 		}

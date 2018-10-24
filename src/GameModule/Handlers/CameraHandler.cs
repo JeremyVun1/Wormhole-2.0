@@ -16,6 +16,11 @@ namespace TaskForceUltra.src.GameModule
 		private Rectangle chaseArea;
 		private List<Rectangle> cornerAreas;
 		private List<Rectangle> sideAreas;
+		public Rectangle Viewport {
+			get {
+				return SwinGame.CreateRectangle(Camera.CameraPos(), SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
+			}
+		}
 
 		private Entity activeEntity;
 

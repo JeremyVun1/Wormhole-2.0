@@ -22,18 +22,6 @@ namespace TaskForceUltra.src.GameModule
 		private GameSendData gameSendData;
 		private Timer gameTimer;
 
-		private bool IsGameEnd { get { return player.IsDead; } }
-
-		/*
-		 * public Difficulty(string id, float spawnTimer, float rewardMod, float aiMod, int maxMass) {
-			this.id = id;
-			this.spawnTimer = spawnTimer;
-			this.rewardMod = rewardMod;
-			this.aiMod = aiMod;
-			this.maxMass = maxMass;
-			}
-		*/
-
 		public GameModule(Ship p, Level level, AISpawner aiSpawner, EntityHandler entHandler, CollisionHandler collHandler,
 			CameraHandler camHandler, GameSendData gameSendData, Scoresheet scoresheet, InputController inpController
 		)
@@ -60,13 +48,19 @@ namespace TaskForceUltra.src.GameModule
 			inputController.Update();
 			aiSpawner.Update();
 
-			if (IsGameEnd)
+			if (IsGameEnd())
 				EndGame();
+		}
+
+		private bool IsGameEnd() {
+			if (player.IsDead || entityHandler.AIShipCount() == 0)
+				return true;
+			return false;
 		}
 
 		public void Draw() {
 			Level.Draw();
-			entityHandler.Draw();
+			entityHandler.Draw(cameraHandler.Viewport);
 		}
 
 		public void EndGame() {
@@ -91,7 +85,7 @@ namespace TaskForceUltra.src.GameModule
 			EntityHandler entHandler = new EntityHandler(scoreSheet);
 			CollisionHandler collHandler = new CollisionHandler(level.PlayArea, entHandler);
 
-			Ship p = shipFac.Create(shipId, SwinGame.PointAt(100, 100), new WrapBoundaryBehaviour(level.PlayArea), ControllerType.Player1, diff, entHandler);
+			Ship p = shipFac.Create(shipId, Util.RandomPointInRect(level.PlayArea), new WrapBoundaryBehaviour(level.PlayArea), ControllerType.Player1, diff, entHandler);
 			entHandler.Track(p);
 
 			CameraHandler camHandler = new CameraHandler(p, level.PlayArea);
@@ -99,6 +93,11 @@ namespace TaskForceUltra.src.GameModule
 			//ai spawning
 			AISpawner aiSpawner = new AISpawner(diff, level.PlayArea, shipFac, entHandler);
 
+			//spawn predefined ships from the level
+			foreach(string enemyId in level.EntitiesToSpawn) {
+				Ship toSpawn = shipFac.Create(enemyId, Util.RandomPointInRect(level.PlayArea), new WrapBoundaryBehaviour(level.PlayArea), ControllerType.Computer, diff, entHandler);
+				entHandler.Track(toSpawn);
+			}
 
 			InputController inpController;
 			if (p is IControllable) {

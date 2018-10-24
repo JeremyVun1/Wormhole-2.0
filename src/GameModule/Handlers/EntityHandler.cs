@@ -42,9 +42,11 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
-		public void Draw() {
+		public void Draw(Rectangle viewport) {
+			//don't draw stuff unless it's within the view port
 			foreach(Entity e in EntityList) {
-				e.Draw();
+				if (SwinGame.PointInRect(e.RealPos, viewport))
+					e.Draw();
 			}
 		}
 
@@ -55,6 +57,15 @@ namespace TaskForceUltra.src.GameModule
 
 		public void Untrack(Entity entity) {
 			EntityList.Remove(entity);
+		}
+
+		public int AIShipCount() {
+			int result = 0;
+
+			foreach(AIShip aiShip in EntityList.OfType<AIShip>()) {
+				result += 1;
+			}
+			return result;
 		}
 	}
 }

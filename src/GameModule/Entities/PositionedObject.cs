@@ -22,5 +22,10 @@ namespace TaskForceUltra.src.GameModule
 		public virtual void TeleportTo(Point2D target) {
 			refPos = target;
 		}
+
+		protected bool OnScreen() {
+			Rectangle cameraBox = SwinGame.CreateRectangle(Camera.CameraPos(), SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
+			return SwinGame.PointInRect(RealPos, cameraBox);
+		}
 	}
 }

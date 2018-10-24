@@ -1,11 +1,14 @@
 {
 	"id": "MenuScene",
 	"size": {"W": 1000, "H": 1000},
+	"playable": false,
 	"levelNumber": 0,
 	"environMods": [
 		"Nebula",
 		"Blackhole",
 		"Radioactive"
+	],
+	"entities": [
 	],
 	"background": {
 		"starCount": 100,

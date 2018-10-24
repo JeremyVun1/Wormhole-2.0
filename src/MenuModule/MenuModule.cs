@@ -47,6 +47,10 @@ namespace TaskForceUltra.src.MenuModule
 			currMenu.Draw();
 		}
 
+		/// <summary>
+		/// Add a menu object to the menu module
+		/// </summary>
+		/// <param name="menu">Menu object</param>
 		public void AddMenu(Menu menu) {
 			if (MenuExists(menu.Id))
 				RemoveMenu(menu.Id);
@@ -66,6 +70,10 @@ namespace TaskForceUltra.src.MenuModule
 			menus.Remove(FetchMenu(id));
 		}
 
+		/// <summary>
+		/// Change the currently displayed menu
+		/// </summary>
+		/// <param name="id">id of the menu you want to change to</param>
 		public void ChangeMenu(string id) {
 			Menu foundMenu = menus.Find(x => (x.Id == id.ToLower()));
 			if (foundMenu != null) {
@@ -75,10 +83,19 @@ namespace TaskForceUltra.src.MenuModule
 			else Console.WriteLine($"Can't find menu of id: {id}");
 		}
 
+		/// <summary>
+		/// Adds player selected game option to the data that will be sent to the game controller
+		/// </summary>
+		/// <param name="selection">game option</param>
+		/// <param name="id">id of the selected option</param>
 		public void AddSelection(SelectionType selection, string id) {
 			selections.Add(selection, id);
 		}
 
+		/// <summary>
+		/// Removes player selected game option from the data sent to the game controller
+		/// </summary>
+		/// <param name="selection">game option</param>
 		public void RemoveSelection(SelectionType selection) {
 			selections.Remove(selection);
 		}
@@ -91,6 +108,10 @@ namespace TaskForceUltra.src.MenuModule
 			exitDelegate();
 		}
 
+		/// <summary>
+		/// Setup the score sceen
+		/// </summary>
+		/// <param name="receiveData">Data object sent by the Game module</param>
 		public void SetupScoreScreen(Dictionary<GameResultType, int> receiveData) {
 			int points = receiveData[GameResultType.Points];
 			bank.AddCredits(points);
@@ -108,7 +129,12 @@ namespace TaskForceUltra.src.MenuModule
 			menu?.InsertText("totalTimeText", (totalTime/1000).ToString());
 		}
 
-		public void UpdateHighscores(string name, int score) {
+		/// <summary>
+		/// update the high score menu with the game results
+		/// </summary>
+		/// <param name="name">name of player</param>
+		/// <param name="points">player score</param>
+		public void UpdateHighscores(string name, int points) {
 			HighscoreMenu menu = FetchMenu("highscores") as HighscoreMenu;
 
 			if (menu == null) {
@@ -116,9 +142,8 @@ namespace TaskForceUltra.src.MenuModule
 				return;
 			}
 
-			if (menu.IsHighscore(score)) {
-				menu.InsertScore(name, score);
-			}
+			if (menu.TryInsertScore(name, points))
+				return;
 			else menu.RemoveElement("newHighscoreText");
 		}
 	}

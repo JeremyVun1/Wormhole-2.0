@@ -27,7 +27,6 @@ namespace TaskForceUltra.src.GameModule.AI
 			if (controlled.IsDead)
 				return;
 
-			shootCooldown.Update();
 			Shoot();
 			ExecuteStrategy();
 		}

@@ -17,19 +17,26 @@ namespace TaskForceUltra.src.GameModule
 
 		protected BoundaryStrategy boundaryStrat { get; private set; }
 
+		private bool optimisedUpdate; // if true, do not update the object if it is off screen
+
 		public Mover(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
-			List<Color> colors, int health, Vector vel, Vector dir, 
-			BoundaryStrategy boundaryStrat, Team team
+			List<Color> colors, int health, Vector vel, Vector dir, BoundaryStrategy boundaryStrat,
+			Team team, bool optimiseMe = false
 		) : base(id, filePath, refPos, offsetPos, shape, colors, health, team)
 		{
 			this.boundaryStrat = boundaryStrat;
 			Vel = vel;
 			Dir = dir;
 			theta = 0;
+
+			optimisedUpdate = optimiseMe;
 		}
 
 		public override void Update() {
+			if (optimisedUpdate && !OnScreen())
+				return;
+
 			base.Update();
 			Move();
 			Rotate();

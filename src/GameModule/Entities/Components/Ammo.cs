@@ -47,7 +47,6 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 			base.Update();
 			if (cdHandler != null) {
-				cdHandler.Update();
 				if (cdHandler.OnCooldown()) {
 					Thrust(Dir);
 				}

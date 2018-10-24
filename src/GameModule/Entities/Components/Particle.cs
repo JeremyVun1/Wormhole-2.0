@@ -25,10 +25,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 		public Particle(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
-			List<Color> colors, float friction, MinMax<float> lifetimeRange,
-			MinMax<float> velRange, MinMax<float> turnRateRange, BoundaryStrategy boundaryStrat,
-			Team team
-		) : base(id, filePath, refPos, offsetPos, shape, colors, 1, SwinGame.VectorTo(0,0), SwinGame.VectorTo(0, -1), boundaryStrat, team)
+			List<Color> colors, float friction, MinMax<float> lifetimeRange, MinMax<float> velRange,
+			MinMax<float> turnRateRange, BoundaryStrategy boundaryStrat, Team team
+		) : base(id, filePath, refPos, offsetPos, shape, colors, 1, SwinGame.VectorTo(0,0), SwinGame.VectorTo(0, -1), boundaryStrat, team, true)
 		{
 			this.friction = friction;
 			this.lifetimeRange = lifetimeRange;
@@ -43,8 +42,6 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override void Update() {
 			//particle will have a cooldown handler if we have initiated this, else do nothing
 			if (cdHandler != null) {
-				cdHandler.Update();
-
 				if (cdHandler.OnCooldown()) {
 					//apply friction to velocity and turnrate
 					Vel = Vel.Multiply(friction);
@@ -107,8 +104,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 			MinMax<float> velRange = particleObj["velRange"].ToObject<MinMax<float>>();
 			MinMax<float> turnRateRange = particleObj["turnRateRange"].ToObject<MinMax<float>>();
 
-			return new Particle(id, path, SwinGame.PointAt(0, 0), offsetPos, shape,
-				colors, friction, lifetimeRange, velRange, turnRateRange, boundaryStrat, team);
+			return new Particle(id, path, SwinGame.PointAt(0, 0), offsetPos, shape, colors,
+				friction, lifetimeRange, velRange, turnRateRange, boundaryStrat, team);
 		}
 	}
 }

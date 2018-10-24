@@ -38,11 +38,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 			if (sleep)
 				return;
 
-			primingTimer.Update();
 			aiStrat.Update();
-
 			HandleEmitters();
-
 			base.Update();
 		}
 

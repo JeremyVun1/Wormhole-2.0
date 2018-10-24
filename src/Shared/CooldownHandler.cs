@@ -37,7 +37,7 @@ namespace TaskForceUltra
 				.Permit(Trigger.RESET, State.READY);
 		}
 
-		public void Update() {
+		private void Update() {
 			switch (stateMachine.State) {
 				case State.COOLDOWN:
 					if (timer.Ticks > threshhold)
@@ -52,6 +52,7 @@ namespace TaskForceUltra
 		}
 
 		public bool OnCooldown() {
+			Update();
 			return (stateMachine.State == State.COOLDOWN);
 		}
 

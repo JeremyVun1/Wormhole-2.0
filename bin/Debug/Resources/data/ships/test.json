@@ -1,7 +1,7 @@
 	{
-	"id": "testShip",
+	"id": "Triangle",
 	"cost": 100,
-	"health": 10,
+	"health": 0,
 	"color": {
 		"R": 0,
 		"G": 150,

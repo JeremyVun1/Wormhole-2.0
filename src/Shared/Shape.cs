@@ -24,7 +24,7 @@ namespace TaskForceUltra
 			this.shape = shape;
 			BoundingBox = boundingBox;
 			this.length = length;
-			pos = offsetPos; //should we be creating at origin? test this
+			pos = offsetPos;
 		}
 
 		public void TeleportTo(Point2D target) {
