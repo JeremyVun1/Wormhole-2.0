@@ -41,7 +41,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		/// activate the tool and fire it's ammo
 		/// </summary>
 		public void Activate() {
-			if (!cdHandler.OnCooldown()) {
+			if (!cdHandler.IsOnCooldown()) {
 				JObject ammoObj = Util.Deserialize(Ammo.FilePath);
 
 				Ammo newAmmo = new AmmoFactory().Create(ammoObj, FilePath, entHandler, boundaryStrat, Team, SwinGame.PointAt(0,0)) as Ammo;

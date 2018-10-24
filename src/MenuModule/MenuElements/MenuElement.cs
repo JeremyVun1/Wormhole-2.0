@@ -58,7 +58,7 @@ namespace TaskForceUltra.src.MenuModule
 		public virtual void Draw() {
 			SwinGame.FillRectangle(fillColor, bounds);
 			DrawOutline();
-			SwinGame.DrawText(text, fontColor, Color.Transparent, fontId, alignment, bounds);
+			SwinGame.DrawText(text, fontColor, Color.Transparent, fontId, FontAlignment.AlignCenter, bounds);
 		}
 
 		protected virtual void DrawOutline() {

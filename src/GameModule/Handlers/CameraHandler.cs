@@ -42,9 +42,10 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		public void Update() {
-			if (DebugMode.IsOn) {
-				DebugArea(cornerAreas, Color.Red);
-				DebugArea(sideAreas, Color.Blue);
+			if (DebugMode.IsDebugging(Debugging.Camera)) {
+				DebugArea(cornerAreas, SwinGame.RGBAColor(255, 0, 0, 80));
+				DebugArea(sideAreas, SwinGame.RGBAColor(255, 0, 0, 50));
+				DebugArea(chaseArea, SwinGame.RGBAColor(255, 0, 0, 20));
 			}
 
 			UpdateState();
@@ -182,8 +183,12 @@ namespace TaskForceUltra.src.GameModule
 
 		private void DebugArea(List<Rectangle> areas, Color clr) {
 			foreach (Rectangle r in areas) {
-				SwinGame.FillRectangle(clr, r);
+				DebugArea(r, clr);
 			}
+		}
+
+		private void DebugArea(Rectangle rect, Color clr) {
+			SwinGame.FillRectangle(clr, rect);
 		}
 	}
 }

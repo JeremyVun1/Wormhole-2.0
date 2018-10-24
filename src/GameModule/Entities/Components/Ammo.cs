@@ -50,7 +50,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 			base.Update();
 			if (cdHandler != null) {
-				if (cdHandler.OnCooldown()) {
+				if (cdHandler.IsOnCooldown()) {
 					Thrust(Dir);
 				}
 				else Kill(Team.None);
@@ -73,6 +73,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 			if (cdHandler != null)
 				base.Draw();
+
+			DebugDraw();
 		}
 
 		/// <summary>
@@ -100,6 +102,11 @@ namespace TaskForceUltra.src.GameModule.Entities
 		/// </summary>
 		public void Sleep() {
 			sleep = true;
+		}
+
+		protected override void DebugDraw() {
+			if (DebugMode.IsDebugging(Debugging.Ammo))
+				Debug();
 		}
 	}
 

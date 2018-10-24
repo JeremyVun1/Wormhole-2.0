@@ -58,10 +58,6 @@ namespace TaskForceUltra.src.GameModule
 
 		public virtual void Draw() {
 			Shape?.Draw(colors[colorIndex]);
-
-			if (DebugMode.IsOn) {
-				Debug();
-			}
 		}
 
 		/// <summary>

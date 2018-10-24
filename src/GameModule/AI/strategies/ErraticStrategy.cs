@@ -27,7 +27,7 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 			base.ExecuteStrategy();
 
 			//set new random vector and random timer threshhold
-			if (!cdHandler.OnCooldown()) {
+			if (!cdHandler.IsOnCooldown()) {
 				Vector newDir = Util.RandomUnitVector();
 				cdHandler.StartNewThreshhold(Util.Rand(turnCooldown));
 			}

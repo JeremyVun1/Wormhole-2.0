@@ -37,7 +37,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		/// Create, initialise, and track new particle
 		/// </summary>
 		public void Activate() {
-			if (!cdHandler.OnCooldown()) {
+			if (!cdHandler.IsOnCooldown()) {
 				JObject particleObj = Util.Deserialize(Particle.FilePath);
 
 				Particle newParticle = new ParticleFactory().Create(particleObj, FilePath, entHandler, boundaryStrat, Team, offsetPos) as Particle;

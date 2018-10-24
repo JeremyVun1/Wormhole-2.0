@@ -45,7 +45,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 		public override void Update() {
 			if (cdHandler != null) {
-				if (cdHandler.OnCooldown()) {
+				if (cdHandler.IsOnCooldown()) {
 					Vel = Vel.Multiply(friction);
 					turnRate *= friction;
 					theta = turnRate;
@@ -61,6 +61,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override void Draw() {
 			if (cdHandler != null)
 				base.Draw();
+
+			DebugDraw();
 		}
 
 		/// <summary>
@@ -81,6 +83,11 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 			Vector deltaV = dir.Multiply(-thrustForce);
 			Vel = (Vel.AddVector(deltaV)).LimitToMagnitude(thrustForce);
+		}
+
+		protected override void DebugDraw() {
+			if (DebugMode.IsDebugging(Debugging.Particle))
+				Debug();
 		}
 	}
 

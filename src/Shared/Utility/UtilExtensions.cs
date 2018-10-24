@@ -116,24 +116,36 @@ namespace TaskForceUltra
 		}
 
 		public static void Update(this List<Component> componentList) {
+			if (componentList == null)
+				return;
+
 			foreach (Component c in componentList) {
 				c?.Update();
 			}
 		}
 
 		public static void Draw(this List<Component> componentList) {
+			if (componentList == null)
+				return;
+
 			foreach (Component c in componentList) {
 				c?.Draw();
 			}
 		}
 
 		public static void SetVel(this List<Component> componentList, Vector v) {
+			if (componentList == null)
+				return;
+
 			foreach (Component c in componentList) {
 				c?.SetVel(v);
 			}
 		}
 
 		public static void Turn(this List<Component> componentList, double theta) {
+			if (componentList == null)
+				return;
+
 			foreach (Component c in componentList) {
 				c?.Turn(theta);
 			}

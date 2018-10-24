@@ -82,6 +82,8 @@ namespace TaskForceUltra
 		}
 
 		private void Update() {
+			DebugMode.HandleInput();
+
 			switch (stateMachine.State) {
 				case (State.GAME):
 					gameModule.Update();

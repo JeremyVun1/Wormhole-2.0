@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SwinGameSDK;
+using TaskForceUltra.src.GameModule.Entities;
 
 namespace TaskForceUltra.src.MenuModule
 {
@@ -15,6 +16,7 @@ namespace TaskForceUltra.src.MenuModule
 		private Menu currMenu;
 		private Level menuScene;
 		private MenuSendData selections;
+		private EntityHandler entityHandler;
 
 		private Dictionary<string, Shape> shipList;
 		private Dictionary<string, Level> levelList;
@@ -22,16 +24,17 @@ namespace TaskForceUltra.src.MenuModule
 
 		private ExitGame exitDelegate;
 
-		public MenuModule(MenuSendData selection, Bank bank,
+		public MenuModule(MenuSendData selections, Bank bank,
 			Dictionary<string, Shape> shipList, Dictionary<string, Level> levelList,
-			Level menuScene, ExitGame exit
+			Level menuScene, EntityHandler entityHandler, ExitGame exit
 		)
 		{
 			this.bank = bank;
 			this.shipList = shipList;
 			this.levelList = levelList;
 			this.menuScene = menuScene;
-			this.selections = selection;
+			this.selections = selections;
+			this.entityHandler = entityHandler;
 			exitDelegate = exit;
 
 			menus = new List<Menu>();
@@ -39,11 +42,13 @@ namespace TaskForceUltra.src.MenuModule
 
 		public void Update() {
 			menuScene.Update();
+			entityHandler.Update();
 			currMenu.Update();
 		}
 
 		public void Draw() {
 			menuScene.Draw();
+			entityHandler.Draw(menuScene.PlayArea);
 			currMenu.Draw();
 		}
 
@@ -144,7 +149,7 @@ namespace TaskForceUltra.src.MenuModule
 
 			if (menu.TryInsertScore(name, points))
 				return;
-			else menu.RemoveElement("newHighscoreText");
+			else FetchMenu("scorescreen")?.RemoveElement("newHighscoreText");
 		}
 	}
 
@@ -161,8 +166,18 @@ namespace TaskForceUltra.src.MenuModule
 
 		public MenuModule Create(Bank bank, Dictionary<string, Shape> shipList,
 			Dictionary<string, Level> levelList, IReceiveMenuData receiver, ExitGame exit) {
-			//create module, then add menus to it
-			MenuModule result = new MenuModule(new MenuSendData(receiver), bank, shipList, levelList, levelList["MenuScene"], exit);
+
+			//spawn asteroids
+			EntityHandler entityHandler = new EntityHandler(null);
+			Level menuScene = levelList["MenuScene"];
+			AsteroidFactory asteroidFac = new AsteroidFactory();
+			string asteroidPath = SwinGame.AppPath() + "\\resources\\data\\asteroids\\asteroid.json";
+			for (int i = 0; i < menuScene.AsteroidsToSpawn; i++) {
+				Asteroid toSpawn = asteroidFac.Create(asteroidPath, menuScene.PlayArea);
+				entityHandler.Track(toSpawn);
+			}
+
+			MenuModule result = new MenuModule(new MenuSendData(receiver), bank, shipList, levelList, menuScene, entityHandler, exit);
 
 			MenuFactory menuFac = new MenuFactory(dirPath, result);
 

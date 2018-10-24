@@ -20,8 +20,6 @@ namespace TaskForceUltra.src.MenuModule
 			scoresFile = SwinGame.AppPath() + "\\resources\\data\\scores.json";
 
 			InitHighscores();
-
-			Load();
 		}
 
 		public override void Update() {
@@ -88,8 +86,9 @@ namespace TaskForceUltra.src.MenuModule
 		/// <param name="points">score they got</param>
 		/// <returns>returns true if got a highscore, false if not highscore</returns>
 		public bool TryInsertScore(string name, int points) {
-			if (!IsHighscore(points))
+			if (!IsHighscore(points)) {
 				return false;
+			}
 
 			highscores.Add(new KeyValuePair<string, int>(name, points));
 

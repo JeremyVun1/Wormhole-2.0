@@ -31,7 +31,7 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		public virtual void Update() {
-			if (!cdHandler.OnCooldown()) {
+			if (!cdHandler.IsOnCooldown()) {
 				Spawn();
 			}
 

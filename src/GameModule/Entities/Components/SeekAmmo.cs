@@ -50,7 +50,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 			if (emitters == null)
 				return;
 
-			if (thrusting && !primingTimer.OnCooldown()) {
+			if (thrusting && !primingTimer.IsOnCooldown()) {
 				foreach (Emitter e in emitters) {
 					e.Update();
 					e.Activate();
@@ -73,7 +73,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		public void TurnTo(Vector targetDir, float turnStrength = 1) {
-			if (primingTimer.OnCooldown())
+			if (primingTimer.IsOnCooldown())
 				return;
 
 			double desiredTheta = Dir.AngleTo(targetDir) * Math.PI / 180;

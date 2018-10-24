@@ -1,18 +1,29 @@
 {
 	"id": "Asteroid",
 	"baseHealth": 10,
-	"rgb": [
-		255,
-		255,
-		255
+	"colors": [
+		{
+			"R": 255,
+			"G": 255,
+			"B": 255
+		}
 	],
-	"scale": 1,
-	"shape": {
-		"Lines": [],
-		"boxes": [],
-		"triangles": [
-			[0, 0],
-			[1, 0]
-		]
+	"damage": 1,
+	"mass": 500,
+	"sizeRange": {
+		"Min": 10,
+		"Max": 40
+	},	
+	"edgesRange": {
+		"Min": 5,
+		"Max": 10
+	},
+	"turnRateRange": {
+		"Min": 0.1,
+		"Max": 1
+	},
+	"velRange": {
+		"Min": 0.4,
+		"Max": 2
 	}
 }

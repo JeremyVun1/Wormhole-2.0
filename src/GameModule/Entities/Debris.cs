@@ -34,7 +34,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 			turnRate *= friction;
 			theta = turnRate;
 
-			if (!cdHandler.OnCooldown())
+			if (!cdHandler.IsOnCooldown())
 				Kill(Team.None);
 
 			base.Update();
@@ -51,7 +51,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 	public class DebrisFactory
 	{
 		public Debris Create(LineSegment l, Point2D pos) {
-			Shape shape = new Shape(new List<LineSegment> { l }, null, 10, SwinGame.PointAt(0, 0));
+			Shape shape = new Shape(new List<LineSegment> { l }, null, SwinGame.PointAt(0, 0));
 			List<Color> colors = new List<Color> { Color.Red };
 
 			Debris result = new Debris("debris", null, pos, SwinGame.PointAt(0, 0), shape, colors,

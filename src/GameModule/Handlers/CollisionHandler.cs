@@ -19,12 +19,14 @@ namespace TaskForceUltra.src.GameModule
 
 		public CollisionHandler(Rectangle playArea, IHandlesEntities entityHandler) {
 			this.entityHandler = entityHandler;
-			quadTree = new Node(null, playArea, 100);
+			quadTree = new Node(null, playArea, 150);
 		}
 
 		public void Update() {
 			RegisterAll();
 			CollideEntities();
+
+			quadTree.DebugDraw();
 		}
 
 		/// <summary>
@@ -46,7 +48,6 @@ namespace TaskForceUltra.src.GameModule
 			foreach (ICollides self in entityHandler.EntityList.OfType<ICollides>()) {
 				ICollides other = quadTree.CollidingWith(self);
 
-				//returns
 				if (other != null) {
 					self.ReactToCollision(other.Damage, other.Vel, other.Mass, other.Team, other is Ammo);
 					other.ReactToCollision(self.Damage, self.Vel, self.Mass, self.Team, self is Ammo);

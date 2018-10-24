@@ -34,20 +34,20 @@
 	"textBoxes": [
 		{
 			"id": "selectShipText",
-			"pos": {"X": 0.45, "Y": 0.17},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.17},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Select Ship"
 		},
 		{
 			"id": "selectDifficultyText",
-			"pos": {"X": 0.45, "Y": 0.33},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.33},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Select Difficulty"
 		},
 		{
 			"id": "selectLevelText",
-			"pos": {"X": 0.45, "Y": 0.5},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.5},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Select Level"
 		}
 	],

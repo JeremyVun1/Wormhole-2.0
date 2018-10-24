@@ -7,9 +7,10 @@
 		"Blackhole",
 		"Radioactive"
 	],
-	"entities": [
+	"ships": [
 		"cube"
 	],
+	"asteroids": 20,
 	"background": {
 		"starCount": 50,
 		"size": {

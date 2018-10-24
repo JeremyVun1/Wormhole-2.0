@@ -14,4 +14,5 @@ namespace TaskForceUltra
 	public enum Team { Team1, Team2, Team3, Team4, Computer, None }
 	public enum GameResultType { Time, Points, Result }
 	public enum BattleResult { Loss = 0, Win = 1 }
+	public enum Debugging { Ship, Camera, Ammo, Particle, Component, Nodes }
 }

@@ -16,17 +16,15 @@ namespace TaskForceUltra
 	public class Shape
 	{
 		private List<LineSegment> shape;
-		private float length;
 		private Point2D pos;
 		public List<LineSegment> BoundingBox { get; private set; }
 		public int Mass {
 			get { return shape.Count; }
 		}
 
-		public Shape(List<LineSegment> shape, List<LineSegment> boundingBox, int length, Point2D offsetPos) {
+		public Shape(List<LineSegment> shape, List<LineSegment> boundingBox, Point2D offsetPos) {
 			this.shape = shape;
 			BoundingBox = boundingBox;
-			this.length = length;
 			pos = offsetPos;
 		}
 
@@ -55,10 +53,9 @@ namespace TaskForceUltra
 		public void Debug(Color clr) {
 			if (BoundingBox == null)
 				return;
-			else if (DebugMode.IsShapeDebugging) {
-				foreach (LineSegment l in BoundingBox) {
-					SwinGame.DrawLine(clr, l);
-				}
+
+			foreach (LineSegment l in BoundingBox) {
+				SwinGame.DrawLine(clr, l);
 			}
 		}
 
@@ -76,6 +73,54 @@ namespace TaskForceUltra
 	/// </summary>
 	public class ShapeFactory
 	{
+		public Shape CreateCircleApprox(float length, int edges) {
+			MinMax<float> angleRange = new MinMax<float>(0.3f, 1.5f);
+			edges = Math.Max(edges, 3);
+			float[] angles = new float[edges];
+
+			//use random angles
+			angles = BuildCircleApproxAngles(edges, angleRange);
+
+			//create lines
+			List<LineSegment> lines = new List<LineSegment>();
+			Point2D lastPoint = SwinGame.PointAt(0, 0);
+			float totalAngle = 0;
+			foreach (float angle in angles) {
+				totalAngle += angle;
+				Vector vec = SwinGame.VectorFromAngle(totalAngle, length);
+				lines.Add(SwinGame.CreateLine(lastPoint, lastPoint + vec));
+				lastPoint = lines.Last().EndPoint;
+			}
+			lines.Add(SwinGame.CreateLine(lastPoint, SwinGame.PointAt(0, 0)));
+
+			//bounding box
+			List<LineSegment> boundingBox = CreateBoundingBox(lines);
+			Shape shape = new Shape(lines, boundingBox, SwinGame.PointAt(0, 0));
+
+			return shape;
+		}
+
+		private float[] BuildCircleApproxAngles(int edges, MinMax<float> angleRange) {
+			float totalAngle = 0;
+			float[] result = new float[edges];
+
+			for (int i = 0; i < edges-1; i++) {
+				float angle = (360 / edges) * Util.RandomInRange(angleRange);
+
+				//check that we are not exceeding 360
+				angle = totalAngle + angle < 360 ? angle : 360 - totalAngle;
+				if (angle <= 0)
+					break;
+				result[i] = angle;
+				totalAngle += angle;
+			}
+
+			if (totalAngle < 360)
+				result[edges-1] = 360 - totalAngle;
+
+			return result;
+		}
+
 		public Shape Create(JObject shapeObj, float s, Point2D offsetPos) {
 			if (shapeObj == null)
 				return null;
@@ -98,9 +143,7 @@ namespace TaskForceUltra
 			shape = shape.Move(offsetPos);
 			shape = shape.Move(SwinGame.PointAt(-lineLength / 2, -lineLength / 2));
 
-			Shape result = new Shape(shape, boundingBox, lineLength, offsetPos);
-
-			return result;
+			return new Shape(shape, boundingBox, offsetPos);
 		}
 
 		//Methods for deserialising lines, boxes, triangles into line segments

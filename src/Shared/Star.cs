@@ -81,7 +81,7 @@ namespace TaskForceUltra
 		public void Update() {
 			switch (stateMachine.State) {
 				case State.REST:
-					if (!cdHandler.OnCooldown())
+					if (!cdHandler.IsOnCooldown())
 						stateMachine.Fire(Trigger.FLARE);
 					break;
 				case State.DIMMING:
@@ -103,7 +103,7 @@ namespace TaskForceUltra
 		/// Dim the star
 		/// </summary>
 		private void Dim() {
-			if (!cdHandler.OnCooldown()) {
+			if (!cdHandler.IsOnCooldown()) {
 				ChangeColor();
 				DecrementSize();
 			}

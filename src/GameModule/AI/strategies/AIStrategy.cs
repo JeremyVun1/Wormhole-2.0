@@ -39,7 +39,7 @@ namespace TaskForceUltra.src.GameModule.AI
 		}
 
 		protected void Shoot() {
-			if (!shootCooldown.OnCooldown()) {
+			if (!shootCooldown.IsOnCooldown()) {
 				controlled.Fire();
 				shootCooldown.StartCooldown();
 			}
@@ -59,20 +59,24 @@ namespace TaskForceUltra.src.GameModule.AI
 			this.shootCooldown = shootCooldown;
 		}
 
-		public AIStrategy Create(IAIEntity aiShip, IHandlesEntities entHandler) {
+		public AIStrategy Create(IAIEntity aiEntity, IHandlesEntities entHandler) {
 			//generate random number up to the difficulty level
 			int n = Util.Rand(difficultyLevel);
 
 			//return the hardest strategy that the number can get
 			if (n < 10) {
-				return new StaticStrategy(aiShip, shootCooldown);
+				return new StaticStrategy(aiEntity, shootCooldown);
 			}
 			else if (n < 20) {
-				return new ErraticStrategy(aiShip, shootCooldown);
+				return new ErraticStrategy(aiEntity, shootCooldown);
 			}
 			else {
-				return new ChaseStrategy(aiShip, entHandler, shootCooldown);
+				return new ChaseStrategy(aiEntity, entHandler, shootCooldown);
 			}
+		}
+
+		public AIStrategy Create(IAIEntity aiEntity) {
+			return Create(aiEntity, null);
 		}
 	}
 }

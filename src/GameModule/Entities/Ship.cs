@@ -67,7 +67,6 @@ namespace TaskForceUltra.src.GameModule
 			componentList?.Update();
 
 			HandleHurtingState();
-
 			TeleportTo(RealPos);
 		}
 
@@ -88,6 +87,8 @@ namespace TaskForceUltra.src.GameModule
 		public override void Draw() {
 			base.Draw();
 			componentList?.Draw();
+
+			DebugDraw();
 		}
 
 		/// <summary>
@@ -194,6 +195,12 @@ namespace TaskForceUltra.src.GameModule
 
 		public void SetTeam(Team team) {
 			Team = team;
+		}
+
+		protected void DebugDraw() {
+			if (DebugMode.IsDebugging(Debugging.Ship)) {
+				Debug();
+			}
 		}
 	}
 

@@ -21,16 +21,18 @@ namespace TaskForceUltra
 		private Background background;
 		public Rectangle PlayArea { get; private set; }
 		public bool Playable { get; private set; }
-		public List<string> EntitiesToSpawn { get; private set; }
+		public List<string> ShipsToSpawn { get; private set; }
+		public int AsteroidsToSpawn { get; private set; }
 
-		public Level(string id, List<EnvMod> EnvMods, List<string> entToSpawn,
-			bool playable, Rectangle playArea, Background bkgd)
+		public Level(string id, List<EnvMod> EnvMods, List<string> shipsToSpawn,
+			int asteroidsToSpawn, bool playable, Rectangle playArea, Background bkgd)
 		{
 			Id = id;
 			this.EnvMods = EnvMods;
 			background = bkgd;
 			PlayArea = playArea;
-			EntitiesToSpawn = entToSpawn;
+			ShipsToSpawn = shipsToSpawn;
+			AsteroidsToSpawn = asteroidsToSpawn;
 			Playable = playable;
 		}
 
@@ -71,8 +73,9 @@ namespace TaskForceUltra
 
 					string id = obj.Value<string>("id");
 					bool playable = obj.Value<bool>("playable");
-					string json = JsonConvert.SerializeObject(obj.GetValue("entities"));
-					List<string> entitiesToSpawn = JsonConvert.DeserializeObject<List<string>>(json);
+					string json = JsonConvert.SerializeObject(obj.GetValue("ships"));
+					List<string> shipsToSpawn = JsonConvert.DeserializeObject<List<string>>(json);
+					int asteroidsToSpawn = obj.Value<int>("asteroids");
 
 					Size2D<int> size = obj["size"].ToObject<Size2D<int>>();
 					Rectangle playArea = SwinGame.CreateRectangle(SwinGame.PointAt(0, 0), size.W, size.H);
@@ -83,7 +86,7 @@ namespace TaskForceUltra
 					BackgroundFactory backgroundFac = new BackgroundFactory();
 					Background bkgd = backgroundFac.Create(bkgdObj, playArea);
 
-					levelList.Add(id, new Level(id, EnvMods, entitiesToSpawn, playable, playArea, bkgd));
+					levelList.Add(id, new Level(id, EnvMods, shipsToSpawn, asteroidsToSpawn, playable, playArea, bkgd));
 				}
 				catch(Exception e) {
 					Console.WriteLine($"Cannot read level: {file}");

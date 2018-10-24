@@ -39,6 +39,13 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override void Draw() {
 			base.Draw();
 			childComponents?.Draw();
+
+			DebugDraw();
+		}
+
+		protected virtual void DebugDraw() {
+			if (DebugMode.IsDebugging(Debugging.Component))
+				Debug();
 		}
 
 		/// <summary>

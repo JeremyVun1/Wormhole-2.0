@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SwinGameSDK;
+using TaskForceUltra.src.GameModule.Entities;
 
 namespace TaskForceUltra.src.GameModule.Handlers
 {
@@ -28,6 +29,25 @@ namespace TaskForceUltra.src.GameModule.Handlers
 
 			if (Math.Abs(grid.Width) > minWidth)
 				CreateChildren();
+		}
+
+		public void DebugDraw() {
+			if (DebugMode.IsDebugging(Debugging.Nodes)) {
+				if (childNodes != null) {
+					foreach (Node n in childNodes) {
+						n.DebugDraw();
+					}
+				}
+				SwinGame.DrawRectangle(Color.Yellow, grid);
+
+				foreach(ICollides c in ICollidesList) {
+					SwinGame.FillRectangle(Color.Aqua, c.RealPos.X, c.RealPos.Y, 10, 10);
+				}
+
+				if (ICollidesList.Count > 0) {
+					SwinGame.FillRectangle(SwinGame.RGBAColor(255, 255, 0, 100), grid);
+				}
+			}
 		}
 
 		/// <summary>
@@ -61,21 +81,25 @@ namespace TaskForceUltra.src.GameModule.Handlers
 		/// check if the passed in collideable is colliding with anything
 		/// </summary>
 		/// <returns>return what it is colliding w ith</returns>
-		public ICollides CollideWith(ICollides self) {
+		public ICollides CollidingWith(ICollides self) {
 			Node n = FetchContaining(self);
 			
 			//guard
 			if (n == null)
 				return null;
 
-			foreach (ICollides other in n.ICollidesList) {
-				if (self != other && self.Team != other.Team && !CheckedList.Contains(other)) {
-					CheckedList.Add(other);
-					if (IsColliding(self.BoundingBox, other.BoundingBox)) {
-						return other;
+			Node[] adjacentNodes = n.parent.childNodes;
+
+			foreach (Node adjacentNode in adjacentNodes) {
+				foreach (ICollides other in adjacentNode.ICollidesList) {
+					if (self != other && self.Team != other.Team) {
+						if (IsColliding(self.BoundingBox, other.BoundingBox)) {
+							return other;
+						}
 					}
 				}
 			}
+			
 			return null;
 		}
 

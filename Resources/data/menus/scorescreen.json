@@ -34,44 +34,44 @@
 	"textBoxes": [		
 		{
 			"id": "battleResultHeading",
-			"pos": {"X": 0.47, "Y": 0.2},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.2},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Result"
 		},
 		{
 			"id": "battleResultText",
-			"pos": {"X": 0.47, "Y": 0.25},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.25},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Lorem Ipsum capsicum"
 		},
 		{
 			"id": "pointsHeading",
-			"pos": {"X": 0.44, "Y": 0.4},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.4},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Total Points:"
 		},
 		{
 			"id": "pointsText",
-			"pos": {"X": 0.47, "Y": 0.45},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.45},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Lorem Ipsum capsicum"
 		},
 		{
 			"id": "newHighscoreText",
-			"pos": {"X": 0.41, "Y": 0.5},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.5},
+			"size": {"W": 1, "H": 0.5},
 			"text": "New High Score!"
 		},
 		{
 			"id": "totalTimeHeading",
-			"pos": {"X": 0.45, "Y": 0.6},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.6},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Total Time"
 		},
 		{
 			"id": "totalTimeText",
-			"pos": {"X": 0.4, "Y": 0.65},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.65},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Lorem Ipsum capsicum"
 		}
 	],

@@ -45,6 +45,7 @@
     <Compile Include="src\GameModule\AI\strategies\ErraticStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\StaticStrategy.cs" />
     <Compile Include="src\GameModule\Entities\AIShip.cs" />
+    <Compile Include="src\GameModule\Entities\Asteroid.cs" />
     <Compile Include="src\GameModule\Entities\BoundaryStrategies\BoundaryStrategy.cs" />
     <Compile Include="src\GameModule\Entities\BoundaryStrategies\WrapBoundaryBehaviour.cs" />
     <Compile Include="src\GameModule\Entities\Components\Ammo.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="src\Shared\Star.cs" />
     <Compile Include="src\Shared\Structs\MinMax.cs" />
     <Compile Include="src\Shared\Structs\Size2D.cs" />
+    <Compile Include="src\Shared\Utility\DebugMode.cs" />
     <Compile Include="src\Shared\Utility\Log.cs" />
     <Compile Include="src\Shared\Utility\MoveExtensions.cs" />
     <Compile Include="src\Shared\Utility\RotateExtensions.cs" />

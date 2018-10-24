@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using SwinGameSDK;
 using TaskForceUltra.src.GameModule.Entities;
+using TaskForceUltra.src.GameModule;
 
-namespace TaskForceUltra.src.GameModule
+namespace TaskForceUltra
 {
 	/// <summary>
 	/// Keeps track of game entities to update and draw them 
@@ -29,7 +30,7 @@ namespace TaskForceUltra.src.GameModule
 				if (EntityList[i].IsDead) {
 					//score
 					if (EntityList[i].KilledBy != Team.None) {
-						scoresheet.AddPoints(EntityList[i].KilledBy, EntityList[i].Mass);
+						scoresheet?.AddPoints(EntityList[i].KilledBy, EntityList[i].Mass);
 					}
 
 					//create debris

@@ -71,7 +71,7 @@ namespace TaskForceUltra.src.GameModule
 		/// </summary>
 		public void EndGame() {
 			gameSendData.Add(GameResultType.Points, scoresheet.FetchTeamScore(player.Team));
-			gameSendData.Add(GameResultType.Result, player.IsDead ? 1 : 0);
+			gameSendData.Add(GameResultType.Result, player.IsDead ? 0 : 1);
 			gameSendData.Add(GameResultType.Time, (int)gameTimer.Ticks);
 
 			SwinGame.FreeTimer(gameTimer);
@@ -87,7 +87,6 @@ namespace TaskForceUltra.src.GameModule
 	{
 		public GameModule Create(string shipId, Difficulty diff, Level level, ShipFactory shipFac, GameSendData gameSendData) {
 			Scoresheet scoreSheet = new Scoresheet();
-
 			EntityHandler entHandler = new EntityHandler(scoreSheet);
 			CollisionHandler collHandler = new CollisionHandler(level.PlayArea, entHandler);
 
@@ -95,13 +94,19 @@ namespace TaskForceUltra.src.GameModule
 			entHandler.Track(p);
 
 			CameraHandler camHandler = new CameraHandler(p, level.PlayArea);
-
-			//ai spawning
 			AISpawner aiSpawner = new AISpawner(diff, level.PlayArea, shipFac, entHandler);
 
 			//spawn predefined ships from the level
-			foreach(string enemyId in level.EntitiesToSpawn) {
+			foreach(string enemyId in level.ShipsToSpawn) {
 				Ship toSpawn = shipFac.Create(enemyId, Util.RandomPointInRect(level.PlayArea), new WrapBoundaryBehaviour(level.PlayArea), ControllerType.Computer, diff, entHandler);
+				entHandler.Track(toSpawn);
+			}
+
+			//spawn asteroids
+			AsteroidFactory asteroidFac = new AsteroidFactory();
+			string asteroidPath = SwinGame.AppPath() + "\\resources\\data\\asteroids\\asteroid.json";
+			for (int i=0; i<level.AsteroidsToSpawn; i++) {
+				Asteroid toSpawn = asteroidFac.Create(asteroidPath, level.PlayArea);
 				entHandler.Track(toSpawn);
 			}
 

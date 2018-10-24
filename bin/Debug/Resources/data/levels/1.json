@@ -1,16 +1,16 @@
 {
 	"id": "Level1",
-	"size": {"W": 500, "H": 500},
+	"size": {"W": 1500, "H": 1500},
 	"playable": true,
-	"levelNumber": 0,
 	"environMods": [
 		"Nebula",
 		"Blackhole",
 		"Radioactive"
 	],
-	"entities": [
+	"ships": [
 		"cube"
 	],
+	"asteroids": 20,
 	"background": {
 		"starCount": 50,
 		"size": {
