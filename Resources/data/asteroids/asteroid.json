@@ -9,7 +9,7 @@
 		}
 	],
 	"damage": 1,
-	"mass": 500,
+	"mass": 50,
 	"sizeRange": {
 		"Min": 10,
 		"Max": 40

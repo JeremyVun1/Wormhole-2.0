@@ -420,8 +420,8 @@ namespace TaskForceUltra.src.MenuModule
 			Dictionary<string, Level> levelList, IReceiveMenuData receiver, ExitGame exit) {
 
 			//spawn asteroids
-			EntityHandler entityHandler = new EntityHandler(null);
 			Level menuScene = levelList["MenuScene"];
+			EntityHandler entityHandler = new EntityHandler(null, menuScene.PlayArea);
 			AsteroidFactory asteroidFac = new AsteroidFactory();
 			string asteroidPath = SwinGame.AppPath() + "\\resources\\data\\asteroids\\asteroid.json";
 			for (int i = 0; i < menuScene.AsteroidsToSpawn; i++) {
@@ -610,7 +610,7 @@ namespace TaskForceUltra.src.MenuModule
 			JArray buttonsObj = menuObj.Value<JArray>("buttons");
 			JArray colorsObj = menuObj.Value<JArray>("elementColors");
 
-			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule);
+			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule, id);
 
 			return new Menu(id, title, elements);
 		}
@@ -630,7 +630,7 @@ namespace TaskForceUltra.src.MenuModule
 			string buffer = File.ReadAllText(SwinGame.AppPath() + pathname);
 			textBoxesObj = JsonConvert.DeserializeObject<JArray>(buffer);
 
-			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule);
+			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule, id);
 
 			return new HighscoreMenu(id, title, elements);
 		}
@@ -642,7 +642,7 @@ namespace TaskForceUltra.src.MenuModule
 			JArray textBoxesObj = menuObj.Value<JArray>("textBoxes");
 			JArray buttonsObj = menuObj.Value<JArray>("buttons");
 			JArray colorsObj = menuObj.Value<JArray>("elementColors");
-			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule);
+			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule, id);
 
 			int sw = SwinGame.ScreenHeight();
 			int sh = SwinGame.ScreenWidth();
@@ -664,10 +664,15 @@ namespace TaskForceUltra.src.MenuModule
 
 			//create level selection buttons
 			n = levelList.Count > levelSelectionBounds.Count ? levelSelectionBounds.Count : levelList.Count;
+			int count = 0;
 			for (int i = 0; i < n; ++i) {
 				string levelId = levelList.ElementAt(i).Key;
-				if (levelList.ElementAt(i).Value.Playable) // only allow it to be selected if the level is playable
-					levelSelection.Add(menuElementFac.CreateSelectButton(id, levelId, levelSelectionBounds[i], SelectionType.Level, levelId, levelSelection, menuModule));
+
+				//only allow level to be selected if it has been set to playable
+				if (levelList.ElementAt(i).Value.Playable) {
+					levelSelection.Add(menuElementFac.CreateSelectButton(id, levelId, levelSelectionBounds[count], SelectionType.Level, levelId, levelSelection, menuModule));
+					count++;
+				}
 			}
 
 			//difficulty buttons
@@ -938,7 +943,7 @@ namespace TaskForceUltra.src.MenuModule
 	/// </summary>
 	public class MenuElementFactory
 	{
-		public List<MenuElement> Create(JArray textBoxesObj, JArray buttonsObj, JArray colorsObj, IMenuModule menuModule) {
+		public List<MenuElement> Create(JArray textBoxesObj, JArray buttonsObj, JArray colorsObj, IMenuModule menuModule, string parentId) {
 			List<MenuElement> result = new List<MenuElement>();
 
 			Color hoverColor = Util.DeserializeKeyedColor(colorsObj, "hoverColor");
@@ -951,7 +956,7 @@ namespace TaskForceUltra.src.MenuModule
 			}
 
 			foreach (JObject obj in buttonsObj) {
-				result.Add(CreateButton(obj, hoverColor, fillColor, borderColor, fontColor, menuModule));
+				result.Add(CreateButton(obj, hoverColor, fillColor, borderColor, fontColor, menuModule, parentId));
 			}
 
 			return result;
@@ -965,17 +970,19 @@ namespace TaskForceUltra.src.MenuModule
 			return new TextBox(id, bounds, hover, fill, border, font, text);
 		}
 
-		public Button CreateButton(JObject buttonObj, Color hover, Color fill, Color border, Color font, IMenuModule menuModule) {
+		public Button CreateButton(JObject buttonObj, Color hover, Color fill, Color border, Color font, IMenuModule menuModule, string parentId) {
 			Rectangle bounds = CreateElementBounds(buttonObj);
 			string text = buttonObj.Value<string>("label");
 			string action = buttonObj.Value<string>("action");
-			string payload = buttonObj.Value<string>("payload");
+			string payload = "";
+			try { payload = buttonObj.Value<string>("payload"); } catch { }
+
 			string id = buttonObj.Value<string>("id");
 			string type = buttonObj.Value<string>("type");
 
 			//build command for button
 			MenuCommandFactory menuCommandFac = new MenuCommandFactory(menuModule);
-			ICommand command = menuCommandFac.Create(action, payload);
+			ICommand command = menuCommandFac.Create(action, payload, parentId);
 
 			switch(type.ToLower()) {
 				case "nonstick":
@@ -1283,6 +1290,37 @@ namespace TaskForceUltra
 	public interface ICommand
 	{
 		void Execute();
+		void Undo();
+	}
+}
+
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TaskForceUltra.src.MenuModule
+{
+	/// <summary>
+	/// Command to exit the game
+	/// </summary>
+	public class ExitMenuCommand : ICommand
+	{
+		private IMenuModule menuModule;
+
+		public ExitMenuCommand(IMenuModule m)
+		{
+			menuModule = m;
+		}
+
+		public void Execute() {
+			menuModule.Exit();
+		}
+
+		public void Undo() {
+			//can't undo
+		}
 	}
 }
 
@@ -1305,10 +1343,10 @@ namespace TaskForceUltra.src.MenuModule
 			menuModule = m;
 		}
 
-		public ICommand Create(string action, string payload) {
+		public ICommand Create(string action, string id, string parentId) {
 			switch (action.ToLower()) {
 				case "navto":
-					return new NavToCommand(menuModule, payload);
+					return new NavToCommand(menuModule, id, parentId);
 				case "increasevolume":
 					return new IncreaseVolumeCommand();
 				case "decreasevolume":
@@ -1316,43 +1354,16 @@ namespace TaskForceUltra.src.MenuModule
 				case "exit":
 					return new ExitMenuCommand(menuModule);
 				case "selectship":
-					return new SelectShipCommand(menuModule, payload);
+					return new SelectShipCommand(menuModule, id);
 				case "selectlevel":
-					return new SelectLevelCommand(menuModule, payload);
+					return new SelectLevelCommand(menuModule, id);
 				case "selectdifficulty":
-					return new SelectDifficultyCommand(menuModule, payload);
+					return new SelectDifficultyCommand(menuModule, id);
 				case "play":
 					return new PlayCommand(menuModule);
 				default:
 					return null;
 			}
-		}
-	}
-}
-
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskForceUltra.src.MenuModule
-{
-	/// <summary>
-	/// Command to navigate to another menu
-	/// </summary>
-	public class NavToCommand : ICommand
-	{
-		private IMenuModule menuModule;
-		private string id;
-
-		public NavToCommand(IMenuModule m, string id) {
-			menuModule = m;
-			this.id = id;
-		}
-
-		public void Execute() {
-			menuModule.ChangeMenu(id);
 		}
 	}
 }
@@ -1379,32 +1390,9 @@ namespace TaskForceUltra.src.MenuModule
 		public void Execute() {
 			menuModule.Send();
 		}
-	}
-}
 
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskForceUltra.src.MenuModule
-{
-	/// <summary>
-	/// Command to select a difficulty to play at
-	/// </summary>
-	public class SelectDifficultyCommand : ICommand
-	{
-		private IMenuModule menuModule;
-		private string id;
-
-		public SelectDifficultyCommand(IMenuModule m, string id) {
-			menuModule = m;
-			this.id = id;
-		}
-
-		public void Execute() {
-			menuModule.AddSelection(SelectionType.Difficulty, id);
+		public void Undo() {
+			//can't undo
 		}
 	}
 }
@@ -1418,20 +1406,26 @@ using System.Threading.Tasks;
 namespace TaskForceUltra.src.MenuModule
 {
 	/// <summary>
-	/// Command to select a level to play on
+	/// Command to navigate to another menu
 	/// </summary>
-	public class SelectLevelCommand : ICommand
+	public class NavToCommand : ICommand
 	{
 		private IMenuModule menuModule;
 		private string id;
+		private string parentId;
 
-		public SelectLevelCommand(IMenuModule m, string id) {
+		public NavToCommand(IMenuModule m, string id, string parentId) {
 			menuModule = m;
 			this.id = id;
+			this.parentId = parentId;
 		}
 
 		public void Execute() {
-			menuModule.AddSelection(SelectionType.Level, id);
+			menuModule.ChangeMenu(id);
+		}
+
+		public void Undo() {
+			menuModule.ChangeMenu(parentId);
 		}
 	}
 }
@@ -1460,6 +1454,10 @@ namespace TaskForceUltra.src.MenuModule
 		public void Execute() {
 			menuModule.AddSelection(SelectionType.Ship, id);
 		}
+
+		public void Undo() {
+			menuModule.RemoveSelection(SelectionType.Ship);
+		}
 	}
 }
 
@@ -1468,19 +1466,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SwinGameSDK;
 
 namespace TaskForceUltra.src.MenuModule
 {
 	/// <summary>
-	/// Command to increase swingame music volume
+	/// Command to select a level to play on
 	/// </summary>
-	public class IncreaseVolumeCommand : ICommand
+	public class SelectLevelCommand : ICommand
 	{
-		public IncreaseVolumeCommand() { }
+		private IMenuModule menuModule;
+		private string id;
+
+		public SelectLevelCommand(IMenuModule m, string id) {
+			menuModule = m;
+			this.id = id;
+		}
 
 		public void Execute() {
-			SwinGame.SetMusicVolume(SwinGame.MusicVolume() + 0.1f);
+			menuModule.AddSelection(SelectionType.Level, id);
+		}
+
+		public void Undo() {
+			menuModule.RemoveSelection(SelectionType.Level);
+		}
+	}
+}
+
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TaskForceUltra.src.MenuModule
+{
+	/// <summary>
+	/// Command to select a difficulty to play at
+	/// </summary>
+	public class SelectDifficultyCommand : ICommand
+	{
+		private IMenuModule menuModule;
+		private string id;
+
+		public SelectDifficultyCommand(IMenuModule m, string id) {
+			menuModule = m;
+			this.id = id;
+		}
+
+		public void Execute() {
+			menuModule.AddSelection(SelectionType.Difficulty, id);
+		}
+
+		public void Undo() {
+			menuModule.RemoveSelection(SelectionType.Difficulty);
 		}
 	}
 }
@@ -1504,6 +1542,10 @@ namespace TaskForceUltra.src.MenuModule
 		public void Execute() {
 			SwinGame.SetMusicVolume(SwinGame.MusicVolume() - 0.1f);
 		}
+
+		public void Undo() {
+			SwinGame.SetMusicVolume(SwinGame.MusicVolume() + 0.1f);
+		}
 	}
 }
 
@@ -1512,23 +1554,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SwinGameSDK;
 
 namespace TaskForceUltra.src.MenuModule
 {
 	/// <summary>
-	/// Command to exit the game
+	/// Command to increase swingame music volume
 	/// </summary>
-	public class ExitMenuCommand : ICommand
+	public class IncreaseVolumeCommand : ICommand
 	{
-		private IMenuModule menuModule;
-
-		public ExitMenuCommand(IMenuModule m)
-		{
-			menuModule = m;
-		}
+		public IncreaseVolumeCommand() { }
 
 		public void Execute() {
-			menuModule.Exit();
+			SwinGame.SetMusicVolume(SwinGame.MusicVolume() + 0.1f);
+		}
+
+		public void Undo() {
+			SwinGame.SetMusicVolume(SwinGame.MusicVolume() - 0.1f);
 		}
 	}
 }
@@ -1599,6 +1641,10 @@ namespace TaskForceUltra.src.GameModule
 		public void Draw() {
 			Level.Draw();
 			entityHandler.Draw(cameraHandler.Viewport);
+
+			//draw points
+			Rectangle scoreRect = SwinGame.CreateRectangle(0, 0, SwinGame.ScreenWidth(), SwinGame.ScreenHeight()*0.1f);
+			SwinGame.DrawText(scoresheet.FetchTeamScore(Team.Team1).ToString(), Color.Yellow, Color.Transparent, "MenuTitle", FontAlignment.AlignCenter, scoreRect);
 		}
 
 		/// <summary>
@@ -1622,7 +1668,7 @@ namespace TaskForceUltra.src.GameModule
 	{
 		public GameModule Create(string shipId, Difficulty diff, Level level, ShipFactory shipFac, GameSendData gameSendData) {
 			Scoresheet scoreSheet = new Scoresheet();
-			EntityHandler entHandler = new EntityHandler(scoreSheet);
+			EntityHandler entHandler = new EntityHandler(scoreSheet, level.PlayArea);
 			CollisionHandler collHandler = new CollisionHandler(level.PlayArea, entHandler);
 
 			Ship p = shipFac.Create(shipId, Util.RandomPointInRect(level.PlayArea), new WrapBoundaryBehaviour(level.PlayArea), ControllerType.Player1, diff, entHandler);
@@ -1829,13 +1875,13 @@ namespace TaskForceUltra
 					Size2D<int> size = obj["size"].ToObject<Size2D<int>>();
 					Rectangle playArea = SwinGame.CreateRectangle(SwinGame.PointAt(0, 0), size.W, size.H);
 
-					List<EnvMod> EnvMods = obj["environMods"].ToObject<List<EnvMod>>(); //Most likely will not work
+					//List<EnvMod> EnvMods = obj["environMods"].ToObject<List<EnvMod>>(); //Most likely will not work
 
 					JObject bkgdObj = obj.Value<JObject>("background");
 					BackgroundFactory backgroundFac = new BackgroundFactory();
 					Background bkgd = backgroundFac.Create(bkgdObj, playArea);
 
-					levelList.Add(id, new Level(id, EnvMods, shipsToSpawn, asteroidsToSpawn, playable, playArea, bkgd));
+					levelList.Add(id, new Level(id, null, shipsToSpawn, asteroidsToSpawn, playable, playArea, bkgd));
 				}
 				catch(Exception e) {
 					Console.WriteLine($"Cannot read level: {file}");
@@ -2103,6 +2149,10 @@ namespace TaskForceUltra
 		private enum Trigger { TOGGLE, RESET };
 		private StateMachine<State, Trigger> stateMachine;
 
+		public float cdPercentage {
+			get { return Math.Min(timer.Ticks / threshhold, 1); }
+		}
+
 		public CooldownHandler(float ms) {
 			threshhold = ms;
 
@@ -2184,7 +2234,7 @@ namespace TaskForceUltra.src.GameModule
 		private List<Rectangle> sideAreas;
 
 		public Rectangle Viewport {
-			get { return SwinGame.CreateRectangle(Camera.CameraPos(), SwinGame.ScreenWidth(), SwinGame.ScreenHeight()); }
+			get { return SwinGame.CreateRectangle(Camera.CameraPos().Subtract(SwinGame.PointAt(100,100)), SwinGame.ScreenWidth() + 200, SwinGame.ScreenHeight() + 200); }
 		}
 
 		private Entity activeEntity;
@@ -2375,9 +2425,11 @@ namespace TaskForceUltra
 	{
 		public List<Entity> EntityList { get; private set; }
 		private Scoresheet scoresheet;
+		private Rectangle playArea;
 
-		public EntityHandler(Scoresheet scoresheet) {
+		public EntityHandler(Scoresheet scoresheet, Rectangle playArea) {
 			this.scoresheet = scoresheet;
+			this.playArea = playArea;
 			EntityList = new List<Entity>();
 		}
 
@@ -2395,7 +2447,7 @@ namespace TaskForceUltra
 					List<LineSegment> lines = EntityList[i].DebrisLines;
 					if (lines != null) {
 						foreach (LineSegment l in lines) {
-							Debris debris = new DebrisFactory().Create(l, EntityList[i].RealPos);
+							Debris debris = new DebrisFactory().Create(l, EntityList[i].RealPos, playArea);
 							Track(debris);
 						}
 					}
@@ -2474,10 +2526,12 @@ namespace TaskForceUltra.src.GameModule
 	{
 		private Node quadTree;
 		private IHandlesEntities entityHandler;
+		private NumberPopupFactory numberPopupFac;
 
 		public CollisionHandler(Rectangle playArea, IHandlesEntities entityHandler) {
 			this.entityHandler = entityHandler;
 			quadTree = new Node(null, playArea, 150);
+			numberPopupFac = new NumberPopupFactory(playArea);
 		}
 
 		public void Update() {
@@ -2502,37 +2556,26 @@ namespace TaskForceUltra.src.GameModule
 		/// </summary>
 		private void CollideEntities() {
 			quadTree.CheckedList.Clear();
+			List<NumberPopup> popups = new List<NumberPopup>();
 			
 			foreach (ICollides self in entityHandler.EntityList.OfType<ICollides>()) {
 				ICollides other = quadTree.CollidingWith(self);
 
 				if (other != null) {
-					self.ReactToCollision(other.Damage, other.Vel, other.Mass, other.Team, other is Ammo);
-					other.ReactToCollision(self.Damage, self.Vel, self.Mass, self.Team, self is Ammo);
+					bool selfCollided = self.TryReactToCollision(other.Damage, other.Vel, other.Mass, other.Team, other is Ammo);
+					bool otherCollided = other.TryReactToCollision(self.Damage, self.Vel, self.Mass, self.Team, self is Ammo);
+
+					if (selfCollided)
+						popups.Add(numberPopupFac.Create(self.RealPos, other.Damage));
+					if (otherCollided)
+						popups.Add(numberPopupFac.Create(other.RealPos, self.Damage));
 				}
 			}
+
+			foreach (NumberPopup p in popups) {
+				entityHandler.Track(p);
+			}
 		}
-	}
-}
-
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SwinGameSDK;
-
-namespace TaskForceUltra.src.GameModule
-{
-	public interface ICollides {
-		Point2D RealPos { get; }
-		Team Team { get; }
-		Vector Vel { get; }
-		int Mass { get; }
-		int Damage { get; }
-		List<LineSegment> BoundingBox { get; }
-
-		void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false);
 	}
 }
 
@@ -2630,8 +2673,12 @@ namespace TaskForceUltra.src.GameModule.Handlers
 
 			foreach (Node adjacentNode in adjacentNodes) {
 				foreach (ICollides other in adjacentNode.ICollidesList) {
-					if (self != other && self.Team != other.Team) {
+					if (self != other && self.Team != other.Team && !adjacentNode.CheckedList.Contains(other)) {
 						if (IsColliding(self.BoundingBox, other.BoundingBox)) {
+							if (self is Ammo)
+								CheckedList.Add(self);
+							if (other is Ammo)
+								CheckedList.Add(other);
 							return other;
 						}
 					}
@@ -2795,33 +2842,6 @@ namespace TaskForceUltra.src.GameModule
 		}
 	}
 }
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SwinGameSDK;
-
-namespace TaskForceUltra.src.GameModule.AI
-{
-	/// <summary>
-	/// AI entity interface for being controlled by an AI strategy
-	/// </summary>
-	public interface IAIEntity
-	{
-		bool IsDead { get; }
-		Point2D RealPos { get; }
-		Team Team { get; }
-		Vector Vel { get; }
-		float MaxVel { get; }
-
-		void TurnTo(Vector targetDir, float turnStrength = 1);
-		bool ShouldThrust(Vector targetDir);
-		void Thrust(Vector vDir);
-		void Fire();
-	}
-}
-
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -3080,6 +3100,7 @@ namespace TaskForceUltra.src.GameModule
 	{
 		private IControllable controlled;
 		private IActionBinding bindings;
+		private List<ICommand> commandHistory;
 
 		private ICommand forwardCommand;
 		private ICommand backwardsCommand;
@@ -3090,40 +3111,99 @@ namespace TaskForceUltra.src.GameModule
 		private ICommand activatePowerupCommand;
 		private ICommand shootCommand;
 
+		private bool IsUndoMode;
+		private int i;
+
 		public InputController(IControllable c, IActionBinding b)
 		{
 			controlled = c;
 			bindings = b;
 
 			CreateCommands();
+			IsUndoMode = false;
+			commandHistory = new List<ICommand>();
 		}
 
 		public void Update() {
-			HandleInput();
+			if (IsUndoMode)
+				UndoCommand();
+			else HandleInput();
+
+			TrimCommandHistory();
+		}
+
+		private void TrimCommandHistory() {
+			while (commandHistory.Count > 300) {
+				commandHistory.Reverse();
+				commandHistory.RemoveAt((commandHistory.Count - 1));
+				commandHistory.Reverse();
+			}
+		}
+
+		private void UndoCommand() {
+			if (i < 0) {
+				IsUndoMode = false;
+				commandHistory.Clear();
+			}
+			else {
+				commandHistory[i].Undo();
+				Rectangle screenRect = SwinGame.CreateRectangle(Camera.CameraPos().X, Camera.CameraPos().Y, SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
+				SwinGame.FillRectangle(SwinGame.RGBAColor(255, 0, 0, 80), screenRect);
+				Rectangle textRect = SwinGame.CreateRectangle(0, SwinGame.ScreenHeight() * 0.85f, SwinGame.ScreenWidth(), 100);
+				SwinGame.DrawText("UNDOING COMMANDS", Color.White, Color.Transparent, "MenuTitle", FontAlignment.AlignCenter, textRect);
+
+				i -= 1;
+			}
 		}
 
 		private void HandleInput() {
+			//super power reverse actions
+			if (bindings.ReverseTime()) {
+				IsUndoMode = true;
+				i = commandHistory.Count-1;
+				return;
+			}
+
 			//Movement
-			if (bindings.Forward())
+			if (bindings.Forward()) {
 				forwardCommand.Execute();
-			if (bindings.Backward())
+				commandHistory.Add(forwardCommand);
+			}				
+			if (bindings.Backward()) {
 				backwardsCommand.Execute();
-			if (bindings.StrafeLeft())
+				commandHistory.Add(backwardsCommand);
+			}				
+			if (bindings.StrafeLeft()) {
 				strafeLeftCommand.Execute();
-			if (bindings.StrafeRight())
+				commandHistory.Add(strafeLeftCommand);
+			}
+
+			if (bindings.StrafeRight()) {
 				strafeRightcommand.Execute();
+				commandHistory.Add(strafeRightcommand);
+			}
 
 			//Rotation
-			if (bindings.TurnRight())
+			if (bindings.TurnRight()) {
 				turnRightCommand.Execute();
-			if (bindings.TurnLeft())
+				commandHistory.Add(turnRightCommand);
+			}
+
+			if (bindings.TurnLeft()) {
 				turnLeftCommand.Execute();
+				commandHistory.Add(turnLeftCommand);
+			}
 
 			//actions
-			if (bindings.Shoot())
+			if (bindings.Shoot()) {
 				shootCommand.Execute();
-			if (bindings.ActivatePowerup())
+				commandHistory.Add(shootCommand);
+			}
+				
+			if (bindings.ActivatePowerup()) {
 				Console.WriteLine("activate powerup input received");
+			}
+				
 		}
 
 		private void CreateCommands() {
@@ -3210,6 +3290,7 @@ namespace TaskForceUltra.src.GameModule
 		bool StrafeRight();
 		bool TurnLeft();
 		bool TurnRight();
+		bool ReverseTime();
 	}
 }
 
@@ -3261,6 +3342,9 @@ namespace TaskForceUltra.src.GameModule
 		}
 		public bool ActivatePowerup() {
 			return SwinGame.KeyTyped(bindings[ShipAction.ActivatePowerup]);
+		}
+		public bool ReverseTime() {
+			return SwinGame.KeyTyped(bindings[ShipAction.ReverseTime]);
 		}
 	}
 
@@ -3334,6 +3418,10 @@ namespace TaskForceUltra.src.GameModule.Commands
 		public void Execute() {
 			controlled.ActivatePowerupCommand();
 		}
+
+		public void Undo() {
+			//can't undo
+		}
 	}
 }
 
@@ -3355,6 +3443,10 @@ namespace TaskForceUltra.src.GameModule.Commands
 
 		public void Execute() {
 			controlled.BackwardCommand();
+		}
+
+		public void Undo() {
+			controlled.ForwardCommand();
 		}
 	}
 }
@@ -3378,27 +3470,9 @@ namespace TaskForceUltra.src.GameModule.Commands
 		public void Execute() {
 			controlled.ForwardCommand();
 		}
-	}
-}
 
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskForceUltra.src.GameModule.Commands
-{
-	public class StrafeRightCommand : ICommand
-	{
-		IControllable controlled;
-
-		public StrafeRightCommand(IControllable c) {
-			controlled = c;
-		}
-
-		public void Execute() {
-			controlled.StrafeRightCommand();
+		public void Undo() {
+			controlled.BackwardCommand();
 		}
 	}
 }
@@ -3452,6 +3526,32 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.GameModule.Commands
 {
+	public class ShootCommand : ICommand
+	{
+		IControllable controlled;
+
+		public ShootCommand(IControllable c) {
+			controlled = c;
+		}
+
+		public void Execute() {
+			controlled.ShootCommand();
+		}
+
+		public void Undo() {
+			//can't undo shooting
+		}
+	}
+}
+
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TaskForceUltra.src.GameModule.Commands
+{
 	public class TurnLeftCommand : ICommand
 	{
 		IControllable controlled;
@@ -3462,6 +3562,10 @@ namespace TaskForceUltra.src.GameModule.Commands
 
 		public void Execute() {
 			controlled.TurnLeftCommand();
+		}
+
+		public void Undo() {
+			controlled.TurnRightCommand();
 		}
 	}
 }
@@ -3485,6 +3589,10 @@ namespace TaskForceUltra.src.GameModule.Commands
 		public void Execute() {
 			controlled.StrafeLeftCommand();
 		}
+
+		public void Undo() {
+			controlled.StrafeRightCommand();
+		}
 	}
 }
 
@@ -3496,16 +3604,20 @@ using System.Threading.Tasks;
 
 namespace TaskForceUltra.src.GameModule.Commands
 {
-	public class ShootCommand : ICommand
+	public class StrafeRightCommand : ICommand
 	{
 		IControllable controlled;
 
-		public ShootCommand(IControllable c) {
+		public StrafeRightCommand(IControllable c) {
 			controlled = c;
 		}
 
 		public void Execute() {
-			controlled.ShootCommand();
+			controlled.StrafeRightCommand();
+		}
+
+		public void Undo() {
+			controlled.StrafeLeftCommand();
 		}
 	}
 }
@@ -3528,6 +3640,10 @@ namespace TaskForceUltra.src.GameModule.Commands
 
 		public void Execute() {
 			controlled.TurnRightCommand();
+		}
+
+		public void Undo() {
+			controlled.TurnLeftCommand();
 		}
 	}
 }
@@ -3591,13 +3707,13 @@ namespace TaskForceUltra.src.GameModule
 		protected int baseHealth;
 		protected int health;
 		public float Condition {
-			get { return (health / baseHealth); }
+			get { return ((float)health / (float)baseHealth); }
 		}
 		public bool IsDead { get; protected set; }
 		public Team KilledBy { get; protected set; }
 
 		public Shape Shape { get; private set; }
-		public virtual List<LineSegment> DebrisLines { get { return Shape.GetLines(); } }
+		public virtual List<LineSegment> DebrisLines { get { return Shape?.GetLines(); } }
 		protected List<Color> colors;
 		protected int colorIndex;
 		
@@ -3610,8 +3726,7 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
-		public Entity(
-			string id, string filePath, Point2D refPos, Point2D offsetPos,
+		public Entity(string id, string filePath, Point2D refPos, Point2D offsetPos,
 			Shape shape, List<Color> colors, int health, Team team
 		) : base(refPos, offsetPos)
 		{
@@ -3977,6 +4092,186 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SwinGameSDK;
+
+namespace TaskForceUltra.src.GameModule.Entities
+{
+	public class NumberPopup : Mover
+	{
+		private string text;
+		private CooldownHandler cdHandler;
+
+		public NumberPopup(string id, int points, Point2D refPos, List<Color> colors, float vel,
+			Vector dir, float lifetime, BoundaryStrategy boundaryStrat, Team team, bool optimiseMe
+		) : base(id, null, refPos, SwinGame.PointAt(0,0), null, colors, 0, dir.Multiply(vel), dir, boundaryStrat, team, optimiseMe)
+		{
+			text = $"+{points}";
+			cdHandler = new CooldownHandler(lifetime * 1000);
+			cdHandler.StartCooldown();
+		}
+
+		public override void Draw() {
+			SwinGame.DrawText(text, colors[colorIndex], "PopupText", refPos.X, refPos.Y);
+		}
+
+		public override void Update() {
+			if (!cdHandler.IsOnCooldown()) {
+				Kill(Team.None);
+			}
+			base.Update();
+		}
+	}
+
+	public class NumberPopupFactory
+	{
+		private Rectangle playArea;
+
+		public NumberPopupFactory(Rectangle playArea) {
+			this.playArea = playArea;
+		}
+
+		public NumberPopup Create(Point2D pos, int points) {
+			Point2D offset = SwinGame.PointAt(Util.Rand(30) - 15, Util.Rand(30) - 15);
+			pos = pos.Add(offset);
+
+			List<Color> colors = new List<Color>() { Color.Yellow };
+			float vel = Util.Rand(1000, 3000) / 1000f;
+
+			float x = Util.Rand(500, 2000) / 8000f;
+			Vector dir = SwinGame.VectorTo(x, -1);
+			float lifetime = 1.5f;
+			BoundaryStrategy boundaryStrat = new DieBoundaryBehaviour(playArea);
+
+			return new NumberPopup(points.ToString(), points, pos, colors, vel, dir, lifetime, boundaryStrat, Team.None, true);
+		}
+	}
+}
+
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SwinGameSDK;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using TaskForceUltra.src.GameModule.AI;
+
+namespace TaskForceUltra.src.GameModule.Entities
+{
+	/// <summary>
+	/// Random Dummy Asteroid
+	/// </summary>
+	public class Asteroid : Mover, ICollides, IAIEntity
+	{
+		public int Damage { get; private set; }
+		private AIStrategy aiStrat;
+		public AIStrategy AIStrat { set { aiStrat = value; } }
+		private float turnRate;
+		public float MaxVel { get; private set; }
+		private int mass;
+		public override int Mass { get { return (base.Mass + mass); } }
+
+		public Asteroid(string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
+			List<Color> colors, int mass, int health, float thrustForce, Vector dir, float turnRate, BoundaryStrategy boundaryStrat,
+			Team team, int dmg, bool optimiseMe = false)
+		: base(id, filePath, refPos, offsetPos, shape, colors, health, SwinGame.VectorFromAngle(dir.Angle, thrustForce), dir, boundaryStrat, team, optimiseMe)
+		{
+			this.turnRate = turnRate;
+			this.mass = mass;
+			Vel = dir.Multiply(thrustForce);
+			Damage = dmg;
+		}
+
+		public override void Update() {
+			theta += turnRate * Math.PI / 180;
+			base.Update();
+		}
+
+		public override void Draw() {
+			base.Draw();
+
+			DrawDebug();
+		}
+
+		private void DrawDebug() {
+			if (DebugMode.IsDebugging(Debugging.Ship))
+				Debug();
+		}
+
+		public bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
+			health -= dmg;
+
+			float velTransferMod = ((float)collidingMass / (float)Mass);
+			Vel = Vel.AddVector(collidingVel.Multiply(velTransferMod));
+			Vel = Vel.LimitToMagnitude(MaxVel);
+
+			if (health <= 0)
+				Kill(collidingTeam);
+
+			return true;
+		}
+
+		public void TurnTo(Vector targetDir, float turnStrength = 1) { }
+
+		public void Thrust(Vector vDir) { }
+
+		public void Fire() { }
+	}
+
+	/// <summary>
+	/// Asteroid Factory
+	/// </summary>
+	public class AsteroidFactory
+	{
+		public Asteroid Create(string filePath, Rectangle playArea) {
+			try {
+				JObject obj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(filePath));
+				string id = obj.Value<string>("id");
+				List<Color> colors = Util.LoadColors(obj.Value<JArray>("colors"));
+				int health = obj.Value<int>("baseHealth");
+				int damage = obj.Value<int>("damage");
+				int mass = obj.Value<int>("mass");
+
+				JToken sizeObj = obj.GetValue("sizeRange");
+				JToken edgesObj = obj.GetValue("edgesRange");
+				JToken turnRateRangeObj = obj.GetValue("turnRateRange");
+				JToken velRangeObj = obj.GetValue("velRange");
+				MinMax<float> sizeRange = new MinMax<float>(sizeObj.Value<float>("Min"), sizeObj.Value<float>("Max"));
+				MinMax<float> edgesRange = new MinMax<float>(edgesObj.Value<float>("Min"), edgesObj.Value<float>("Max"));
+				MinMax<float> turnRateRange = new MinMax<float>(turnRateRangeObj.Value<float>("Min"), turnRateRangeObj.Value<float>("Max"));
+				MinMax<float> velRange = new MinMax<float>(velRangeObj.Value<float>("Min"), velRangeObj.Value<float>("Max"));
+
+				Vector dir = Util.RandomUnitVector();
+				float vel = Util.RandomInRange(velRange);
+				float turnRate = Util.RandomInRange(turnRateRange);
+				BoundaryStrategy boundaryStrat = new WrapBoundaryBehaviour(playArea);
+
+				float size = Util.RandomInRange(sizeRange);
+				mass *= (int)size / 10;
+				Shape shape = new ShapeFactory().CreateCircleApprox(size, (int)Util.RandomInRange(edgesRange));
+				Point2D spawnPos = Util.RandomPointInRect(playArea);
+
+				Asteroid result = new Asteroid(id, filePath, SwinGame.PointAt(0, 0), SwinGame.PointAt(-size, size), shape, colors, mass, health, vel, dir, turnRate, boundaryStrat, Team.Computer, damage);
+				result.TeleportTo(spawnPos);
+
+				result.AIStrat = new AIStrategyFactory(0, 0).Create(result);
+				return result;
+			}
+			catch (Exception e) {
+				Console.WriteLine(e);
+				return null;
+			}
+		}
+	}
+}
+
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -4062,7 +4357,23 @@ namespace TaskForceUltra.src.GameModule
 			base.Draw();
 			componentList?.Draw();
 
+			DrawHealthBar();
+
 			DebugDraw();
+		}
+
+		private void DrawHealthBar() {
+			float yOffset = SwinGame.PointLineDistance(RealPos, BoundingBox[0]);
+			Point2D offset1 = SwinGame.PointAt(-20, yOffset + 10);
+			Point2D offset2 = SwinGame.PointAt(20, yOffset + 15);
+			Rectangle healthBar = SwinGame.CreateRectangle(RealPos.Add(offset1), RealPos.Add(offset2));
+			Rectangle health = SwinGame.CreateRectangle(healthBar.TopLeft, healthBar.Width * Condition, healthBar.Height);
+
+			Color progClr = health.Width < healthBar.Width ? SwinGame.RGBAColor(255, 120, 0, 190) : SwinGame.RGBAColor(0, 255, 0, 190);
+			SwinGame.FillRectangle(progClr, health);
+			SwinGame.DrawRectangle(SwinGame.RGBAColor(255, 255, 255, 255), healthBar);
+
+			Console.WriteLine(Condition);
 		}
 
 		/// <summary>
@@ -4071,9 +4382,10 @@ namespace TaskForceUltra.src.GameModule
 		/// <param name="dmg">incoming damage</param>
 		/// <param name="collidingVel">velocity of other object</param>
 		/// <param name="collidingMass">mass of other object</param>
-		/// <param name="collider">team of other object</param>
+		/// <param name="collider">
+		/// team of other object</param>
 		/// <param name="forceReaction">opt to bypass hurting timeout</param>
-		public virtual void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
+		public virtual bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
 			if (!isHurting || forceReaction) {
 				isHurting = true;
 				hurtTimer.Start();
@@ -4082,10 +4394,13 @@ namespace TaskForceUltra.src.GameModule
 				float velTransferMod = ((float)collidingMass / (float)Mass);
 				Vel = Vel.AddVector(collidingVel.Multiply(velTransferMod));
 				Vel = Vel.LimitToMagnitude(MaxVel);
+				return true;
 			}
 
 			if (health <= 0)
 				Kill(collidingTeam);
+
+			return false;
 		}
 
 
@@ -4392,9 +4707,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 		{
 		}
 
-		public override void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
+		public override bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
 			forceReaction = false;
-			base.ReactToCollision(dmg, collidingVel, collidingMass, collider, forceReaction);
+			return base.TryReactToCollision(dmg, collidingVel, collidingMass, collider, forceReaction);
 		}
 
 		/// <summary>
@@ -4475,6 +4790,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SwinGameSDK;
+
+namespace TaskForceUltra.src.GameModule
+{
+	public interface ICollides {
+		Point2D RealPos { get; }
+		Team Team { get; }
+		Vector Vel { get; }
+		int Mass { get; }
+		int Damage { get; }
+		List<LineSegment> BoundingBox { get; }
+
+		bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false);
+	}
+}
+
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SwinGameSDK;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -4489,8 +4825,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		protected List<Component> childComponents;
 
 		public override int Mass {
-			get {
-				return (base.Mass + childComponents.Mass()); }
+			get { return (base.Mass + childComponents.Mass()); }
 		}
 		public override List<LineSegment> DebrisLines { get { return null; } }
 
@@ -4940,6 +5275,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 			childComponents = children;
 			this.entHandler = entHandler;
 			cdHandler = new CooldownHandler(cooldown*1000);
+			cdHandler.StartCooldown();
 		}
 
 		/// <summary>
@@ -4961,6 +5297,22 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override void Update() {
 			base.Update();
 			Ammo.Sleep();
+		}
+
+		public override void Draw() {
+			base.Draw();
+			DrawCooldown();
+		}
+
+		private void DrawCooldown() {
+			Point2D offset1 = SwinGame.PointAt(-8, 5);
+			Point2D offset2 = SwinGame.PointAt(8, 12);
+			Rectangle cdBar = SwinGame.CreateRectangle(RealPos.Add(offset1), RealPos.Add(offset2));
+			Rectangle cdProg = SwinGame.CreateRectangle(cdBar.TopLeft, cdBar.Width * cdHandler.cdPercentage, cdBar.Height);
+
+			Color progClr = cdProg.Width < cdBar.Width ? SwinGame.RGBAColor(255, 120, 0, 190) : SwinGame.RGBAColor(0, 255, 0, 140);
+			SwinGame.FillRectangle(progClr, cdProg);
+			SwinGame.DrawRectangle(SwinGame.RGBAColor(0,255,0,255), cdBar);
 		}
 
 		public override void TeleportTo(Point2D target) {
@@ -5097,8 +5449,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 			cdHandler.StartCooldown();
 		}
 
-		public void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
+		public bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
 			Kill(Team.None);
+			return false;
 		}
 
 		/// <summary>
@@ -5185,7 +5538,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		{
 			entityHandler = entHandler;
 			MaxVel = maxVel;
-			primingTimer = new CooldownHandler(1000);
+			primingTimer = new CooldownHandler(750);
 			primingTimer.StartCooldown();
 			this.emitters = emitters;
 			accel = vel;
@@ -5326,110 +5679,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SwinGameSDK;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using TaskForceUltra.src.GameModule.AI;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
 	/// <summary>
-	/// Random Dummy Asteroid
+	/// The entity will die if it goes outside of the play area
 	/// </summary>
-	public class Asteroid : Mover, ICollides, IAIEntity
+	public class DieBoundaryBehaviour : BoundaryStrategy
 	{
-		public int Damage { get; private set; }
-		private AIStrategy aiStrat;
-		public AIStrategy AIStrat { set { aiStrat = value; } }
-		private float turnRate;
-		public float MaxVel { get; private set; }
-		private int mass;
-		public override int Mass { get { return (base.Mass + mass); } }
+		public DieBoundaryBehaviour(Rectangle playArea) : base(playArea) { }
 
-		public Asteroid(string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
-			List<Color> colors, int mass, int health, float thrustForce, Vector dir, float turnRate, BoundaryStrategy boundaryStrat,
-			Team team, int dmg, bool optimiseMe = false)
-		: base(id, filePath, refPos, offsetPos, shape, colors, health, SwinGame.VectorFromAngle(dir.Angle, thrustForce), dir, boundaryStrat, team, optimiseMe)
-		{
-			this.turnRate = turnRate;
-			this.mass = mass;
-			Vel = dir.Multiply(thrustForce);
-			Damage = dmg;
+		public override void Run(Entity entity) {
+			if (!IsInPlay(entity)) {
+				entity.Kill(Team.None);
+			}
 		}
-
-		public override void Update() {
-			theta += turnRate * Math.PI / 180;
-			base.Update();
-		}
-
-		public override void Draw() {
-			base.Draw();
-
-			DrawDebug();
-		}
-
-		private void DrawDebug() {
-			if (DebugMode.IsDebugging(Debugging.Ship))
-				Debug();
-		}
-
-		public void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
-			health -= dmg;
-
-			float velTransferMod = ((float)collidingMass / (float)Mass);
-			Vel = Vel.AddVector(collidingVel.Multiply(velTransferMod));
-			Vel = Vel.LimitToMagnitude(MaxVel);
-
-			if (health <= 0)
-				Kill(collidingTeam);
-		}
-
-		public void TurnTo(Vector targetDir, float turnStrength = 1) { }
-
-		public void Thrust(Vector vDir) { }
-
-		public void Fire() { }
 	}
+}
 
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SwinGameSDK;
+
+namespace TaskForceUltra.src.GameModule.AI
+{
 	/// <summary>
-	/// Asteroid Factory
+	/// AI entity interface for being controlled by an AI strategy
 	/// </summary>
-	public class AsteroidFactory
+	public interface IAIEntity
 	{
-		public Asteroid Create(string filePath, Rectangle playArea) {
-			//try
-			JObject obj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(filePath));
-			string id = obj.Value<string>("id");
-			List<Color> colors = Util.LoadColors(obj.Value<JArray>("colors"));
-			int health = obj.Value<int>("baseHealth");
-			int damage = obj.Value<int>("damage");
-			int mass = obj.Value<int>("mass");
+		bool IsDead { get; }
+		Point2D RealPos { get; }
+		Team Team { get; }
+		Vector Vel { get; }
+		float MaxVel { get; }
 
-			JToken sizeObj = obj.GetValue("sizeRange");
-			JToken edgesObj = obj.GetValue("edgesRange");
-			JToken turnRateRangeObj = obj.GetValue("turnRateRange");
-			JToken velRangeObj = obj.GetValue("velRange");
-			MinMax<float> sizeRange = new MinMax<float>(sizeObj.Value<float>("Min"), sizeObj.Value<float>("Max"));
-			MinMax<float> edgesRange = new MinMax<float>(edgesObj.Value<float>("Min"), edgesObj.Value<float>("Max"));
-			MinMax<float> turnRateRange = new MinMax<float>(turnRateRangeObj.Value<float>("Min"), turnRateRangeObj.Value<float>("Max"));
-			MinMax<float> velRange = new MinMax<float>(velRangeObj.Value<float>("Min"), velRangeObj.Value<float>("Max"));
-
-			Vector dir = Util.RandomUnitVector();
-			float vel = Util.RandomInRange(velRange);
-			float turnRate = Util.RandomInRange(turnRateRange);
-			BoundaryStrategy boundaryStrat = new WrapBoundaryBehaviour(playArea);
-
-			float size = Util.RandomInRange(sizeRange);
-			mass *= (int)size/10;
-			Shape shape = new ShapeFactory().CreateCircleApprox(size, (int)Util.RandomInRange(edgesRange));
-			Point2D spawnPos = Util.RandomPointInRect(playArea);
-
-			Asteroid result = new Asteroid(id, filePath, SwinGame.PointAt(0, 0), SwinGame.PointAt(-size, size), shape, colors, mass, health, vel, dir, turnRate, boundaryStrat, Team.Computer, damage);
-			result.TeleportTo(spawnPos);
-
-			result.AIStrat = new AIStrategyFactory(0, 0).Create(result);
-			return result;
-		}
+		void TurnTo(Vector targetDir, float turnStrength = 1);
+		bool ShouldThrust(Vector targetDir);
+		void Thrust(Vector vDir);
+		void Fire();
 	}
 }
 
@@ -5453,8 +5744,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override List<LineSegment> DebrisLines { get { return null; } }
 
 		public Debris(string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
-			List<Color> colors, int health, Vector vel, Vector dir, float friction, float turnRate,
-			float lifetime, BoundaryStrategy boundaryStrat, Team team
+			List<Color> colors, BoundaryStrategy boundaryStrat, int health, Vector vel, Vector dir,
+			float friction, float turnRate, float lifetime, Team team
 		) : base(id, filePath, refPos, offsetPos, shape, colors, health, vel, dir, boundaryStrat, team)
 		{
 			this.friction = friction;
@@ -5485,12 +5776,13 @@ namespace TaskForceUltra.src.GameModule.Entities
 	/// </summary>
 	public class DebrisFactory
 	{
-		public Debris Create(LineSegment l, Point2D pos) {
+		public Debris Create(LineSegment l, Point2D pos, Rectangle playArea) {
 			Shape shape = new Shape(new List<LineSegment> { l }, null, SwinGame.PointAt(0, 0));
 			List<Color> colors = new List<Color> { Color.Red };
 
-			Debris result = new Debris("debris", null, pos, SwinGame.PointAt(0, 0), shape, colors,
-			1, Util.RandomUnitVector().Multiply(2), Util.RandomUnitVector(), 0.97f, Util.Rand(10), 3, null, Team.Computer);
+			BoundaryStrategy boundaryStrat = new DieBoundaryBehaviour(playArea);
+			Debris result = new Debris("debris", null, pos, SwinGame.PointAt(0, 0), shape, colors, boundaryStrat,
+			1, Util.RandomUnitVector().Multiply(2), Util.RandomUnitVector(), 0.97f, Util.Rand(10), 3, Team.Computer);
 
 			result.TeleportTo(pos);
 
@@ -5510,12 +5802,29 @@ namespace TaskForceUltra
 	public enum SelectionType { Ship, Difficulty, Level }
 	public enum EnvMod { Nebula, Flare, Blackhole, Void, Radioactive }
 	public enum DifficultyType { Easy, Medium, Hard }
-	public enum ShipAction { Forward, Backward, StrafeLeft, StrafeRight, TurnLeft, TurnRight, Shoot, ActivatePowerup }
+	public enum ShipAction { Forward, Backward, StrafeLeft, StrafeRight, TurnLeft, TurnRight, Shoot, ActivatePowerup, ReverseTime }
 	public enum ControllerType { Player1, Player2, Player3, Player4, Computer }
 	public enum Team { Team1, Team2, Team3, Team4, Computer, None }
 	public enum GameResultType { Time, Points, Result }
 	public enum BattleResult { Loss = 0, Win = 1 }
 	public enum Debugging { Ship, Camera, Ammo, Particle, Component, Nodes }
+}
+
+﻿namespace TaskForceUltra
+{
+	/// <summary>
+	/// Struct that defines min and max values
+	/// </summary>
+	public struct MinMax<T>
+	{
+		public T Min { get; set; }
+		public T Max { get; set; }
+
+		public MinMax(T min, T max) {
+			Min = min;
+			Max = max;
+		}
+	}
 }
 
 ﻿using System;
@@ -5610,23 +5919,6 @@ namespace TaskForceUltra
 	}
 }
 
-﻿namespace TaskForceUltra
-{
-	/// <summary>
-	/// Struct that defines min and max values
-	/// </summary>
-	public struct MinMax<T>
-	{
-		public T Min { get; set; }
-		public T Max { get; set; }
-
-		public MinMax(T min, T max) {
-			Min = min;
-			Max = max;
-		}
-	}
-}
-
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5707,33 +5999,37 @@ namespace TaskForceUltra
 		public static void HandleInput() {
 			if (SwinGame.KeyDown(KeyCode.CtrlKey)) {
 				//debug all
-				if (typed(KeyCode.DKey)) {
+				if (Typed(KeyCode.DKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Ammo, Debugging.Component, Debugging.Camera, Debugging.Particle, Debugging.Ship, Debugging.Nodes });
 				}
 				//debug ship
-				else if (typed(KeyCode.SKey)) {
+				else if (Typed(KeyCode.SKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Component, Debugging.Ship });
 				}
 				//debug ammo
-				else if (typed(KeyCode.AKey)) {
+				else if (Typed(KeyCode.AKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Ammo });
 				}
 				//debug component
-				else if (typed(KeyCode.CKey)) {
+				else if (Typed(KeyCode.CKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Component });
 				}
 				//debug level
-				else if (typed(KeyCode.LKey)) {
+				else if (Typed(KeyCode.LKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Camera });
 				}
 				//debug particle
-				else if (typed(KeyCode.PKey)) {
+				else if (Typed(KeyCode.PKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Particle });
+				}
+				//debug collision grid
+				else if (Typed(KeyCode.NKey)) {
+					ToggleDebugState(new Debugging[] { Debugging.Nodes });
 				}
 			}
 		}
 
-		private static bool typed(KeyCode key) {
+		private static bool Typed(KeyCode key) {
 			return SwinGame.KeyTyped(key);
 		}
 
@@ -5930,6 +6226,98 @@ namespace TaskForceUltra
 
 ﻿using System;
 using System.Collections.Generic;
+using SwinGameSDK;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+
+namespace TaskForceUltra
+{
+	/// <summary>
+	/// Utility helper functions
+	/// </summary>
+	public static class Util
+	{
+		//////////////////////////
+		// Random number generation
+		/////////////////////////
+		//shorten the call for random number
+		public static int Rand(int min, int max) {
+			Random rng = new Random(Guid.NewGuid().GetHashCode());
+			return rng.Next(min, max);
+		}
+		public static int Rand(int max) {
+			Random rng = new Random(Guid.NewGuid().GetHashCode());
+			return rng.Next(max);
+		}
+		public static int Rand() {
+			Random rng = new Random(Guid.NewGuid().GetHashCode());
+			return rng.Next();
+		}
+
+		//random return values
+		public static float RandomInRange(MinMax<float> x) {
+			float result = Rand((int)(x.Min * 1000), (int)(x.Max * 1000));
+			result /= 1000f;
+			return result;
+		}
+
+		public static Point2D RandomPointInRect(Rectangle rect) {
+			int x = Rand((int)rect.X, (int)rect.Right);
+			int y = Rand((int)rect.Y, (int)rect.Bottom);
+
+			return SwinGame.PointAt(x, y);
+		}
+
+		public static Vector RandomUnitVector() {
+			float x = (Rand(2000) - 1000);
+			x /= 1000;
+			float y = (Rand(2000) - 1000);
+			y /= 1000;
+			return SwinGame.VectorTo(x, y).UnitVector;
+		}
+
+		///////////////////////////////
+		// Json deserialisation helpers
+		//////////////////////////////
+		public static JObject Deserialize(string filePath) {
+			try {
+				string buffer = File.ReadAllText(filePath);
+				JObject obj = JsonConvert.DeserializeObject<JObject>(buffer);
+				return obj;
+			}
+			catch (Exception e) {
+				Console.WriteLine($"error deserializing from {filePath}");
+				Console.WriteLine(e);
+				return null;
+			}
+		}
+
+		public static Color GetRGBColor(JToken color) {
+			return SwinGame.RGBColor(color.Value<byte>("R"), color.Value<byte>("G"), color.Value<byte>("B"));
+		}
+
+		public static List<Color> LoadColors(JArray colorsObj) {
+			List<Color> result = new List<Color>();
+
+			foreach (JObject c in colorsObj) {
+				result.Add(GetRGBColor(c));
+			}
+			return result;
+		}
+
+		public static Color DeserializeKeyedColor(JArray colorObj, string key) {
+			foreach (JObject c in colorObj) {
+				if (c.ContainsKey(key))
+					return GetRGBColor(c.GetValue(key));
+			}
+			return Color.White;
+		}
+	}
+}
+
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -6079,98 +6467,6 @@ namespace TaskForceUltra
 			foreach (Component c in componentList) {
 				c?.Turn(theta);
 			}
-		}
-	}
-}
-
-﻿using System;
-using System.Collections.Generic;
-using SwinGameSDK;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.IO;
-
-namespace TaskForceUltra
-{
-	/// <summary>
-	/// Utility helper functions
-	/// </summary>
-	public static class Util
-	{
-		//////////////////////////
-		// Random number generation
-		/////////////////////////
-		//shorten the call for random number
-		public static int Rand(int min, int max) {
-			Random rng = new Random(Guid.NewGuid().GetHashCode());
-			return rng.Next(min, max);
-		}
-		public static int Rand(int max) {
-			Random rng = new Random(Guid.NewGuid().GetHashCode());
-			return rng.Next(max);
-		}
-		public static int Rand() {
-			Random rng = new Random(Guid.NewGuid().GetHashCode());
-			return rng.Next();
-		}
-
-		//random return values
-		public static float RandomInRange(MinMax<float> x) {
-			float result = Rand((int)(x.Min * 1000), (int)(x.Max * 1000));
-			result /= 1000f;
-			return result;
-		}
-
-		public static Point2D RandomPointInRect(Rectangle rect) {
-			int x = Rand((int)rect.X, (int)rect.Right);
-			int y = Rand((int)rect.Y, (int)rect.Bottom);
-
-			return SwinGame.PointAt(x, y);
-		}
-
-		public static Vector RandomUnitVector() {
-			float x = (Rand(2000) - 1000);
-			x /= 1000;
-			float y = (Rand(2000) - 1000);
-			y /= 1000;
-			return SwinGame.VectorTo(x, y).UnitVector;
-		}
-
-		///////////////////////////////
-		// Json deserialisation helpers
-		//////////////////////////////
-		public static JObject Deserialize(string filePath) {
-			try {
-				string buffer = File.ReadAllText(filePath);
-				JObject obj = JsonConvert.DeserializeObject<JObject>(buffer);
-				return obj;
-			}
-			catch (Exception e) {
-				Console.WriteLine($"error deserializing from {filePath}");
-				Console.WriteLine(e);
-				return null;
-			}
-		}
-
-		public static Color GetRGBColor(JToken color) {
-			return SwinGame.RGBColor(color.Value<byte>("R"), color.Value<byte>("G"), color.Value<byte>("B"));
-		}
-
-		public static List<Color> LoadColors(JArray colorsObj) {
-			List<Color> result = new List<Color>();
-
-			foreach (JObject c in colorsObj) {
-				result.Add(GetRGBColor(c));
-			}
-			return result;
-		}
-
-		public static Color DeserializeKeyedColor(JArray colorObj, string key) {
-			foreach (JObject c in colorObj) {
-				if (c.ContainsKey(key))
-					return GetRGBColor(c.GetValue(key));
-			}
-			return Color.White;
 		}
 	}
 }
