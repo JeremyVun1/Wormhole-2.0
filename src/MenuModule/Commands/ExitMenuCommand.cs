@@ -21,5 +21,9 @@ namespace TaskForceUltra.src.MenuModule
 		public void Execute() {
 			menuModule.Exit();
 		}
+
+		public void Undo() {
+			//can't undo
+		}
 	}
 }

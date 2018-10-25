@@ -17,5 +17,9 @@ namespace TaskForceUltra.src.GameModule.Commands
 		public void Execute() {
 			controlled.ShootCommand();
 		}
+
+		public void Undo() {
+			//can't undo shooting
+		}
 	}
 }

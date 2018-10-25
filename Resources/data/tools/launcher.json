@@ -1,8 +1,8 @@
 {
-	"id": "Launcher",
+	"id": "launcher",
 	"mass": 3,
 	"scale": 0.5,
-	"cooldown": 0.5,
+	"cooldown": 1,
 	"shape": {
 		"lines": [],
 		"boxes": [

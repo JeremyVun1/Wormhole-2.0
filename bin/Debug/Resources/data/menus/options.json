@@ -34,8 +34,8 @@
 	"textBoxes": [
 		{
 			"id": "setVolume",
-			"pos": {"X": 0.45, "Y": 0.2},
-			"size": {"W": 0.5, "H": 0.5},
+			"pos": {"X": 0, "Y": 0.2},
+			"size": {"W": 1, "H": 0.5},
 			"text": "Set Volume"
 		}
 	],
@@ -46,8 +46,7 @@
 			"pos": {"X": 0.25, "Y": 0.3},
 			"size": {"W": 0.2, "H": 0.07},
 			"action": "IncreaseVolume",
-			"type": "NonStick",
-			"payload": "asdad"
+			"type": "NonStick"
 		},
 		{
 			"id": "decrease",
@@ -55,8 +54,7 @@
 			"pos": {"X": 0.55, "Y": 0.3},
 			"size": {"W": 0.2, "H": 0.07},
 			"action": "DecreaseVolume",
-			"type": "NonStick",
-			"payload": "asad"
+			"type": "NonStick"
 		},
 		{
 			"id": "back",

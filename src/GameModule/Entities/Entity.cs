@@ -25,7 +25,7 @@ namespace TaskForceUltra.src.GameModule
 		public Team KilledBy { get; protected set; }
 
 		public Shape Shape { get; private set; }
-		public virtual List<LineSegment> DebrisLines { get { return Shape.GetLines(); } }
+		public virtual List<LineSegment> DebrisLines { get { return Shape?.GetLines(); } }
 		protected List<Color> colors;
 		protected int colorIndex;
 		

@@ -15,6 +15,6 @@ namespace TaskForceUltra.src.GameModule
 		int Damage { get; }
 		List<LineSegment> BoundingBox { get; }
 
-		void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false);
+		bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false);
 	}
 }

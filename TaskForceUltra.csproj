@@ -48,6 +48,7 @@
     <Compile Include="src\GameModule\Entities\Asteroid.cs" />
     <Compile Include="src\GameModule\Entities\BoundaryStrategies\BoundaryStrategy.cs" />
     <Compile Include="src\GameModule\Entities\BoundaryStrategies\WrapBoundaryBehaviour.cs" />
+    <Compile Include="src\GameModule\Entities\BoundaryStrategies\DieBoundaryBehaviour.cs" />
     <Compile Include="src\GameModule\Entities\Components\Ammo.cs" />
     <Compile Include="src\GameModule\Entities\Components\Component.cs" />
     <Compile Include="src\GameModule\Entities\Components\Emitter.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="src\GameModule\Entities\Components\Tool.cs" />
     <Compile Include="src\GameModule\Entities\Debris.cs" />
     <Compile Include="src\GameModule\Entities\Mover.cs" />
+    <Compile Include="src\GameModule\Entities\NumberPopup.cs" />
     <Compile Include="src\GameModule\Entities\PlayerShip.cs" />
     <Compile Include="src\GameModule\GameSendData.cs" />
     <Compile Include="src\GameModule\Handlers\ActionBinding.cs" />
@@ -156,6 +158,9 @@
     <None Include="Resources\bundles\Game_Bundle.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\ammo\myAmmo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\ammo\ballistic.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -189,6 +194,9 @@
     <None Include="Resources\data\emitters\disco.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\emitters\myEmitter.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\emitters\fiery.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -198,7 +206,13 @@
     <None Include="Resources\data\engines\light.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\engines\myEngine.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\engines\slowengine.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\levels\myLevel.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\levels\1.json">
@@ -228,6 +242,9 @@
     <None Include="Resources\data\particles\fiery.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\particles\myParticle.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\particles\rainbow.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -243,10 +260,13 @@
     <None Include="Resources\data\ships\hammerhead.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\ships\test.json">
+    <None Include="Resources\data\ships\MyNewShip.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\tools\launcher.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\myLaser.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\tools\railgun.json">

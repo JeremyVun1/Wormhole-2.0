@@ -17,5 +17,9 @@ namespace TaskForceUltra.src.GameModule.Commands
 		public void Execute() {
 			controlled.StrafeRightCommand();
 		}
+
+		public void Undo() {
+			controlled.StrafeLeftCommand();
+		}
 	}
 }

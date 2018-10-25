@@ -92,8 +92,12 @@ namespace TaskForceUltra.src.GameModule.Handlers
 
 			foreach (Node adjacentNode in adjacentNodes) {
 				foreach (ICollides other in adjacentNode.ICollidesList) {
-					if (self != other && self.Team != other.Team) {
+					if (self != other && self.Team != other.Team && !adjacentNode.CheckedList.Contains(other)) {
 						if (IsColliding(self.BoundingBox, other.BoundingBox)) {
+							if (self is Ammo)
+								CheckedList.Add(self);
+							if (other is Ammo)
+								CheckedList.Add(other);
 							return other;
 						}
 					}

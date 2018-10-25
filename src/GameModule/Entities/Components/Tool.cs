@@ -35,6 +35,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 			childComponents = children;
 			this.entHandler = entHandler;
 			cdHandler = new CooldownHandler(cooldown*1000);
+			cdHandler.StartCooldown();
 		}
 
 		/// <summary>
@@ -56,6 +57,21 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override void Update() {
 			base.Update();
 			Ammo.Sleep();
+		}
+
+		public override void Draw() {
+			base.Draw();
+			DrawCooldown();
+		}
+
+		private void DrawCooldown() {
+			Point2D offset1 = SwinGame.PointAt(-6, 5);
+			Point2D offset2 = SwinGame.PointAt(6, 10);
+			Rectangle cdBar = SwinGame.CreateRectangle(RealPos.Add(offset1), RealPos.Add(offset2));
+			Rectangle cdProg = SwinGame.CreateRectangle(cdBar.TopLeft, cdBar.Width * cdHandler.cdPercentage, cdBar.Height);
+
+			SwinGame.FillRectangle(SwinGame.RGBAColor(0,255,0,140), cdProg);
+			SwinGame.DrawRectangle(SwinGame.RGBAColor(0,255,0,140), cdBar);
 		}
 
 		public override void TeleportTo(Point2D target) {

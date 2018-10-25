@@ -111,7 +111,7 @@ namespace TaskForceUltra.src.MenuModule
 			JArray buttonsObj = menuObj.Value<JArray>("buttons");
 			JArray colorsObj = menuObj.Value<JArray>("elementColors");
 
-			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule);
+			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule, id);
 
 			return new Menu(id, title, elements);
 		}
@@ -131,7 +131,7 @@ namespace TaskForceUltra.src.MenuModule
 			string buffer = File.ReadAllText(SwinGame.AppPath() + pathname);
 			textBoxesObj = JsonConvert.DeserializeObject<JArray>(buffer);
 
-			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule);
+			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule, id);
 
 			return new HighscoreMenu(id, title, elements);
 		}
@@ -143,7 +143,7 @@ namespace TaskForceUltra.src.MenuModule
 			JArray textBoxesObj = menuObj.Value<JArray>("textBoxes");
 			JArray buttonsObj = menuObj.Value<JArray>("buttons");
 			JArray colorsObj = menuObj.Value<JArray>("elementColors");
-			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule);
+			List<MenuElement> elements = menuElementFac.Create(textBoxesObj, buttonsObj, colorsObj, menuModule, id);
 
 			int sw = SwinGame.ScreenHeight();
 			int sh = SwinGame.ScreenWidth();
@@ -165,10 +165,15 @@ namespace TaskForceUltra.src.MenuModule
 
 			//create level selection buttons
 			n = levelList.Count > levelSelectionBounds.Count ? levelSelectionBounds.Count : levelList.Count;
+			int count = 0;
 			for (int i = 0; i < n; ++i) {
 				string levelId = levelList.ElementAt(i).Key;
-				if (levelList.ElementAt(i).Value.Playable) // only allow it to be selected if the level is playable
-					levelSelection.Add(menuElementFac.CreateSelectButton(id, levelId, levelSelectionBounds[i], SelectionType.Level, levelId, levelSelection, menuModule));
+
+				//only allow level to be selected if it has been set to playable
+				if (levelList.ElementAt(i).Value.Playable) {
+					levelSelection.Add(menuElementFac.CreateSelectButton(id, levelId, levelSelectionBounds[count], SelectionType.Level, levelId, levelSelection, menuModule));
+					count++;
+				}
 			}
 
 			//difficulty buttons

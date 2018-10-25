@@ -1,0 +1,30 @@
+{
+	"id": "myAmmo",
+	"colors": [
+		{
+			"R": 255,
+			"G": 100,
+			"B": 50
+		}
+	],
+	"mass": 5,
+	"damage": 3,
+	"lifetime": 2,
+	"vel": 20,
+	"maxVel": 20,
+	"turnRate": 0,
+	"scale": 0.8,
+	"shape": {
+		"lines": [
+			{
+				"StartPoint":
+					{"X": 0, "Y": -15},
+				"EndPoint":
+					{"X": 0, "Y": 7}
+			},
+		],
+		"boxes": [],
+		"triangles": []
+	},
+	"behaviour": "static"
+}

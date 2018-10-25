@@ -51,7 +51,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 				Debug();
 		}
 
-		public void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
+		public bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
 			health -= dmg;
 
 			float velTransferMod = ((float)collidingMass / (float)Mass);
@@ -60,6 +60,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 			if (health <= 0)
 				Kill(collidingTeam);
+
+			return true;
 		}
 
 		public void TurnTo(Vector targetDir, float turnStrength = 1) { }

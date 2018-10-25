@@ -97,9 +97,10 @@ namespace TaskForceUltra.src.GameModule
 		/// <param name="dmg">incoming damage</param>
 		/// <param name="collidingVel">velocity of other object</param>
 		/// <param name="collidingMass">mass of other object</param>
-		/// <param name="collider">team of other object</param>
+		/// <param name="collider">
+		/// team of other object</param>
 		/// <param name="forceReaction">opt to bypass hurting timeout</param>
-		public virtual void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
+		public virtual bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collidingTeam, bool forceReaction = false) {
 			if (!isHurting || forceReaction) {
 				isHurting = true;
 				hurtTimer.Start();
@@ -108,10 +109,13 @@ namespace TaskForceUltra.src.GameModule
 				float velTransferMod = ((float)collidingMass / (float)Mass);
 				Vel = Vel.AddVector(collidingVel.Multiply(velTransferMod));
 				Vel = Vel.LimitToMagnitude(MaxVel);
+				return true;
 			}
 
 			if (health <= 0)
 				Kill(collidingTeam);
+
+			return false;
 		}
 
 

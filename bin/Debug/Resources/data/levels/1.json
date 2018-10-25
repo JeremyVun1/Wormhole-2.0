@@ -2,11 +2,6 @@
 	"id": "Level1",
 	"size": {"W": 1500, "H": 1500},
 	"playable": true,
-	"environMods": [
-		"Nebula",
-		"Blackhole",
-		"Radioactive"
-	],
 	"ships": [
 		"cube"
 	],

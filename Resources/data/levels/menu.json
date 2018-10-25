@@ -5,11 +5,6 @@
         "H": 1000
     },
     "playable": false,
-    "environMods": [
-        "Nebula",
-        "Blackhole",
-        "Radioactive"
-    ],
     "ships": [
     ],
     "asteroids":  10,

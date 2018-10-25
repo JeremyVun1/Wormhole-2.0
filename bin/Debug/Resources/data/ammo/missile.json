@@ -10,10 +10,10 @@
 	"mass": 20,
 	"damage": 2,
 	"lifetime": 5,
-	"vel": 2,
+	"vel": 3,
 	"maxVel": 10,
-	"turnRate": 2,
-	"scale": 0.6,
+	"turnRate": 3,
+	"scale": 0.5,
 	"shape": {
 		"boxes": [
 			{"X": 0, "Y": -1},

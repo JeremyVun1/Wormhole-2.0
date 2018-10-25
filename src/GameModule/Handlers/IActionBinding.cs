@@ -19,5 +19,6 @@ namespace TaskForceUltra.src.GameModule
 		bool StrafeRight();
 		bool TurnLeft();
 		bool TurnRight();
+		bool ReverseTime();
 	}
 }

@@ -17,5 +17,9 @@ namespace TaskForceUltra.src.GameModule.Commands
 		public void Execute() {
 			controlled.ActivatePowerupCommand();
 		}
+
+		public void Undo() {
+			//can't undo
+		}
 	}
 }

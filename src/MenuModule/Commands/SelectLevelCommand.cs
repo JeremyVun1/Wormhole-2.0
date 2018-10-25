@@ -22,5 +22,9 @@ namespace TaskForceUltra.src.MenuModule
 		public void Execute() {
 			menuModule.AddSelection(SelectionType.Level, id);
 		}
+
+		public void Undo() {
+			menuModule.RemoveSelection(SelectionType.Level);
+		}
 	}
 }

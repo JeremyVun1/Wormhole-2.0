@@ -31,7 +31,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		{
 			entityHandler = entHandler;
 			MaxVel = maxVel;
-			primingTimer = new CooldownHandler(1000);
+			primingTimer = new CooldownHandler(750);
 			primingTimer.StartCooldown();
 			this.emitters = emitters;
 			accel = vel;

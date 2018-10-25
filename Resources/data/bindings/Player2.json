@@ -1,5 +1,5 @@
 {
-	"id": "Player1",
+	"id": "Player2",
 	"Bindings": {
 		"Forward": "WKey",
 		"Backward": "SKey",
@@ -8,6 +8,7 @@
 		"TurnRight": "DKey",
 		"TurnLeft": "AKey",
 		"Shoot": "SpaceKey",
-		"ActivatePowerup": "XKey"
+		"ActivatePowerup": "XKey",
+		"ReverseTime": "GKey"
 	}
 }

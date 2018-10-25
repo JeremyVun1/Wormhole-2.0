@@ -17,10 +17,10 @@ namespace TaskForceUltra.src.MenuModule
 			menuModule = m;
 		}
 
-		public ICommand Create(string action, string payload) {
+		public ICommand Create(string action, string id, string parentId) {
 			switch (action.ToLower()) {
 				case "navto":
-					return new NavToCommand(menuModule, payload);
+					return new NavToCommand(menuModule, id, parentId);
 				case "increasevolume":
 					return new IncreaseVolumeCommand();
 				case "decreasevolume":
@@ -28,11 +28,11 @@ namespace TaskForceUltra.src.MenuModule
 				case "exit":
 					return new ExitMenuCommand(menuModule);
 				case "selectship":
-					return new SelectShipCommand(menuModule, payload);
+					return new SelectShipCommand(menuModule, id);
 				case "selectlevel":
-					return new SelectLevelCommand(menuModule, payload);
+					return new SelectLevelCommand(menuModule, id);
 				case "selectdifficulty":
-					return new SelectDifficultyCommand(menuModule, payload);
+					return new SelectDifficultyCommand(menuModule, id);
 				case "play":
 					return new PlayCommand(menuModule);
 				default:

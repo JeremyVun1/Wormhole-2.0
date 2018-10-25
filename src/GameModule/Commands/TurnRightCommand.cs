@@ -17,5 +17,9 @@ namespace TaskForceUltra.src.GameModule.Commands
 		public void Execute() {
 			controlled.TurnRightCommand();
 		}
+
+		public void Undo() {
+			controlled.TurnLeftCommand();
+		}
 	}
 }

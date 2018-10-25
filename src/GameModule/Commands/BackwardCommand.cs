@@ -17,5 +17,9 @@ namespace TaskForceUltra.src.GameModule.Commands
 		public void Execute() {
 			controlled.BackwardCommand();
 		}
+
+		public void Undo() {
+			controlled.ForwardCommand();
+		}
 	}
 }

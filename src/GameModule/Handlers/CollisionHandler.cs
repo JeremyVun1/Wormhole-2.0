@@ -16,10 +16,12 @@ namespace TaskForceUltra.src.GameModule
 	{
 		private Node quadTree;
 		private IHandlesEntities entityHandler;
+		private NumberPopupFactory numberPopupFac;
 
 		public CollisionHandler(Rectangle playArea, IHandlesEntities entityHandler) {
 			this.entityHandler = entityHandler;
 			quadTree = new Node(null, playArea, 150);
+			numberPopupFac = new NumberPopupFactory(playArea);
 		}
 
 		public void Update() {
@@ -44,14 +46,24 @@ namespace TaskForceUltra.src.GameModule
 		/// </summary>
 		private void CollideEntities() {
 			quadTree.CheckedList.Clear();
+			List<NumberPopup> popups = new List<NumberPopup>();
 			
 			foreach (ICollides self in entityHandler.EntityList.OfType<ICollides>()) {
 				ICollides other = quadTree.CollidingWith(self);
 
 				if (other != null) {
-					self.ReactToCollision(other.Damage, other.Vel, other.Mass, other.Team, other is Ammo);
-					other.ReactToCollision(self.Damage, self.Vel, self.Mass, self.Team, self is Ammo);
+					bool selfCollided = self.TryReactToCollision(other.Damage, other.Vel, other.Mass, other.Team, other is Ammo);
+					bool otherCollided = other.TryReactToCollision(self.Damage, self.Vel, self.Mass, self.Team, self is Ammo);
+
+					if (selfCollided)
+						popups.Add(numberPopupFac.Create(self.RealPos, other.Damage));
+					if (otherCollided)
+						popups.Add(numberPopupFac.Create(other.RealPos, self.Damage));
 				}
+			}
+
+			foreach (NumberPopup p in popups) {
+				entityHandler.Track(p);
 			}
 		}
 	}

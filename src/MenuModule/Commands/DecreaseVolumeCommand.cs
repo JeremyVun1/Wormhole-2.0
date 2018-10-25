@@ -17,5 +17,9 @@ namespace TaskForceUltra.src.MenuModule
 		public void Execute() {
 			SwinGame.SetMusicVolume(SwinGame.MusicVolume() - 0.1f);
 		}
+
+		public void Undo() {
+			SwinGame.SetMusicVolume(SwinGame.MusicVolume() + 0.1f);
+		}
 	}
 }

@@ -16,6 +16,7 @@ namespace TaskForceUltra.src.GameModule
 	{
 		private IControllable controlled;
 		private IActionBinding bindings;
+		private List<ICommand> commandHistory;
 
 		private ICommand forwardCommand;
 		private ICommand backwardsCommand;
@@ -26,40 +27,99 @@ namespace TaskForceUltra.src.GameModule
 		private ICommand activatePowerupCommand;
 		private ICommand shootCommand;
 
+		private bool IsUndoMode;
+		private int i;
+
 		public InputController(IControllable c, IActionBinding b)
 		{
 			controlled = c;
 			bindings = b;
 
 			CreateCommands();
+			IsUndoMode = false;
+			commandHistory = new List<ICommand>();
 		}
 
 		public void Update() {
-			HandleInput();
+			if (IsUndoMode)
+				UndoCommand();
+			else HandleInput();
+
+			TrimCommandHistory();
+		}
+
+		private void TrimCommandHistory() {
+			while (commandHistory.Count > 300) {
+				commandHistory.Reverse();
+				commandHistory.RemoveAt((commandHistory.Count - 1));
+				commandHistory.Reverse();
+			}
+		}
+
+		private void UndoCommand() {
+			if (i < 0) {
+				IsUndoMode = false;
+				commandHistory.Clear();
+			}
+			else {
+				commandHistory[i].Undo();
+				Rectangle screenRect = SwinGame.CreateRectangle(Camera.CameraPos().X, Camera.CameraPos().Y, SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
+				SwinGame.FillRectangle(SwinGame.RGBAColor(255, 0, 0, 80), screenRect);
+				Rectangle textRect = SwinGame.CreateRectangle(0, SwinGame.ScreenHeight() * 0.85f, SwinGame.ScreenWidth(), 100);
+				SwinGame.DrawText("UNDOING COMMANDS", Color.White, Color.Transparent, "MenuTitle", FontAlignment.AlignCenter, textRect);
+
+				i -= 1;
+			}
 		}
 
 		private void HandleInput() {
+			//super power reverse actions
+			if (bindings.ReverseTime()) {
+				IsUndoMode = true;
+				i = commandHistory.Count-1;
+				return;
+			}
+
 			//Movement
-			if (bindings.Forward())
+			if (bindings.Forward()) {
 				forwardCommand.Execute();
-			if (bindings.Backward())
+				commandHistory.Add(forwardCommand);
+			}				
+			if (bindings.Backward()) {
 				backwardsCommand.Execute();
-			if (bindings.StrafeLeft())
+				commandHistory.Add(backwardsCommand);
+			}				
+			if (bindings.StrafeLeft()) {
 				strafeLeftCommand.Execute();
-			if (bindings.StrafeRight())
+				commandHistory.Add(strafeLeftCommand);
+			}
+
+			if (bindings.StrafeRight()) {
 				strafeRightcommand.Execute();
+				commandHistory.Add(strafeRightcommand);
+			}
 
 			//Rotation
-			if (bindings.TurnRight())
+			if (bindings.TurnRight()) {
 				turnRightCommand.Execute();
-			if (bindings.TurnLeft())
+				commandHistory.Add(turnRightCommand);
+			}
+
+			if (bindings.TurnLeft()) {
 				turnLeftCommand.Execute();
+				commandHistory.Add(turnLeftCommand);
+			}
 
 			//actions
-			if (bindings.Shoot())
+			if (bindings.Shoot()) {
 				shootCommand.Execute();
-			if (bindings.ActivatePowerup())
+				commandHistory.Add(shootCommand);
+			}
+				
+			if (bindings.ActivatePowerup()) {
 				Console.WriteLine("activate powerup input received");
+			}
+				
 		}
 
 		private void CreateCommands() {

@@ -18,8 +18,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override List<LineSegment> DebrisLines { get { return null; } }
 
 		public Debris(string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
-			List<Color> colors, int health, Vector vel, Vector dir, float friction, float turnRate,
-			float lifetime, BoundaryStrategy boundaryStrat, Team team
+			List<Color> colors, BoundaryStrategy boundaryStrat, int health, Vector vel, Vector dir,
+			float friction, float turnRate, float lifetime, Team team
 		) : base(id, filePath, refPos, offsetPos, shape, colors, health, vel, dir, boundaryStrat, team)
 		{
 			this.friction = friction;
@@ -50,12 +50,13 @@ namespace TaskForceUltra.src.GameModule.Entities
 	/// </summary>
 	public class DebrisFactory
 	{
-		public Debris Create(LineSegment l, Point2D pos) {
+		public Debris Create(LineSegment l, Point2D pos, Rectangle playArea) {
 			Shape shape = new Shape(new List<LineSegment> { l }, null, SwinGame.PointAt(0, 0));
 			List<Color> colors = new List<Color> { Color.Red };
 
-			Debris result = new Debris("debris", null, pos, SwinGame.PointAt(0, 0), shape, colors,
-			1, Util.RandomUnitVector().Multiply(2), Util.RandomUnitVector(), 0.97f, Util.Rand(10), 3, null, Team.Computer);
+			BoundaryStrategy boundaryStrat = new DieBoundaryBehaviour(playArea);
+			Debris result = new Debris("debris", null, pos, SwinGame.PointAt(0, 0), shape, colors, boundaryStrat,
+			1, Util.RandomUnitVector().Multiply(2), Util.RandomUnitVector(), 0.97f, Util.Rand(10), 3, Team.Computer);
 
 			result.TeleportTo(pos);
 

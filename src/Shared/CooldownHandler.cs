@@ -20,6 +20,10 @@ namespace TaskForceUltra
 		private enum Trigger { TOGGLE, RESET };
 		private StateMachine<State, Trigger> stateMachine;
 
+		public float cdPercentage {
+			get { return Math.Min(timer.Ticks / threshhold, 1); }
+		}
+
 		public CooldownHandler(float ms) {
 			threshhold = ms;
 

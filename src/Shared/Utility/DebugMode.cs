@@ -78,33 +78,37 @@ namespace TaskForceUltra
 		public static void HandleInput() {
 			if (SwinGame.KeyDown(KeyCode.CtrlKey)) {
 				//debug all
-				if (typed(KeyCode.DKey)) {
+				if (Typed(KeyCode.DKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Ammo, Debugging.Component, Debugging.Camera, Debugging.Particle, Debugging.Ship, Debugging.Nodes });
 				}
 				//debug ship
-				else if (typed(KeyCode.SKey)) {
+				else if (Typed(KeyCode.SKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Component, Debugging.Ship });
 				}
 				//debug ammo
-				else if (typed(KeyCode.AKey)) {
+				else if (Typed(KeyCode.AKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Ammo });
 				}
 				//debug component
-				else if (typed(KeyCode.CKey)) {
+				else if (Typed(KeyCode.CKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Component });
 				}
 				//debug level
-				else if (typed(KeyCode.LKey)) {
+				else if (Typed(KeyCode.LKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Camera });
 				}
 				//debug particle
-				else if (typed(KeyCode.PKey)) {
+				else if (Typed(KeyCode.PKey)) {
 					ToggleDebugState(new Debugging[] { Debugging.Particle });
+				}
+				//debug collision grid
+				else if (Typed(KeyCode.NKey)) {
+					ToggleDebugState(new Debugging[] { Debugging.Nodes });
 				}
 			}
 		}
 
-		private static bool typed(KeyCode key) {
+		private static bool Typed(KeyCode key) {
 			return SwinGame.KeyTyped(key);
 		}
 

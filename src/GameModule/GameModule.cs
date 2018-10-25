@@ -64,6 +64,10 @@ namespace TaskForceUltra.src.GameModule
 		public void Draw() {
 			Level.Draw();
 			entityHandler.Draw(cameraHandler.Viewport);
+
+			//draw points
+			Rectangle scoreRect = SwinGame.CreateRectangle(0, 0, SwinGame.ScreenWidth(), SwinGame.ScreenHeight()*0.1f);
+			SwinGame.DrawText(scoresheet.FetchTeamScore(Team.Team1).ToString(), Color.Yellow, Color.Transparent, "MenuTitle", FontAlignment.AlignCenter, scoreRect);
 		}
 
 		/// <summary>
@@ -87,7 +91,7 @@ namespace TaskForceUltra.src.GameModule
 	{
 		public GameModule Create(string shipId, Difficulty diff, Level level, ShipFactory shipFac, GameSendData gameSendData) {
 			Scoresheet scoreSheet = new Scoresheet();
-			EntityHandler entHandler = new EntityHandler(scoreSheet);
+			EntityHandler entHandler = new EntityHandler(scoreSheet, level.PlayArea);
 			CollisionHandler collHandler = new CollisionHandler(level.PlayArea, entHandler);
 
 			Ship p = shipFac.Create(shipId, Util.RandomPointInRect(level.PlayArea), new WrapBoundaryBehaviour(level.PlayArea), ControllerType.Player1, diff, entHandler);

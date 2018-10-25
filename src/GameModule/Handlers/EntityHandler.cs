@@ -17,9 +17,11 @@ namespace TaskForceUltra
 	{
 		public List<Entity> EntityList { get; private set; }
 		private Scoresheet scoresheet;
+		private Rectangle playArea;
 
-		public EntityHandler(Scoresheet scoresheet) {
+		public EntityHandler(Scoresheet scoresheet, Rectangle playArea) {
 			this.scoresheet = scoresheet;
+			this.playArea = playArea;
 			EntityList = new List<Entity>();
 		}
 
@@ -37,7 +39,7 @@ namespace TaskForceUltra
 					List<LineSegment> lines = EntityList[i].DebrisLines;
 					if (lines != null) {
 						foreach (LineSegment l in lines) {
-							Debris debris = new DebrisFactory().Create(l, EntityList[i].RealPos);
+							Debris debris = new DebrisFactory().Create(l, EntityList[i].RealPos, playArea);
 							Track(debris);
 						}
 					}

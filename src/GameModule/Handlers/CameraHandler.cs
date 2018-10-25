@@ -21,7 +21,7 @@ namespace TaskForceUltra.src.GameModule
 		private List<Rectangle> sideAreas;
 
 		public Rectangle Viewport {
-			get { return SwinGame.CreateRectangle(Camera.CameraPos(), SwinGame.ScreenWidth(), SwinGame.ScreenHeight()); }
+			get { return SwinGame.CreateRectangle(Camera.CameraPos().Subtract(SwinGame.PointAt(100,100)), SwinGame.ScreenWidth() + 200, SwinGame.ScreenHeight() + 200); }
 		}
 
 		private Entity activeEntity;

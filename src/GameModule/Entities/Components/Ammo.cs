@@ -93,8 +93,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 			cdHandler.StartCooldown();
 		}
 
-		public void ReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
+		public bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
 			Kill(Team.None);
+			return false;
 		}
 
 		/// <summary>

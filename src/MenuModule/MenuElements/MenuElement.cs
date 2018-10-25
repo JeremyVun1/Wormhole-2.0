@@ -71,7 +71,7 @@ namespace TaskForceUltra.src.MenuModule
 	/// </summary>
 	public class MenuElementFactory
 	{
-		public List<MenuElement> Create(JArray textBoxesObj, JArray buttonsObj, JArray colorsObj, IMenuModule menuModule) {
+		public List<MenuElement> Create(JArray textBoxesObj, JArray buttonsObj, JArray colorsObj, IMenuModule menuModule, string parentId) {
 			List<MenuElement> result = new List<MenuElement>();
 
 			Color hoverColor = Util.DeserializeKeyedColor(colorsObj, "hoverColor");
@@ -84,7 +84,7 @@ namespace TaskForceUltra.src.MenuModule
 			}
 
 			foreach (JObject obj in buttonsObj) {
-				result.Add(CreateButton(obj, hoverColor, fillColor, borderColor, fontColor, menuModule));
+				result.Add(CreateButton(obj, hoverColor, fillColor, borderColor, fontColor, menuModule, parentId));
 			}
 
 			return result;
@@ -98,17 +98,19 @@ namespace TaskForceUltra.src.MenuModule
 			return new TextBox(id, bounds, hover, fill, border, font, text);
 		}
 
-		public Button CreateButton(JObject buttonObj, Color hover, Color fill, Color border, Color font, IMenuModule menuModule) {
+		public Button CreateButton(JObject buttonObj, Color hover, Color fill, Color border, Color font, IMenuModule menuModule, string parentId) {
 			Rectangle bounds = CreateElementBounds(buttonObj);
 			string text = buttonObj.Value<string>("label");
 			string action = buttonObj.Value<string>("action");
-			string payload = buttonObj.Value<string>("payload");
+			string payload = "";
+			try { payload = buttonObj.Value<string>("payload"); } catch { }
+
 			string id = buttonObj.Value<string>("id");
 			string type = buttonObj.Value<string>("type");
 
 			//build command for button
 			MenuCommandFactory menuCommandFac = new MenuCommandFactory(menuModule);
-			ICommand command = menuCommandFac.Create(action, payload);
+			ICommand command = menuCommandFac.Create(action, payload, parentId);
 
 			switch(type.ToLower()) {
 				case "nonstick":

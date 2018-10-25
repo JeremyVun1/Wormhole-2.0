@@ -80,13 +80,13 @@ namespace TaskForceUltra
 					Size2D<int> size = obj["size"].ToObject<Size2D<int>>();
 					Rectangle playArea = SwinGame.CreateRectangle(SwinGame.PointAt(0, 0), size.W, size.H);
 
-					List<EnvMod> EnvMods = obj["environMods"].ToObject<List<EnvMod>>(); //Most likely will not work
+					//List<EnvMod> EnvMods = obj["environMods"].ToObject<List<EnvMod>>(); //Most likely will not work
 
 					JObject bkgdObj = obj.Value<JObject>("background");
 					BackgroundFactory backgroundFac = new BackgroundFactory();
 					Background bkgd = backgroundFac.Create(bkgdObj, playArea);
 
-					levelList.Add(id, new Level(id, EnvMods, shipsToSpawn, asteroidsToSpawn, playable, playArea, bkgd));
+					levelList.Add(id, new Level(id, null, shipsToSpawn, asteroidsToSpawn, playable, playArea, bkgd));
 				}
 				catch(Exception e) {
 					Console.WriteLine($"Cannot read level: {file}");

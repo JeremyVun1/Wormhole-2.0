@@ -1,5 +1,5 @@
 {
-	"id": "Disco",
+	"id": "fiery",
 	"rate": 5,
 	"particle": {
 		"path": "\\resources\\data\\particles\\fiery.json"

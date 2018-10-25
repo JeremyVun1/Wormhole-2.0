@@ -47,6 +47,9 @@ namespace TaskForceUltra.src.GameModule
 		public bool ActivatePowerup() {
 			return SwinGame.KeyTyped(bindings[ShipAction.ActivatePowerup]);
 		}
+		public bool ReverseTime() {
+			return SwinGame.KeyTyped(bindings[ShipAction.ReverseTime]);
+		}
 	}
 
 	/// <summary>
