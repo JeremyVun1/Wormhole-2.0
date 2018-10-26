@@ -24,14 +24,14 @@ namespace TaskForceUltra.src.GameModule.Entities
 		private CooldownHandler primingTimer; //delay before we start seeking behaviour
 		private List<Component> emitters;
 
-		public SeekAmmo(string id, string filePath, Point2D refPos, Point2D offsetPos,
-			Shape shape, List<Color> colors, int mass, int damage, float lifetime, float vel, float maxVel,
-			float turnRate, List<Component> emitters, BoundaryStrategy boundaryStrat, IHandlesEntities entHandler, Team team
+		public SeekAmmo(string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape, List<Color> colors,
+			int mass, int damage, float lifetime, float vel, float maxVel, float primingDelay, float turnRate,
+			List<Component> emitters, BoundaryStrategy boundaryStrat, IHandlesEntities entHandler, Team team
 		) : base(id, filePath, refPos, offsetPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team)
 		{
 			entityHandler = entHandler;
 			MaxVel = maxVel;
-			primingTimer = new CooldownHandler(750);
+			primingTimer = new CooldownHandler(primingDelay);
 			primingTimer.StartCooldown();
 			this.emitters = emitters;
 			accel = vel;
@@ -67,7 +67,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		/// <param name="dir">spawning direction</param>
 		/// <param name="vel">spawning velocity</param>
 		public override void Init(Point2D pos, Vector dir, Vector vel) {
-			emitters.TeleportTo(pos);
+			emitters?.TeleportTo(pos);
 			base.Init(pos, dir, vel);
 			thrustForce = accel;
 		}

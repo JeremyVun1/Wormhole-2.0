@@ -1,23 +1,33 @@
 {
-	"id": "myEngine",
-	"thrust": 4,
-	"maxVel": 8,
-	"turnRate": 0.05,
-	"mass": 5,
-	"scale": 0.5,
-	"shape": {
-		"lines": [],
-		"boxes": [
-			{"X": 0, "Y": 0}
-		],
-		"triangles": [
-			{"X": 0, "Y": -1}
-		]
-	},
-	"emitters": [
-		{
-		"path": "\\resources\\data\\emitters\\myEmitter.json",
-		"pos": {"X": 0, "Y": 0}
-		}
-	]
+    "id": "myEngine",
+    "thrust": 4,
+    "maxVel": 8,
+    "turnRate": 0.05,
+    "mass": 5,
+    "health": 10,
+    "scale": 0.5,
+    "shape": {
+        "lines": [],
+        "boxes": [
+            {
+                "X": 0,
+                "Y": 0
+            }
+        ],
+        "triangles": [
+            {
+                "X": 0,
+                "Y": -1
+            }
+        ]
+    },
+    "emitters": [
+        {
+            "path": "\\resources\\data\\emitters\\myEmitter.json",
+            "pos": {
+                "X": 0,
+                "Y": 0
+            }
+        }
+    ]
 }

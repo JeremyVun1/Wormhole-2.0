@@ -158,7 +158,13 @@
     <None Include="Resources\bundles\Game_Bundle.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\ammo\myAmmo.json">
+    <None Include="Resources\data\ammo\shard.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ammo\rocket.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ammo\beam.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\ammo\ballistic.json">
@@ -189,6 +195,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\difficulty\medium.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\emitters\smoky.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\emitters\disco.json">
@@ -245,6 +254,9 @@
     <None Include="Resources\data\particles\myParticle.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\particles\smoke.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\particles\rainbow.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -263,7 +275,13 @@
     <None Include="Resources\data\ships\MyNewShip.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\tools\launcher.json">
+    <None Include="Resources\data\tools\machinegun.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\rocketLauncher.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\heavyLauncher.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\tools\myLaser.json">

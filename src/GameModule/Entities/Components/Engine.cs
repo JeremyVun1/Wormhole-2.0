@@ -100,6 +100,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 			float maxVel = engineObj.Value<float>("maxVel") * mod;
 			float turnRate = engineObj.Value<float>("turnRate") * mod;
 			int mass = engineObj.Value<int>("mass");
+			int health = engineObj.Value<int>("health");
 			float scale = engineObj.Value<float>("scale");
 			JObject shapeObj = engineObj.Value<JObject>("shape");
 			Shape shape = new ShapeFactory().Create(shapeObj, scale, offsetPos);
@@ -107,9 +108,12 @@ namespace TaskForceUltra.src.GameModule.Entities
 			JArray emitterObj = engineObj.Value<JArray>("emitters");
 			List<Component> emitters = new EmitterFactory().CreateList(emitterObj, entHandler, boundaryStrat, team, offsetPos);
 
-			return new Engine(id, path, SwinGame.PointAt(0, 0), offsetPos, shape,
-				new List<Color> { Color.White }, 1, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1),
+			Engine result = new Engine(id, path, SwinGame.PointAt(0, 0), offsetPos, shape,
+				new List<Color> { Color.White }, health, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1),
 				boundaryStrat, team, emitters, thrust, maxVel, turnRate, mass);
+
+			entHandler.Track(result);
+			return result;
 		}
 	}
 }

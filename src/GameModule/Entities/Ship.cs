@@ -68,6 +68,17 @@ namespace TaskForceUltra.src.GameModule
 
 			HandleHurtingState();
 			TeleportTo(RealPos);
+			RemoveDeadComponents();
+		}
+
+		private void RemoveDeadComponents() {
+			if (componentList == null)
+				return;
+
+			for(int i=0; i<componentList.Count; ++i) {
+				if (componentList[i].IsDead)
+					componentList.Remove(componentList[i]);
+			}
 		}
 
 		/// <summary>
@@ -98,13 +109,11 @@ namespace TaskForceUltra.src.GameModule
 			Point2D offset1 = SwinGame.PointAt(-20, yOffset + 10);
 			Point2D offset2 = SwinGame.PointAt(20, yOffset + 15);
 			Rectangle healthBar = SwinGame.CreateRectangle(RealPos.Add(offset1), RealPos.Add(offset2));
-			Rectangle health = SwinGame.CreateRectangle(healthBar.TopLeft, healthBar.Width * Condition, healthBar.Height);
+			Rectangle health = SwinGame.CreateRectangle(healthBar.TopLeft, Math.Max(healthBar.Width * Condition, 0), healthBar.Height);
 
-			Color progClr = health.Width < healthBar.Width ? SwinGame.RGBAColor(255, 120, 0, 190) : SwinGame.RGBAColor(0, 255, 0, 190);
-			SwinGame.FillRectangle(progClr, health);
+			Color healthClr = health.Width < healthBar.Width ? SwinGame.RGBAColor(255, 120, 0, 190) : SwinGame.RGBAColor(0, 255, 0, 190);
+			SwinGame.FillRectangle(healthClr, health);
 			SwinGame.DrawRectangle(SwinGame.RGBAColor(255, 255, 255, 255), healthBar);
-
-			Console.WriteLine(Condition);
 		}
 
 		/// <summary>
@@ -125,12 +134,12 @@ namespace TaskForceUltra.src.GameModule
 				float velTransferMod = ((float)collidingMass / (float)Mass);
 				Vel = Vel.AddVector(collidingVel.Multiply(velTransferMod));
 				Vel = Vel.LimitToMagnitude(MaxVel);
+
+				if (health <= 0)
+					Kill(collidingTeam);
+
 				return true;
 			}
-
-			if (health <= 0)
-				Kill(collidingTeam);
-
 			return false;
 		}
 

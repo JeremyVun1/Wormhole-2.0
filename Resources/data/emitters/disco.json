@@ -1,6 +1,6 @@
 {
 	"id": "Disco",
-	"rate": 10,
+	"rate": 5,
 	"particle": {
 		"path": "\\resources\\data\\particles\\rainbow.json"
 	}

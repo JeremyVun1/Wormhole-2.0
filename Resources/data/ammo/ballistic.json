@@ -1,5 +1,5 @@
 {
-	"id": "Ballistic",
+	"id": "Shard",
 	"colors": [
 		{
 			"R": 255,
@@ -8,12 +8,12 @@
 		}
 	],
 	"mass": 5,
-	"damage": 1,
+	"damage": 2,
 	"lifetime": 3,
 	"vel": 10,
 	"maxVel": 10,
 	"turnRate": 0,
-	"scale": 0.8,
+	"scale": 0.6,
 	"shape": {
 		"lines": [
 			{

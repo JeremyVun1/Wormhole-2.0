@@ -3,7 +3,8 @@
 	"thrust": 2,
 	"maxVel": 6,
 	"turnRate": 0.05,
-	"mass": 5,
+    "mass": 5,
+    "health": 10,
 	"scale": 0.5,
 	"shape": {
 		"lines": [],

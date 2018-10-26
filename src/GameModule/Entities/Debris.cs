@@ -25,7 +25,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 			this.friction = friction;
 			this.turnRate = turnRate;
 
-			cdHandler = new CooldownHandler(lifetime * 1000);
+			cdHandler = new CooldownHandler(lifetime * 500);
 			cdHandler.StartCooldown();
 		}
 

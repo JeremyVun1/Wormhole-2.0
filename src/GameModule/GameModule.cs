@@ -56,7 +56,7 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		private bool IsGameEnd() {
-			if (player.IsDead || entityHandler.AIShipCount() == 0)
+			if (player.IsDead || entityHandler.AIShipCount() == 0 || SwinGame.KeyTyped(KeyCode.EscapeKey))
 				return true;
 			return false;
 		}

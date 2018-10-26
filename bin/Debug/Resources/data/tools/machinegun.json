@@ -1,8 +1,8 @@
 {
-    "id": "Railgun",
+    "id": "MachineGun",
     "mass": 3,
     "scale": 0.5,
-    "cooldown": 0.5,
+    "cooldown": 0.1,
     "health": 10,
     "shape": {
         "lines": [],
@@ -24,6 +24,6 @@
         }
     ],
     "ammo": {
-        "path": "\\resources\\data\\ammo\\ballistic.json"
+        "path": "\\resources\\data\\ammo\\shard.json"
     }
 }

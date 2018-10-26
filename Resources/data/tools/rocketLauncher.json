@@ -1,19 +1,22 @@
 {
-    "id": "Railgun",
+    "id": "Rocket Launcher",
     "mass": 3,
     "scale": 0.5,
-    "cooldown": 0.5,
+    "cooldown": 0.8,
     "health": 10,
     "shape": {
         "lines": [],
         "boxes": [
             {
-                "X": 0,
+                "X": -0.5,
+                "Y": 0
+            },
+            {
+                "X": 0.5,
                 "Y": 0
             }
         ],
         "triangles": [
-
         ]
     },
     "colors": [
@@ -24,6 +27,6 @@
         }
     ],
     "ammo": {
-        "path": "\\resources\\data\\ammo\\ballistic.json"
+        "path": "\\resources\\data\\ammo\\rocket.json"
     }
 }

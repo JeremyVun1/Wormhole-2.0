@@ -1,7 +1,7 @@
 	{
 	"id": "hammerhead",
 	"cost": 100,
-	"health": 10,
+	"health": 25,
 	"color": {
 		"R": 0,
 		"G": 150,
@@ -58,20 +58,57 @@
 			"pos": {"X": 1, "Y": 0.5}
 		}
 	],
-	"tools": [
-		{
-			"path": "\\resources\\data\\tools\\launcher.json",
-			"pos": {"X": -3, "Y": -2}
-		},
-		{
-			"path": "\\resources\\data\\tools\\launcher.json",
-			"pos": {"X": 0, "Y": -2}
-		},
-		{
-			"path": "\\resources\\data\\tools\\launcher.json",
-			"pos": {"X": 3, "Y": -2}
-		}
-	],
+        "tools": [
+            {
+                "path": "\\resources\\data\\tools\\rocketLauncher.json",
+                "pos": {
+                    "X": -3,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\rocketLauncher.json",
+                "pos": {
+                    "X": -2,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\rocketLauncher.json",
+                "pos": {
+                    "X": -1,
+                    "Y": 1
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\rocketLauncher.json",
+                "pos": {
+                    "X": 1,
+                    "Y": 1
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\heavyLauncher.json",
+                "pos": {
+                    "X": 0,
+                    "Y": 3
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\rocketLauncher.json",
+                "pos": {
+                    "X": 2,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\rocketLauncher.json",
+                "pos": {
+                    "X": 3,
+                    "Y": -2
+                }
+            }
+        ],
 	"emitters": [
 	]
 }

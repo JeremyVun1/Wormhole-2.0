@@ -30,6 +30,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 		private CooldownHandler cdHandler;
 
+		public override List<LineSegment> DebrisLines { get { return Shape.GetLines(2); } }
+
 		public Ammo(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
 			List<Color> colors, int mass, int damage, float lifetime, float vel,
@@ -93,8 +95,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 			cdHandler.StartCooldown();
 		}
 
-		public bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
-			Kill(Team.None);
+		public override bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
+			if (!sleep)
+				Kill(Team.None);
 			return false;
 		}
 
@@ -117,33 +120,44 @@ namespace TaskForceUltra.src.GameModule.Entities
 	public class AmmoFactory : ComponentFactory
 	{
 		public override Component Create(JObject ammoObj, string path, IHandlesEntities entHandler, BoundaryStrategy boundaryStrat, Team team, Point2D parentPos, float mod = 1) {
-			string id = ammoObj.Value<string>("id");
-			List<Color> colors = Util.LoadColors(ammoObj.Value<JArray>("colors"));
-			int mass = ammoObj.Value<int>("mass");
-			int damage = (int)(ammoObj.Value<int>("damage") * mod);
-			float lifetime = ammoObj.Value<float>("lifetime") * mod;
-			float vel = ammoObj.Value<float>("vel") * mod;
-			float maxVel = ammoObj.Value<float>("maxVel") * mod;
-			float turnRate = ammoObj.Value<float>("turnRate") * mod;
-			float scale = ammoObj.Value<float>("scale");
-			JObject shapeObj = ammoObj.Value<JObject>("shape");
-			Shape shape = new ShapeFactory().Create(shapeObj, scale, parentPos);
-			string behaviour = ammoObj.Value<string>("behaviour");
+			try {
+				string id = ammoObj.Value<string>("id");
+				List<Color> colors = Util.LoadColors(ammoObj.Value<JArray>("colors"));
+				int mass = ammoObj.Value<int>("mass");
+				int damage = (int)(ammoObj.Value<int>("damage") * mod);
+				float lifetime = ammoObj.Value<float>("lifetime") * mod;
+				float vel = ammoObj.Value<float>("vel") * mod;
+				float maxVel = ammoObj.Value<float>("maxVel") * mod;
+				float turnRate = ammoObj.Value<float>("turnRate") * mod;
+				float scale = ammoObj.Value<float>("scale");
+				JObject shapeObj = ammoObj.Value<JObject>("shape");
+				Shape shape = new ShapeFactory().Create(shapeObj, scale, parentPos);
+				string behaviour = ammoObj.Value<string>("behaviour");
 
-			if (team == Team.Computer)
-				colors = new List<Color> { Color.Yellow };
+				float primingDelay = 0;
+				try { primingDelay = ammoObj.Value<float>("primingDelay"); }
+				catch { }
 
-			switch(behaviour) {
-				case "seek":
-					JArray emitterObj = ammoObj.Value<JArray>("emitters");
-					List<Component> emitters = new EmitterFactory().CreateList(emitterObj, entHandler, boundaryStrat, team, parentPos, mod);
-					SeekAmmo result = new SeekAmmo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, emitters, boundaryStrat, entHandler, team);
-					result.AIStrat = new ChaseStrategy(result, entHandler, 0);
-					return result;
-				case "static":
-					return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team);
-				default:
-					return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team);
+				if (team == Team.Computer)
+					colors = new List<Color> { Color.Yellow };
+
+				switch (behaviour) {
+					case "seek":
+						JArray emitterObj = null;
+						try { emitterObj = ammoObj.Value<JArray>("emitters"); } catch { }
+						List<Component> emitters = new EmitterFactory().CreateList(emitterObj, entHandler, boundaryStrat, team, parentPos, mod);
+						SeekAmmo result = new SeekAmmo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, primingDelay, turnRate, emitters, boundaryStrat, entHandler, team);
+						result.AIStrat = new ChaseStrategy(result, entHandler, 0);
+						return result;
+					case "static":
+						return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team);
+					default:
+						return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team);
+				}
+			}
+			catch (Exception e) {
+				Console.WriteLine(e);
+				return null;
 			}
 		}
 	}

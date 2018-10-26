@@ -13,14 +13,16 @@ namespace TaskForceUltra.src.GameModule.Entities
 	/// <summary>
 	/// Base class for ship components
 	/// </summary>
-	public abstract class Component : Mover
+	public abstract class Component : Mover, ICollides
 	{
 		protected List<Component> childComponents;
 
 		public override int Mass {
 			get { return (base.Mass + childComponents.Mass()); }
 		}
-		public override List<LineSegment> DebrisLines { get { return null; } }
+		public override List<LineSegment> DebrisLines { get { return Shape.GetLines(0); } }
+
+		public int Damage { get { return 0; } }
 
 		public Component(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape, List<Color> colors,
@@ -68,6 +70,13 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override void Kill(Team killer) {
 			base.Kill(Team.None);
 		}
+
+		public virtual bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
+			health -= dmg;
+			if (health <= 0)
+				Kill(collider);
+			return true;
+		}
 	}
 
 	/// <summary>
@@ -101,8 +110,10 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public abstract Component Create(JObject compObj, string path, IHandlesEntities entHandler, BoundaryStrategy boundaryStrat, Team team, Point2D offsetPos, float mod = 1);
 
 		public virtual List<Component> CreateList(JArray compObj, IHandlesEntities entHandler, BoundaryStrategy boundaryStrat, Team team, Point2D parentPos, float mod = 1) {
-			List<Component> result = new List<Component>();
+			if (compObj == null)
+				return null;
 
+			List<Component> result = new List<Component>();
 			foreach(JObject obj in compObj) {
 				result.Add(CreateFromReference(obj, entHandler, boundaryStrat, team, parentPos));
 			}

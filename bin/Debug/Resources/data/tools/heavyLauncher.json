@@ -1,19 +1,26 @@
 {
-    "id": "Railgun",
+    "id": "Heavy Launcher",
     "mass": 3,
     "scale": 0.5,
-    "cooldown": 0.5,
+    "cooldown": 5,
     "health": 10,
     "shape": {
         "lines": [],
         "boxes": [
             {
                 "X": 0,
+                "Y": -1
+            },
+            {
+                "X": 0,
                 "Y": 0
+            },
+            {
+                "X": 0,
+                "Y": -1
             }
         ],
         "triangles": [
-
         ]
     },
     "colors": [
@@ -24,6 +31,6 @@
         }
     ],
     "ammo": {
-        "path": "\\resources\\data\\ammo\\ballistic.json"
+        "path": "\\resources\\data\\ammo\\missile.json"
     }
 }

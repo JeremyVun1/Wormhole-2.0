@@ -16,7 +16,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 	public class Tool : Component
 	{
 		private float cooldown;
-		public Ammo Ammo { get { return childComponents.OfType<Ammo>().First(); } }
+		public Ammo Ammo { get { return childComponents?.OfType<Ammo>()?.First(); } }
 		private IHandlesEntities entHandler;
 
 		private int mass;
@@ -99,6 +99,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 			string id = toolObj.Value<string>("id");
 			int mass = toolObj.Value<int>("mass");
 			float scale = toolObj.Value<float>("scale");
+			int health = toolObj.Value<int>("health");
 			float cooldown = toolObj.Value<float>("cooldown") / mod;
 			JObject shapeObj = toolObj.Value<JObject>("shape");
 			List<Color> colors = Util.LoadColors(toolObj.Value<JArray>("colors"));
@@ -107,9 +108,12 @@ namespace TaskForceUltra.src.GameModule.Entities
 			JObject ammoObj = toolObj.Value<JObject>("ammo");
 			Component ammo = new AmmoFactory().CreateFromReference(ammoObj, entHandler, boundaryStrat, team, offsetPos, mod);
 
-			return new Tool(id, path, SwinGame.PointAt(0, 0), offsetPos, shape,
-				colors, 1, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1), cooldown,
+			Tool result = new Tool(id, path, SwinGame.PointAt(0, 0), offsetPos, shape,
+				colors, health, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1), cooldown,
 				boundaryStrat, team, new List<Component>() { ammo }, mass, entHandler);
+
+			entHandler.Track(result);
+			return result;
 		}
 	}
 }

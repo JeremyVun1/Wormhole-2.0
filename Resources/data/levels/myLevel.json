@@ -5,7 +5,7 @@
 	"ships": [
 		"cube"
 	],
-	"asteroids": 20,
+	"asteroids": 50,
 	"background": {
 		"starCount": 50,
 		"size": {

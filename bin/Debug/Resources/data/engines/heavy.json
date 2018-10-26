@@ -1,23 +1,33 @@
 {
-	"id": "Heavy",
-	"thrust": 4,
-	"maxVel": 20,
-	"turnRate": 0.2,
-	"mass": 2,
-	"scale": 1,
-	"shape": {
-		"lines": [],
-		"boxes": [
-			{"X": 0, "Y": 0}
-		],
-		"triangles": [
-			{"X": 0, "Y": -1}
-		]
-	},
-	"emitters": [
-		{
-		"path": "\\resources\\data\\emitters\\fiery.json",
-		"pos": {"X": 0, "Y": 0}
-		}
-	]
+    "id": "Heavy",
+    "thrust": 4,
+    "maxVel": 20,
+    "turnRate": 0.2,
+    "mass": 2,
+    "health": 10,
+    "scale": 1,
+    "shape": {
+        "lines": [],
+        "boxes": [
+            {
+                "X": 0,
+                "Y": 0
+            }
+        ],
+        "triangles": [
+            {
+                "X": 0,
+                "Y": -1
+            }
+        ]
+    },
+    "emitters": [
+        {
+            "path": "\\resources\\data\\emitters\\fiery.json",
+            "pos": {
+                "X": 0,
+                "Y": 0
+            }
+        }
+    ]
 }

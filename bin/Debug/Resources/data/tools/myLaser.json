@@ -1,25 +1,29 @@
 {
-	"id": "myLaser",
-	"mass": 3,
-	"scale": 0.5,
-	"cooldown": 2,
-	"shape": {
-		"lines": [],
-		"boxes": [
-			{"X": 0, "Y": 0}
-		],
-		"triangles": [
-			
-		]
-	},
-	"colors": [
-		{
-			"R": 255,
-			"G": 255,
-			"B": 255
-		}
-	],
-	"ammo": {
-		"path": "\\resources\\data\\ammo\\myAmmo.json"
-	}
+    "id": "myLaser",
+    "mass": 3,
+    "scale": 0.5,
+    "cooldown": 2,
+    "health": 10,
+    "shape": {
+        "lines": [],
+        "boxes": [
+            {
+                "X": 0,
+                "Y": 0
+            }
+        ],
+        "triangles": [
+
+        ]
+    },
+    "colors": [
+        {
+            "R": 255,
+            "G": 255,
+            "B": 255
+        }
+    ],
+    "ammo": {
+        "path": "\\resources\\data\\ammo\\beam.json"
+    }
 }

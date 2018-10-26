@@ -6,6 +6,13 @@
     },
     "playable": false,
     "ships": [
+        "cube",
+        "cube",
+        "cube",
+        "cube",
+        "cube",
+        "cube",
+        "cube"
     ],
     "asteroids":  10,
     "background": {

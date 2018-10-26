@@ -72,7 +72,6 @@ C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceU
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\scores.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ships\cube.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ships\hammerhead.json
-C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\launcher.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\railgun.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\TaskForceUltra.exe
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\TaskForceUltra.pdb
@@ -91,7 +90,6 @@ C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceU
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\emitters\myEmitter.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\particles\myParticle.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\levels\myLevel.json
-C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ammo\myAmmo.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\myLaser.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\menus\help.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\menus\highscores.json
@@ -99,3 +97,11 @@ C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceU
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\menus\options.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\menus\scorescreen.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\menus\select.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ammo\rocket.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ammo\beam.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\rocketLauncher.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\heavyLauncher.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ammo\shard.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\machinegun.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\emitters\smoky.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\particles\smoke.json

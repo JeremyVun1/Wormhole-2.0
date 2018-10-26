@@ -63,6 +63,14 @@ namespace TaskForceUltra
 		/// Returns line segments that it is managing
 		/// </summary>
 		/// <returns>List of line segments</returns>
+		public List<LineSegment> GetLines(int n) {
+			if (n == 0)
+				return null;
+
+			n = n > shape.Count ? shape.Count-1 : n-1;
+			return shape.GetRange(0,n);
+		}
+
 		public List<LineSegment> GetLines() {
 			return shape;
 		}

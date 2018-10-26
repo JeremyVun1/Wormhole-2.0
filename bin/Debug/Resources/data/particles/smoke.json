@@ -1,0 +1,44 @@
+{
+    "id": "Smoke",
+	"colors": [
+		{
+			"R": 120,
+			"G": 100,
+			"B": 100
+		},
+		{
+			"R": 100,
+			"G": 80,
+			"B": 80
+		},
+		{
+			"R": 90,
+			"G": 70,
+			"B": 70
+		}
+	],
+	"scale": 0.5,
+	"shape": {
+		"lines": [],
+		"boxes": [],
+        "triangles": [
+            {
+                "X": 0,
+                "Y": 0
+            }
+        ]
+	},
+	"friction": 0.94,
+	"lifetimeRange": {
+		"min": 0.1,
+		"max": 0.75
+	},
+	"velRange": {
+		"min": 3,
+		"max": 10
+	},
+	"turnRateRange": {
+		"min": 0.05,
+		"max": 0.7
+	}
+}

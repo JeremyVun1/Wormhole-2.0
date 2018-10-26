@@ -55,9 +55,9 @@ namespace TaskForceUltra.src.GameModule
 					bool selfCollided = self.TryReactToCollision(other.Damage, other.Vel, other.Mass, other.Team, other is Ammo);
 					bool otherCollided = other.TryReactToCollision(self.Damage, self.Vel, self.Mass, self.Team, self is Ammo);
 
-					if (selfCollided)
+					if (selfCollided && other.Damage > 0)
 						popups.Add(numberPopupFac.Create(self.RealPos, other.Damage));
-					if (otherCollided)
+					if (otherCollided && self.Damage > 0)
 						popups.Add(numberPopupFac.Create(other.RealPos, self.Damage));
 				}
 			}

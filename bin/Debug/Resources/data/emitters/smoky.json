@@ -1,0 +1,7 @@
+{
+	"id": "Smoky",
+	"rate": 10,
+	"particle": {
+		"path": "\\resources\\data\\particles\\smoke.json"
+	}
+}
