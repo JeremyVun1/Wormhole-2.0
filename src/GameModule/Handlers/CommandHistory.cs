@@ -15,6 +15,8 @@ namespace TaskForceUltra.src.GameModule
 		private int maxSize;
 		private List<ICommand> currentStep;
 
+		public int Count { get { return history.Count; } }
+
 		public CommandHistory(int maxSize) {
 			this.maxSize = maxSize;
 			history = new List<List<ICommand>>(maxSize);
@@ -37,9 +39,12 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		public void UndoLastStep() {
-			if (history.Count() == 0)
+			if (history.Count() == 0) {
+				history.Clear();
 				return;
+			}
 
+			//grab the last step
 			List<ICommand> lastStep = history.Last();
 
 			while (lastStep.Count > 0) {
@@ -47,6 +52,7 @@ namespace TaskForceUltra.src.GameModule
 				lastStep.RemoveAt(lastStep.Count - 1);
 			}
 
+			lastStep.Clear();
 			history.RemoveAt(history.Count - 1);
 		}
 
@@ -55,11 +61,10 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		private void TrimCommandHistory() {
-			while (history.Count >= maxSize) {
-				history.Reverse();
-				history.RemoveAt((history.Count - 1));
-				history.Reverse();
+			for (int i=0; i < history.Count-1; i++) {
+				history[i] = history[i+1];
 			}
+			history.RemoveAt((history.Count - 1));
 		}
 	}
 }

@@ -33,7 +33,9 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 			}
 
 			TryRotate();
-			TryThrustForward();
+
+			if (controlled.ShouldThrust(targetDir))
+				ThrustForward();
 		}
 	}
 }

@@ -9,10 +9,10 @@
 	],
 	"mass": 5,
 	"damage": 1,
-	"lifetime": 3,
-	"vel": 3,
-	"maxVel": 7,
-	"turnRate": 5,
+	"lifetime": 1.5,
+	"vel": 1,
+	"maxVel": 10,
+	"turnRate": 6,
 	"scale": 0.3,
 	"shape": {
 		"boxes": [

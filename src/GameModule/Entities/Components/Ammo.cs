@@ -3,70 +3,80 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SwinGameSDK;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using TaskForceUltra.src.GameModule.AI;
 using TaskForceUltra.src.GameModule.AI.strategies;
+using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
 	/// <summary>
 	/// Ammo object
 	/// </summary>
-	public class Ammo : Component, ICollides
+	public class Ammo : Component, ICollides, IAIEntity
 	{
 		private float lifetime;
 		private int mass;
-		protected float maxVel;
-		protected float thrustForce;
+		private float thrustForce;
+		public float MaxVel { get; private set; }
 		protected float turnRate;
 		protected bool thrusting;
 
-		public override int Mass { get { return base.Mass + mass; } }
+		private AIStrategy aiStrat;
+		public AIStrategy AIStrat { set { aiStrat = value; } }
+
 		public new int Damage { get; private set; }
+		public override int Mass { get { return base.Mass + mass; } }
+		public override List<LineSegment> DebrisLines { get { return Shape.GetLines(2); } }
 
 		protected bool sleep;
-
 		private CooldownHandler cdHandler;
-
-		public override List<LineSegment> DebrisLines { get { return Shape.GetLines(2); } }
 
 		public Ammo(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
-			List<Color> colors, int mass, int damage, float lifetime, float vel,
+			List<Color> colors, int mass, int damage, float lifetime, float vel, float maxVel,
 			float turnRate, BoundaryStrategy boundaryStrat, Team team
 		) : base(id, filePath, refPos, offsetPos, shape, colors, 1, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1), boundaryStrat, team)
 		{
 			Damage = damage;
 			this.lifetime = lifetime < 0 ? 0 : lifetime;
 			this.mass = mass <= 0 ? 1 : mass;
-			maxVel = vel;
-			thrustForce = 0;
+
+			MaxVel = maxVel;
+			thrustForce = vel;
 			this.turnRate = turnRate;
+		}
+
+		/// <summary>
+		/// initialise an ammo object
+		/// </summary>
+		/// <param name="pos">spawning position</param>
+		/// <param name="dir">spawning direction</param>
+		/// <param name="vel">spawning velocity</param>
+		public virtual void Init(Point2D pos, Vector dir, Vector vel) {
+			//set position and direction of ammo to that of the passed in parent entity
+			TeleportTo(pos);
+			theta = Dir.AngleTo(dir) * Math.PI / 180;
+
+			MaxVel += vel.Magnitude;
+			cdHandler = new CooldownHandler(lifetime * 1000);
+			cdHandler.StartCooldown();
 		}
 
 		public override void Update() {
 			if (sleep)
 				return;
 
+			aiStrat.Update();
 			base.Update();
-			if (cdHandler != null) {
-				if (cdHandler.IsOnCooldown()) {
-					Thrust(Dir);
-				}
-				else Kill(Team.None);
-			}
-		}
 
-		/// <summary>
-		/// Accelerate the Ammo object
-		/// </summary>
-		/// <param name="vDir">vector along which to accelerate</param>
-		public virtual void Thrust(Vector vDir) {
-			thrusting = true;
-			Vector deltaV = Dir.Multiply(thrustForce / mass);
-			Vel = (Vel.AddVector(deltaV)).LimitToMagnitude(maxVel);
+			//kill ammo if expired
+			if (cdHandler != null) {
+				if (!cdHandler.IsOnCooldown())
+					Kill(Team.None);
+			}
 		}
 
 		public override void Draw() {
@@ -79,21 +89,53 @@ namespace TaskForceUltra.src.GameModule.Entities
 			DebugDraw();
 		}
 
-		/// <summary>
-		/// initialise an ammo object
-		/// </summary>
-		/// <param name="pos">spawning position</param>
-		/// <param name="dir">spawning direction</param>
-		/// <param name="vel">spawning velocity</param>
-		public virtual void Init(Point2D pos, Vector dir, Vector vel) {
-			TeleportTo(pos);
-			theta = Dir.AngleTo(dir) * Math.PI / 180;
-
-			maxVel += vel.Magnitude;
-			thrustForce = maxVel;
-			cdHandler = new CooldownHandler(lifetime * 1000);
-			cdHandler.StartCooldown();
+		protected override void DebugDraw() {
+			if (DebugMode.IsDebugging(Debugging.Ammo))
+				Debug();
 		}
+
+		public virtual void ForwardCommand() {
+			Thrust(1);
+		}
+
+		public void BackwardCommand() {
+			Thrust(-1);
+		}
+
+		/// <summary>
+		/// Accelerate the Ammo object
+		/// </summary>
+		/// <param name="thrustStrength">negative is backwards, positive is forward</param>
+		private void Thrust(int thrustStrength) {
+			thrusting = true;
+			Vector deltaV = Dir.Multiply(thrustForce / mass);
+			deltaV = deltaV.Multiply(thrustStrength);
+			Vel = (Vel.AddVector(deltaV)).LimitToMagnitude(MaxVel);
+		}
+
+		/// <summary>
+		/// Turn Right
+		/// </summary>
+		public void TurnRightCommand() {
+			theta += turnRate * Math.PI / 180;
+		}
+
+		/// <summary>
+		/// Turn Left
+		/// </summary>
+		public void TurnLeftCommand() {
+			theta -= turnRate * Math.PI / 180;
+		}
+
+		public void Fire() { }
+
+		public void StrafeLeftCommand() { }
+
+		public void StrafeRightCommand() { }
+
+		public void ShootCommand() { }
+
+		public void ActivatePowerupCommand() { }
 
 		public override bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
 			if (!sleep)
@@ -106,11 +148,6 @@ namespace TaskForceUltra.src.GameModule.Entities
 		/// </summary>
 		public void Sleep() {
 			sleep = true;
-		}
-
-		protected override void DebugDraw() {
-			if (DebugMode.IsDebugging(Debugging.Ammo))
-				Debug();
 		}
 	}
 
@@ -146,13 +183,17 @@ namespace TaskForceUltra.src.GameModule.Entities
 						JArray emitterObj = null;
 						try { emitterObj = ammoObj.Value<JArray>("emitters"); } catch { }
 						List<Component> emitters = new EmitterFactory().CreateList(emitterObj, entHandler, boundaryStrat, team, parentPos, mod);
-						SeekAmmo result = new SeekAmmo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, primingDelay, turnRate, emitters, boundaryStrat, entHandler, team);
-						result.AIStrat = new ChaseStrategy(result, entHandler, 0);
-						return result;
+						EmittingAmmo emittingAmmo = new EmittingAmmo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, primingDelay, turnRate, emitters, boundaryStrat, entHandler, team);
+						emittingAmmo.AIStrat = new ChaseStrategy(emittingAmmo, entHandler);
+						return emittingAmmo;
 					case "static":
-						return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team);
+						Ammo staticAmmo = new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team);
+						staticAmmo.AIStrat = new ForwardStrategy(staticAmmo);
+						return staticAmmo;
 					default:
-						return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team);
+						Ammo defaultAmmo = new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team);
+						defaultAmmo.AIStrat = new ForwardStrategy(defaultAmmo);
+						return defaultAmmo;
 				}
 			}
 			catch (Exception e) {

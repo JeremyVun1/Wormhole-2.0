@@ -42,6 +42,7 @@
     <Compile Include="src\GameModule\AI\IAIEntity.cs" />
     <Compile Include="src\GameModule\AI\strategies\AIStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ChaseStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\ForwardStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\CrazyRotatingStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ErraticStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\StaticStrategy.cs" />

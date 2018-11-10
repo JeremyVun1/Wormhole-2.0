@@ -20,7 +20,6 @@ namespace TaskForceUltra.src.GameModule.AI
 		Vector Dir { get; }
 
 		bool ShouldThrust(Vector targetDir);
-		void Thrust(Vector vDir);
 		void Fire();
 	}
 }

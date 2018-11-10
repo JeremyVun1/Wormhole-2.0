@@ -27,22 +27,30 @@ namespace TaskForceUltra.src.GameModule
 		private ICommand activatePowerupCommand;
 		private ICommand shootCommand;
 
-		private bool IsUndoMode;
-
 		public InputController(IControllable c, IActionBinding b)
 		{
 			controlled = c;
 			bindings = b;
 
 			CreateCommands();
-			IsUndoMode = false;
-			commandHistory = new CommandHistory(300);
+			commandHistory = new CommandHistory(200);
 		}
 
 		public void Update() {
-			if (IsUndoMode)
+			if (Util.IsUndoMode)
 				UndoCommands();
 			else HandleInput();
+
+			DrawUI();
+		}
+
+		private void DrawUI() {
+			float w = SwinGame.ScreenWidth();
+			float h = SwinGame.ScreenHeight();
+			Rectangle rect = SwinGame.CreateRectangle(SwinGame.ToWorldX(w*0.3f), SwinGame.ToWorldY(h*0.92f), w*0.4f, h*0.02f);
+
+			SwinGame.FillRectangle(Color.Red, rect.X, rect.Y, rect.Width * commandHistory.Count / 200, rect.Height);
+			SwinGame.DrawRectangle(Color.White, rect);
 		}
 
 		private void UndoCommands() {
@@ -50,13 +58,13 @@ namespace TaskForceUltra.src.GameModule
 				DrawOverlay();
 				commandHistory.UndoLastStep();
 			}
-			else IsUndoMode = false;
+			else Util.IsUndoMode = false;
 		}
 
 		private void HandleInput() {
 			//activate time reverse
 			if (bindings.ReverseTime()) {
-				IsUndoMode = true;
+				Util.IsUndoMode = true;
 				return;
 			}
 

@@ -17,12 +17,14 @@ namespace TaskForceUltra.src.GameModule.Entities
 	{
 		protected List<Component> childComponents;
 
-		public override int Mass {
-			get { return (base.Mass + childComponents.Mass()); }
-		}
+		public override int Mass { get { return (base.Mass + childComponents.Mass()); } }
 		public override List<LineSegment> DebrisLines { get { return Shape.GetLines(0); } }
 
 		public int Damage { get { return 0; } }
+
+		protected int hurtThreshhold;
+		protected Timer hurtTimer;
+		protected bool isHurting;
 
 		public Component(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape, List<Color> colors,
@@ -30,11 +32,16 @@ namespace TaskForceUltra.src.GameModule.Entities
 		) : base(id, filePath, refPos, offsetPos, shape, colors, health, vel, dir, boundaryStrat, team, optimiseMe)
 		{
 			childComponents = new List<Component>();
+
+			hurtThreshhold = 500;
+			hurtTimer = SwinGame.CreateTimer();
+			isHurting = false;
 		}
 
 		public override void Update() {
 			base.Update();
 			childComponents?.Update();
+			HandleHurtingState();
 		}
 
 		public override void Draw() {
@@ -72,10 +79,27 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		public virtual bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
-			health -= dmg;
-			if (health <= 0)
-				Kill(collider);
-			return true;
+			if (!isHurting || forceReaction) {
+				isHurting = true;
+				hurtTimer.Start();
+
+				health -= dmg;
+				if (health <= 0)
+					Kill(collider);
+				return true;
+			}
+			else return false;
+		}
+
+		private void HandleHurtingState() {
+			if (isHurting && hurtTimer.Ticks > hurtThreshhold) {
+				hurtTimer.Stop();
+				isHurting = false;
+				colorIndex = 0;
+			}
+			else if (isHurting) {
+				colorIndex = Util.Rand(colors.Count);
+			}
 		}
 	}
 

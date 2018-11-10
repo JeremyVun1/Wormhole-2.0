@@ -29,13 +29,11 @@ namespace TaskForceUltra.src.GameModule.AI
 		protected ICommand turnRightCommand;
 		protected ICommand shootCommand;
 
-		private bool IsUndoMode;
-
 		public AIStrategy(IAIEntity controlled, int shootCd = 0) {
 			this.controlled = controlled;
 			targetDir = Util.RandomUnitVector();
 
-			commandHistory = new CommandHistory(300);
+			commandHistory = new CommandHistory(200);
 			CreateCommands();
 
 			if (shootCd > 0)
@@ -46,7 +44,7 @@ namespace TaskForceUltra.src.GameModule.AI
 			if (controlled.IsDead)
 				return;
 
-			if (IsUndoMode)
+			if (Util.IsUndoMode)
 				UndoCommands();
 			else {
 				Shoot();
@@ -57,12 +55,8 @@ namespace TaskForceUltra.src.GameModule.AI
 
 		private void UndoCommands() {
 			if (commandHistory.HasSteps()) {
-				//test
-				SwinGame.FillRectangle(Color.Red, controlled.RealPos.X, controlled.RealPos.Y, 20, 20);
-
 				commandHistory.UndoLastStep();
 			}
-			else IsUndoMode = false;
 		}
 
 		protected virtual void ExecuteStrategy() {
@@ -70,7 +64,7 @@ namespace TaskForceUltra.src.GameModule.AI
 				return;
 
 			if (SwinGame.KeyTyped(KeyCode.GKey)) {
-				IsUndoMode = true;
+				Util.IsUndoMode = true;
 				return;
 			}
 		}
@@ -86,11 +80,9 @@ namespace TaskForceUltra.src.GameModule.AI
 			}
 		}
 
-		protected void TryThrustForward() {
-			if (controlled.ShouldThrust(targetDir)) {
-				forwardCommand.Execute();
-				commandHistory.AddCommand(forwardCommand);
-			}
+		protected void ThrustForward() {
+			forwardCommand.Execute();
+			commandHistory.AddCommand(forwardCommand);
 		}
 
 		protected void TryRotate() {

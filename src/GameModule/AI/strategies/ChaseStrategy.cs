@@ -17,7 +17,7 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 		private Ship target;
 		private float agroRange;
 
-		public ChaseStrategy(IAIEntity controlled, IHandlesEntities entHandler, int shootCooldown) : base(controlled, shootCooldown) {
+		public ChaseStrategy(IAIEntity controlled, IHandlesEntities entHandler, int shootCooldown = 0) : base(controlled, shootCooldown) {
 			this.entHandler = entHandler;
 			agroRange = SwinGame.ScreenWidth() / 1.5f;
 		}
@@ -28,7 +28,7 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 			target = FetchNearestTarget();
 
 			if (target == null) {
-				TryThrustForward();
+				ThrustForward();
 			}
 			//chase strategy
 			else {
@@ -39,7 +39,9 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 				targetDir = SteeringVec.UnitVector;
 
 				TryRotate();
-				TryThrustForward();
+
+				if (controlled.ShouldThrust(targetDir))
+					ThrustForward();
 
 				//thrust
 				/*if (controlled.ShouldThrust(targetDir)) {
