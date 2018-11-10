@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SwinGameSDK;
+using TaskForceUltra.src.GameModule;
 
 namespace TaskForceUltra.src.GameModule.AI
 {
 	/// <summary>
 	/// AI entity interface for being controlled by an AI strategy
 	/// </summary>
-	public interface IAIEntity
+	public interface IAIEntity : IControllable
 	{
 		bool IsDead { get; }
 		Point2D RealPos { get; }

@@ -8,41 +8,43 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
 using TaskForceUltra.src.GameModule.AI.strategies;
+using TaskForceUltra.src.GameModule.AI;
 
 namespace TaskForceUltra.src.GameModule.Entities
 {
 	/// <summary>
 	/// Ammo object
 	/// </summary>
-	public class Ammo : Component, ICollides
+	public class Ammo : Component, ICollides, IAIEntity
 	{
 		private float lifetime;
 		private int mass;
-		protected float maxVel;
+		public float MaxVel { get; private set; }
 		protected float thrustForce;
 		protected float turnRate;
 		protected bool thrusting;
 
 		public override int Mass { get { return base.Mass + mass; } }
-		public int Damage { get; private set; }
+		public new int Damage { get; private set; }
 
 		protected bool sleep;
 
 		private CooldownHandler cdHandler;
+		public AIStrategy AIStrat;
 
 		public override List<LineSegment> DebrisLines { get { return Shape.GetLines(2); } }
 
 		public Ammo(
 			string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape,
-			List<Color> colors, int mass, int damage, float lifetime, float vel,
+			List<Color> colors, int mass, int damage, float lifetime, float vel, float maxVel,
 			float turnRate, BoundaryStrategy boundaryStrat, Team team
 		) : base(id, filePath, refPos, offsetPos, shape, colors, 1, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1), boundaryStrat, team)
 		{
 			Damage = damage;
 			this.lifetime = lifetime < 0 ? 0 : lifetime;
 			this.mass = mass <= 0 ? 1 : mass;
-			maxVel = vel;
-			thrustForce = 0;
+			MaxVel = maxVel;
+			thrustForce = vel;
 			this.turnRate = turnRate;
 		}
 
@@ -50,13 +52,15 @@ namespace TaskForceUltra.src.GameModule.Entities
 			if (sleep)
 				return;
 
-			base.Update();
 			if (cdHandler != null) {
 				if (cdHandler.IsOnCooldown()) {
 					Thrust(Dir);
 				}
 				else Kill(Team.None);
 			}
+
+			AIStrat.Update();
+			base.Update();
 		}
 
 		/// <summary>
@@ -66,7 +70,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public virtual void Thrust(Vector vDir) {
 			thrusting = true;
 			Vector deltaV = Dir.Multiply(thrustForce / mass);
-			Vel = (Vel.AddVector(deltaV)).LimitToMagnitude(maxVel);
+			Vel = (Vel.AddVector(deltaV)).LimitToMagnitude(MaxVel);
 		}
 
 		public override void Draw() {
@@ -89,8 +93,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 			TeleportTo(pos);
 			theta = Dir.AngleTo(dir) * Math.PI / 180;
 
-			maxVel += vel.Magnitude;
-			thrustForce = maxVel;
+			MaxVel += vel.Magnitude;
+			thrustForce = MaxVel;
 			cdHandler = new CooldownHandler(lifetime * 1000);
 			cdHandler.StartCooldown();
 		}
@@ -100,6 +104,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 				Kill(Team.None);
 			return false;
 		}
+
+		public void Fire() { }
 
 		/// <summary>
 		/// Deactivate ammo
@@ -112,6 +118,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 			if (DebugMode.IsDebugging(Debugging.Ammo))
 				Debug();
 		}
+
+		public virtual void TurnTo(Vector targetDir, float turnStrength = 1) { 	}
 	}
 
 	/// <summary>
@@ -146,13 +154,19 @@ namespace TaskForceUltra.src.GameModule.Entities
 						JArray emitterObj = null;
 						try { emitterObj = ammoObj.Value<JArray>("emitters"); } catch { }
 						List<Component> emitters = new EmitterFactory().CreateList(emitterObj, entHandler, boundaryStrat, team, parentPos, mod);
-						SeekAmmo result = new SeekAmmo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, primingDelay, turnRate, emitters, boundaryStrat, entHandler, team);
-						result.AIStrat = new ChaseStrategy(result, entHandler, 0);
-						return result;
+						EmittingAmmo seekResult = new EmittingAmmo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, primingDelay, turnRate, emitters, boundaryStrat, entHandler, team);
+						seekResult.AIStrat = new ChaseStrategy(seekResult, entHandler, 0);
+						return seekResult;
+					case "erratic":
+						Ammo erraticResult = new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team);
+						erraticResult.AIStrat = new ErraticStrategy(erraticResult, 0);
+						return erraticResult;
 					case "static":
-						return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team);
+						Ammo staticResult = new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team);
+						staticResult.AIStrat = new StaticStrategy(staticResult, 0);
+						return staticResult;
 					default:
-						return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team);
+						return new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team);
 				}
 			}
 			catch (Exception e) {

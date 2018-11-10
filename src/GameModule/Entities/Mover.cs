@@ -12,7 +12,7 @@ namespace TaskForceUltra.src.GameModule
 	/// Something that moves around
 	/// Handles movement logic
 	/// </summary>
-	public abstract class Mover : Entity
+	public abstract class Mover : Entity, IControllable
 	{
 		public Vector Vel { get; protected set; }
 

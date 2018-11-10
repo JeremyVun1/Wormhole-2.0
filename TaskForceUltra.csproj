@@ -158,6 +158,12 @@
     <None Include="Resources\bundles\Game_Bundle.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\ammo\flame.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ammo\superBeam.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\ammo\shard.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -275,7 +281,16 @@
     <None Include="Resources\data\ships\MyNewShip.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\ships\Yamato.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\tools\machinegun.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\flamethrower.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\specialBeamCannon.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\tools\rocketLauncher.json">

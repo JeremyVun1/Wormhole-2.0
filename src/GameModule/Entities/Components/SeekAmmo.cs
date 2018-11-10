@@ -11,37 +11,24 @@ namespace TaskForceUltra.src.GameModule.Entities
 	/// <summary>
 	/// Ammo that locks onto and chases objects on other teams
 	/// </summary>
-	public class SeekAmmo : Ammo, IAIEntity
+	public class EmittingAmmo : Ammo
 	{
-		public float MaxVel {
-			get { return maxVel; }
-			set { maxVel = value; }
-		}
-		private float accel;
 		private IHandlesEntities entityHandler;
-		private AIStrategy aiStrat;
-		public AIStrategy AIStrat { set { aiStrat = value; } }
 		private CooldownHandler primingTimer; //delay before we start seeking behaviour
 		private List<Component> emitters;
 
-		public SeekAmmo(string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape, List<Color> colors,
+		public EmittingAmmo(string id, string filePath, Point2D refPos, Point2D offsetPos, Shape shape, List<Color> colors,
 			int mass, int damage, float lifetime, float vel, float maxVel, float primingDelay, float turnRate,
 			List<Component> emitters, BoundaryStrategy boundaryStrat, IHandlesEntities entHandler, Team team
-		) : base(id, filePath, refPos, offsetPos, shape, colors, mass, damage, lifetime, vel, turnRate, boundaryStrat, team)
+		) : base(id, filePath, refPos, offsetPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team)
 		{
-			entityHandler = entHandler;
-			MaxVel = maxVel;
+			entityHandler = entHandler;			
 			primingTimer = new CooldownHandler(primingDelay);
 			primingTimer.StartCooldown();
 			this.emitters = emitters;
-			accel = vel;
 		}
 
 		public override void Update() {
-			if (sleep)
-				return;
-
-			aiStrat.Update();
 			HandleEmitters();
 			base.Update();
 		}
@@ -69,10 +56,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public override void Init(Point2D pos, Vector dir, Vector vel) {
 			emitters?.TeleportTo(pos);
 			base.Init(pos, dir, vel);
-			thrustForce = accel;
 		}
 
-		public void TurnTo(Vector targetDir, float turnStrength = 1) {
+		public override void TurnTo(Vector targetDir, float turnStrength = 1) {
 			if (primingTimer.IsOnCooldown())
 				return;
 
@@ -88,7 +74,5 @@ namespace TaskForceUltra.src.GameModule.Entities
 				theta = theta.Clamp(0, desiredTheta);
 			}
 		}
-
-		public void Fire() { }
 	}
 }

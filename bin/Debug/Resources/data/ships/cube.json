@@ -69,35 +69,35 @@
 	],
 	"tools": [
         {
-            "path": "\\resources\\data\\tools\\machinegun.json",
+            "path": "\\resources\\data\\tools\\flamethrower.json",
             "pos": {
                 "X": -2,
                 "Y": -2
             }
         },
         {
-            "path": "\\resources\\data\\tools\\machinegun.json",
+            "path": "\\resources\\data\\tools\\flamethrower.json",
             "pos": {
                 "X": -1,
                 "Y": -2
             }
         },
         {
-            "path": "\\resources\\data\\tools\\machinegun.json",
+            "path": "\\resources\\data\\tools\\flamethrower.json",
             "pos": {
                 "X": 0,
                 "Y": -2
             }
         },
         {
-            "path": "\\resources\\data\\tools\\machinegun.json",
+            "path": "\\resources\\data\\tools\\flamethrower.json",
             "pos": {
                 "X": 1,
                 "Y": -2
             }
         },
         {
-            "path": "\\resources\\data\\tools\\machinegun.json",
+            "path": "\\resources\\data\\tools\\flamethrower.json",
             "pos": {
                 "X": 2,
                 "Y": -2

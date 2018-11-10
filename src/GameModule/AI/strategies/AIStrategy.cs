@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TaskForceUltra.src.GameModule.Entities;
 using TaskForceUltra.src.GameModule.AI.strategies;
 using SwinGameSDK;
+using TaskForceUltra.src.GameModule.Commands;
 
 namespace TaskForceUltra.src.GameModule.AI
 {
@@ -17,12 +18,16 @@ namespace TaskForceUltra.src.GameModule.AI
 		protected IAIEntity controlled;
 		protected Vector targetDir;
 		protected CooldownHandler shootCooldown;
+		protected List<ICommand> commandHistory;
 
 		public AIStrategy(IAIEntity controlled, int shootCd) {
 			this.controlled = controlled;
 
 			targetDir = Util.RandomUnitVector();
 			shootCooldown = new CooldownHandler(shootCd * 1000);
+			commandHistory = new List<ICommand>();
+
+			//GameCommandFactory commandFac = new GameCommandFactory(controlled);
 		}
 
 		public void Update() {

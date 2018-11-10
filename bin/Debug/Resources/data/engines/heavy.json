@@ -1,9 +1,9 @@
 {
     "id": "Heavy",
-    "thrust": 4,
-    "maxVel": 20,
-    "turnRate": 0.2,
-    "mass": 2,
+    "thrust": 5,
+    "maxVel": 10,
+    "turnRate": 0.02,
+    "mass": 25,
     "health": 10,
     "scale": 1,
     "shape": {

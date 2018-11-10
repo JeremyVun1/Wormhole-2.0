@@ -105,3 +105,8 @@ C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceU
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\machinegun.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\emitters\smoky.json
 C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\particles\smoke.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ammo\superBeam.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ships\Yamato.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\specialBeamCannon.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\ammo\flame.json
+C:\Users\elode\Documents\swinburne\2018_sem2\COS20007 oop\custom proj\TaskForceUltra\bin\Debug\Resources\data\tools\flamethrower.json

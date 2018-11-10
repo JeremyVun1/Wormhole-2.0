@@ -1,0 +1,55 @@
+	{
+	"id": "Piccolo Ship",
+	"cost": 100,
+	"health": 20,
+	"color": {
+		"R": 0,
+		"G": 150,
+		"B": 150
+	},
+	"scale": 1,
+	"shape": {
+		"lines": [
+		],
+		"boxes": [
+			{"X": -1, "Y": 0},
+			{"X": 0, "Y": 0},
+			{"X": 1, "Y": 0},
+			{"X": 0, "Y": -1}
+		],
+		"triangles": [
+			{"X": 0, "Y": -2}
+		]
+	},
+	"engines": [
+		{
+			"path": "\\resources\\data\\engines\\heavy.json",
+			"pos": {"X": -1, "Y": 0.5}
+		},
+        {
+            "path": "\\resources\\data\\engines\\heavy.json",
+            "pos": {
+                "X": 1,
+                "Y": 0.5
+            }
+        }
+	],
+	"tools": [
+        {
+            "path": "\\resources\\data\\tools\\specialBeamCannon.json",
+            "pos": {
+                "X": -1,
+                "Y": 0
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\specialBeamCannon.json",
+            "pos": {
+                "X": 1,
+                "Y": 0
+            }
+        }
+	],
+	"emitters": [
+	]
+}

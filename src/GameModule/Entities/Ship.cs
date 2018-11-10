@@ -81,6 +81,13 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		public override void Kill(Team killer) {
+			base.Kill(killer);
+			for(int i=0;i<componentList.Count;i++) {
+				componentList[i].Kill(killer);
+			}
+		}
+
 		/// <summary>
 		/// Handles damage timeouts to prevent things from losing all their health really quickly
 		/// </summary>
@@ -151,6 +158,47 @@ namespace TaskForceUltra.src.GameModule
 		/// Ask ship engines to thrust ship along a passed in vector direction
 		/// magnitude of vector direction determines thrust scaling
 		/// </summary>
+
+		/// <summary>
+		/// receiver command implementations
+		/// </summary>
+		public void ForwardCommand() {
+			Thrust(SwinGame.VectorTo(1, 0));
+		}
+
+		public void BackwardCommand() {
+			Thrust(SwinGame.VectorTo(-1, 0));
+		}
+
+		public void StrafeLeftCommand() {
+			Thrust(SwinGame.VectorTo(0, -1));
+		}
+
+		public void StrafeRightCommand() {
+			Thrust(SwinGame.VectorTo(0, 1));
+		}
+
+		public void TurnLeftCommand() {
+			Turn(-1);
+		}
+
+		public void TurnRightCommand() {
+			Turn(1);
+		}
+
+		public void ActivatePowerupCommand() {
+			//TODO need playership inventory system
+		}
+
+		public void ShootCommand() {
+			Fire();
+		}
+
+
+		/// <summary>
+		/// thrusting
+		/// </summary>
+		/// <param name="vDir"></param>
 		public void Thrust(Vector vDir) {
 			vDir = vDir.Rotate(Dir.Angle * (Math.PI / 180));
 
@@ -163,7 +211,7 @@ namespace TaskForceUltra.src.GameModule
 		/// <summary>
 		/// Ask engines to turn the ship based on a positive or negative value
 		/// </summary>
-		protected void Turn(float turnStrength) {
+		public void Turn(float turnStrength) {
 			foreach (Engine e in componentList?.OfType<Engine>()) {
 				theta = e.Turn(turnStrength);
 				componentList.Turn(theta);
