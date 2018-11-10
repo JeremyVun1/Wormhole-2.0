@@ -112,7 +112,7 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		private void CreateCommands() {
-			var commandFac = new GameCommandFactory(controlled);
+			GameCommandFactory commandFac = new GameCommandFactory(controlled);
 
 			activatePowerupCommand = commandFac.Create(ShipAction.ActivatePowerup);
 			shootCommand = commandFac.Create(ShipAction.Shoot);

@@ -24,7 +24,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		protected bool thrusting;
 
 		public override int Mass { get { return base.Mass + mass; } }
-		public int Damage { get; private set; }
+		public new int Damage { get; private set; }
 
 		protected bool sleep;
 

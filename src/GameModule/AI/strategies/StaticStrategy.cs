@@ -20,13 +20,8 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 		protected override void ExecuteStrategy() {
 			base.ExecuteStrategy();
 
-			//rotate
-			controlled.TurnTo(targetDir);
-
-			//thrust
-			if (controlled.ShouldThrust(targetDir)) {
-				controlled.Thrust(SwinGame.VectorTo(1, 0));
-			}
+			TryRotate();
+			TryThrustForward();
 		}
 	}
 }

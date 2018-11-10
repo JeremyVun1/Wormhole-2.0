@@ -10,13 +10,13 @@ namespace TaskForceUltra.src.GameModule.Entities
 	/// <summary>
 	/// Player ship that can be controlled by an input controller
 	/// </summary>
-	public class PlayerShip : Ship, IControllable
+	public class ControllableShip : Ship, IControllable
 	{
-		public PlayerShip(
+		public ControllableShip(
 			string id, string filePath, Point2D refPos, Point2D offsetPos,
-			Shape shape, List<Color> colors, int health, Vector vel, Vector dir,
+			Shape shape, List<Color> colors, int health, Vector vel, Vector dir, int hurtThreshhold,
 			BoundaryStrategy boundaryStrat, Team team, List<Component> components
-		) : base(id, filePath, refPos, offsetPos, shape, colors, health, vel, dir, 2000, boundaryStrat, team, components)
+		) : base(id, filePath, refPos, offsetPos, shape, colors, health, vel, dir, hurtThreshhold, boundaryStrat, team, components)
 		{
 		}
 

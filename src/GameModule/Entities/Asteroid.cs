@@ -36,7 +36,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		public override void Update() {
-			theta += turnRate * Math.PI / 180;
+			aiStrat.Update();
 			base.Update();
 		}
 
@@ -64,11 +64,29 @@ namespace TaskForceUltra.src.GameModule.Entities
 			return true;
 		}
 
-		public void TurnTo(Vector targetDir, float turnStrength = 1) { }
-
 		public void Thrust(Vector vDir) { }
 
+		public void ForwardCommand() { }
+
+		public void TurnRightCommand() {
+			theta += turnRate * Math.PI / 180;
+		}
+
+		public void TurnLeftCommand() {
+			theta -= turnRate * Math.PI / 180;
+		}
+
 		public void Fire() { }
+
+		public void BackwardCommand() { }
+
+		public void StrafeLeftCommand() { }
+
+		public void StrafeRightCommand() { }
+
+		public void ShootCommand() { }
+
+		public void ActivatePowerupCommand() { }
 	}
 
 	/// <summary>
@@ -107,7 +125,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 				Asteroid result = new Asteroid(id, filePath, SwinGame.PointAt(0, 0), SwinGame.PointAt(-size, size), shape, colors, mass, health, vel, dir, turnRate, boundaryStrat, Team.Computer, damage);
 				result.TeleportTo(spawnPos);
 
-				result.AIStrat = new AIStrategyFactory(0, 0).Create(result);
+				result.AIStrat = new AIStrategyFactory(0, 0).CreateRotatingStrategy(result);
 				return result;
 			}
 			catch (Exception e) {

@@ -94,10 +94,13 @@ namespace TaskForceUltra.src.GameModule
 			EntityHandler entHandler = new EntityHandler(scoreSheet, level.PlayArea);
 			CollisionHandler collHandler = new CollisionHandler(level.PlayArea, entHandler);
 
+			//create player's ship
 			Ship p = shipFac.Create(shipId, Util.RandomPointInRect(level.PlayArea), new WrapBoundaryBehaviour(level.PlayArea), ControllerType.Player1, diff, entHandler);
 			entHandler.Track(p);
 
+			//camera
 			CameraHandler camHandler = new CameraHandler(p, level.PlayArea);
+			//ai spawner
 			AISpawner aiSpawner = new AISpawner(diff, level.PlayArea, shipFac, entHandler);
 
 			//spawn predefined ships from the level

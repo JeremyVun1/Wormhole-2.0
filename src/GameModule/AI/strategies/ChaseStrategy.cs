@@ -11,7 +11,7 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 	/// <summary>
 	/// chases ship's on the other team if they come within range of it
 	/// </summary>
-	public class ChaseStrategy : ErraticStrategy
+	public class ChaseStrategy : AIStrategy
 	{
 		private IHandlesEntities entHandler;
 		private Ship target;
@@ -23,14 +23,12 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 		}
 
 		protected override void ExecuteStrategy() {
-			if (controlled == null || controlled.IsDead)
-				return;
+			base.ExecuteStrategy();
 
 			target = FetchNearestTarget();
 
-			//run erratic strategy if no target found
 			if (target == null) {
-				base.ExecuteStrategy();
+				TryThrustForward();
 			}
 			//chase strategy
 			else {
@@ -40,14 +38,14 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 				Vector SteeringVec = DesiredVec.SubtractVector(controlled.Vel);
 				targetDir = SteeringVec.UnitVector;
 
-				//rotate
-				controlled.TurnTo(targetDir);
+				TryRotate();
+				TryThrustForward();
 
 				//thrust
-				if (controlled.ShouldThrust(targetDir)) {
+				/*if (controlled.ShouldThrust(targetDir)) {
 					Vector vDir = SwinGame.VectorTo(1, 0);
 					controlled.Thrust(vDir);
-				}
+				}*/
 			}
 		}
 

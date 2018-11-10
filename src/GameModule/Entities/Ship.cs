@@ -177,6 +177,7 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		/* deprecated
 		/// <summary>
 		/// Turn the ship to a specified vector
 		/// </summary>
@@ -199,7 +200,7 @@ namespace TaskForceUltra.src.GameModule
 			}
 
 			componentList.Turn(theta);
-		}
+		}*/
 
 		/// <summary>
 		/// Activate a specific tool
@@ -331,7 +332,7 @@ namespace TaskForceUltra.src.GameModule
 			return result;
 		}
 
-		private PlayerShip CreatePlayerShip(string shipId, Point2D pos, BoundaryStrategy boundaryStrat, ControllerType controller, IHandlesEntities entHandler) {
+		private ControllableShip CreatePlayerShip(string shipId, Point2D pos, BoundaryStrategy boundaryStrat, ControllerType controller, IHandlesEntities entHandler) {
 			JObject obj = Util.Deserialize(FileRegistry[shipId]);
 
 			int health = obj.Value<int>("health");
@@ -352,8 +353,8 @@ namespace TaskForceUltra.src.GameModule
 			//component
 			List<Component> components = BuildComponents(enginesObj, toolsObj, emittersObj, entHandler, boundaryStrat, team, offset);
 
-			PlayerShip result = new PlayerShip(shipId, FileRegistry[shipId], pos, SwinGame.PointAt(0, 0), shape, shipColors,
-				health, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1), boundaryStrat, team, components);
+			ControllableShip result = new ControllableShip(shipId, FileRegistry[shipId], pos, SwinGame.PointAt(0, 0), shape, shipColors,
+				health, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1), 2000, boundaryStrat, team, components);
 
 			result.TeleportTo(pos);
 			return result;

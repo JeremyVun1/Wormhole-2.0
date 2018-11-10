@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaskForceUltra.src.GameModule.Entities;
 using TaskForceUltra.src.GameModule.AI.strategies;
+using TaskForceUltra.src.GameModule.Commands;
 using SwinGameSDK;
 
 namespace TaskForceUltra.src.GameModule.AI
@@ -17,32 +18,102 @@ namespace TaskForceUltra.src.GameModule.AI
 		protected IAIEntity controlled;
 		protected Vector targetDir;
 		protected CooldownHandler shootCooldown;
+		protected InputController inputController;
+		protected CommandHistory commandHistory;
 
-		public AIStrategy(IAIEntity controlled, int shootCd) {
+		protected ICommand forwardCommand;
+		protected ICommand backwardsCommand;
+		protected ICommand strafeLeftCommand;
+		protected ICommand strafeRightcommand;
+		protected ICommand turnLeftCommand;
+		protected ICommand turnRightCommand;
+		protected ICommand shootCommand;
+
+		private bool IsUndoMode;
+
+		public AIStrategy(IAIEntity controlled, int shootCd = 0) {
 			this.controlled = controlled;
-
 			targetDir = Util.RandomUnitVector();
-			shootCooldown = new CooldownHandler(shootCd * 1000);
+
+			commandHistory = new CommandHistory(300);
+			CreateCommands();
+
+			if (shootCd > 0)
+				shootCooldown = new CooldownHandler(shootCd * 1000);
 		}
 
 		public void Update() {
 			if (controlled.IsDead)
 				return;
 
-			Shoot();
-			ExecuteStrategy();
+			if (IsUndoMode)
+				UndoCommands();
+			else {
+				Shoot();
+				ExecuteStrategy();
+				commandHistory.NextStep();
+			}
+		}
+
+		private void UndoCommands() {
+			if (commandHistory.HasSteps()) {
+				//test
+				SwinGame.FillRectangle(Color.Red, controlled.RealPos.X, controlled.RealPos.Y, 20, 20);
+
+				commandHistory.UndoLastStep();
+			}
+			else IsUndoMode = false;
 		}
 
 		protected virtual void ExecuteStrategy() {
 			if (controlled == null || controlled.IsDead)
 				return;
+
+			if (SwinGame.KeyTyped(KeyCode.GKey)) {
+				IsUndoMode = true;
+				return;
+			}
 		}
 
 		protected void Shoot() {
+			//guard
+			if (shootCooldown == null)
+				return;
+
 			if (!shootCooldown.IsOnCooldown()) {
 				controlled.Fire();
 				shootCooldown.StartCooldown();
 			}
+		}
+
+		protected void TryThrustForward() {
+			if (controlled.ShouldThrust(targetDir)) {
+				forwardCommand.Execute();
+				commandHistory.AddCommand(forwardCommand);
+			}
+		}
+
+		protected void TryRotate() {
+			if (SwinGame.CalculateAngle(controlled.Dir, targetDir).GetSign() > 0) {
+				turnRightCommand.Execute();
+				commandHistory.AddCommand(turnRightCommand);
+			}
+			else {
+				turnLeftCommand.Execute();
+				commandHistory.AddCommand(turnLeftCommand);
+			}
+		}
+
+		private void CreateCommands() {
+			var commandFac = new GameCommandFactory(controlled);
+
+			shootCommand = commandFac.Create(ShipAction.Shoot);
+			forwardCommand = commandFac.Create(ShipAction.Forward);
+			backwardsCommand = commandFac.Create(ShipAction.Backward);
+			strafeLeftCommand = commandFac.Create(ShipAction.StrafeLeft);
+			strafeRightcommand = commandFac.Create(ShipAction.StrafeRight);
+			turnLeftCommand = commandFac.Create(ShipAction.TurnLeft);
+			turnRightCommand = commandFac.Create(ShipAction.TurnRight);
 		}
 	}
 
@@ -73,6 +144,10 @@ namespace TaskForceUltra.src.GameModule.AI
 			else {
 				return new ChaseStrategy(aiEntity, entHandler, shootCooldown);
 			}
+		}
+
+		public AIStrategy CreateRotatingStrategy(IAIEntity aiEntity) {
+			return new CrazyRotatingStrategy(aiEntity);
 		}
 
 		public AIStrategy Create(IAIEntity aiEntity) {

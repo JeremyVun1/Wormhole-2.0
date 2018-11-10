@@ -72,23 +72,31 @@ namespace TaskForceUltra.src.GameModule.Entities
 			thrustForce = accel;
 		}
 
-		public void TurnTo(Vector targetDir, float turnStrength = 1) {
+		public void ForwardCommand() {
 			if (primingTimer.IsOnCooldown())
 				return;
 
-			double desiredTheta = Dir.AngleTo(targetDir) * Math.PI / 180;
+			Thrust(Dir.UnitVector);
+		}
 
-			theta += turnRate * turnStrength * Math.PI / 180;
-			theta *= desiredTheta.GetSign();
+		public void TurnRightCommand() {
+			theta += turnRate * Math.PI / 180;
+		}
 
-			if (theta <= 0) {
-				theta = theta.Clamp(desiredTheta, 0);
-			}
-			else {
-				theta = theta.Clamp(0, desiredTheta);
-			}
+		public void TurnLeftCommand() {
+			theta -= turnRate * Math.PI / 180;
 		}
 
 		public void Fire() { }
+
+		public void BackwardCommand() {}
+
+		public void StrafeLeftCommand() {}
+
+		public void StrafeRightCommand() {}
+
+		public void ShootCommand() {}
+
+		public void ActivatePowerupCommand() {}
 	}
 }

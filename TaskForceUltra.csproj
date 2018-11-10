@@ -42,6 +42,7 @@
     <Compile Include="src\GameModule\AI\IAIEntity.cs" />
     <Compile Include="src\GameModule\AI\strategies\AIStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ChaseStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\CrazyRotatingStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ErraticStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\StaticStrategy.cs" />
     <Compile Include="src\GameModule\Entities\AIShip.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="src\GameModule\Entities\Debris.cs" />
     <Compile Include="src\GameModule\Entities\Mover.cs" />
     <Compile Include="src\GameModule\Entities\NumberPopup.cs" />
-    <Compile Include="src\GameModule\Entities\PlayerShip.cs" />
+    <Compile Include="src\GameModule\Entities\ControllableShip.cs" />
     <Compile Include="src\GameModule\GameSendData.cs" />
     <Compile Include="src\GameModule\Handlers\ActionBinding.cs" />
     <Compile Include="src\GameModule\AI\AISpawner.cs" />
