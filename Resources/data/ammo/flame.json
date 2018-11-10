@@ -1,0 +1,29 @@
+{
+    "id": "Flame",
+    "colors": [
+        {
+            "R": 255,
+            "G": 100,
+            "B": 0
+        }
+    ],
+    "mass": 2,
+    "damage": 1,
+    "lifetime": 0.7,
+    "vel": 4,
+    "maxVel": 4,
+    "turnRate": 1,
+    "primingDelay": 0,
+    "scale": 0.8,
+    "shape": {
+        "lines": [],
+        "boxes": [],
+        "triangles": [
+            {
+                "X": 0,
+                "Y": 0
+            }
+        ]
+    },
+    "behaviour": "erratic"
+}
