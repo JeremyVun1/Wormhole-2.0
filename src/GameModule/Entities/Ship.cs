@@ -81,6 +81,13 @@ namespace TaskForceUltra.src.GameModule
 			}
 		}
 
+		public override void Kill(Team killer) {
+			base.Kill(killer);
+			for (int i = 0; i < componentList.Count; i++) {
+				componentList[i].Kill(killer);
+			}
+		}
+
 		/// <summary>
 		/// Handles damage timeouts to prevent things from losing all their health really quickly
 		/// </summary>

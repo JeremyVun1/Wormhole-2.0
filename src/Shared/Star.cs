@@ -74,10 +74,6 @@ namespace TaskForceUltra
 				.Ignore(Trigger.FLARE);
 		}
 
-		public void Draw() {
-			SwinGame.FillRectangle(colors?[currColorIndex], pos.X, pos.Y, size, size);
-		}
-
 		public void Update() {
 			switch (stateMachine.State) {
 				case State.REST:
@@ -88,6 +84,10 @@ namespace TaskForceUltra
 					Dim();
 					break;
 			}
+		}
+
+		public void Draw() {
+			SwinGame.FillRectangle(colors?[currColorIndex], pos.X, pos.Y, size, size);
 		}
 
 		/// <summary>
