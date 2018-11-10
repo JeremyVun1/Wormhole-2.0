@@ -67,6 +67,7 @@
     <Compile Include="src\GameModule\Commands\BackwardCommand.cs" />
     <Compile Include="src\GameModule\Commands\ForwardCommand.cs" />
     <Compile Include="src\GameModule\Commands\GameCommandFactory.cs" />
+    <Compile Include="src\GameModule\Handlers\CommandHistory.cs" />
     <Compile Include="src\GameModule\Handlers\IActionBinding.cs" />
     <Compile Include="src\GameModule\IControllable.cs" />
     <Compile Include="src\GameModule\Commands\ShootCommand.cs" />
