@@ -56,7 +56,7 @@
     <Compile Include="src\GameModule\Entities\Components\Emitter.cs" />
     <Compile Include="src\GameModule\Entities\Components\Engine.cs" />
     <Compile Include="src\GameModule\Entities\Components\Particle.cs" />
-    <Compile Include="src\GameModule\Entities\Components\SeekAmmo.cs" />
+    <Compile Include="src\GameModule\Entities\Components\EmittingAmmo.cs" />
     <Compile Include="src\GameModule\Entities\Components\Tool.cs" />
     <Compile Include="src\GameModule\Entities\Debris.cs" />
     <Compile Include="src\GameModule\Entities\Mover.cs" />

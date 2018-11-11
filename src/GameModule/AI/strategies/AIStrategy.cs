@@ -127,7 +127,10 @@ namespace TaskForceUltra.src.GameModule.AI
 			int n = Util.Rand(difficultyLevel);
 
 			//return the hardest strategy that the number can get
-			if (n < 10) {
+			if (n < 5) {
+				return new CrazyRotatingStrategy(aiEntity);
+			}
+			else if (n < 10) {
 				return new StaticStrategy(aiEntity, shootCooldown);
 			}
 			else if (n < 20) {
