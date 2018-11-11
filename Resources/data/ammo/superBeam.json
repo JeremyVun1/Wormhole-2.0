@@ -1,0 +1,95 @@
+{
+    "id": "supa beam",
+    "colors": [
+        {
+            "R": 255,
+            "G": 100,
+            "B": 50
+        }
+    ],
+    "mass": 5,
+    "damage": 10,
+    "lifetime": 2,
+    "vel": 20,
+    "maxVel": 20,
+    "turnRate": 0,
+    "scale": 0.5,
+    "shape": {
+        "lines": [
+            {
+                "StartPoint": {
+                    "X": 2,
+                    "Y": -15
+                },
+                "EndPoint": {
+                    "X": 2,
+                    "Y": 7
+                }
+            },
+            {
+                "StartPoint": {
+                    "X": 1,
+                    "Y": -15
+                },
+                "EndPoint": {
+                    "X": 1,
+                    "Y": 7
+                }
+            },
+            {
+                "StartPoint": {
+                    "X": 0,
+                    "Y": -15
+                },
+                "EndPoint": {
+                    "X": 0,
+                    "Y": 7
+                }
+            },
+            {
+                "StartPoint": {
+                    "X": -1,
+                    "Y": -15
+                },
+                "EndPoint": {
+                    "X": -1,
+                    "Y": 7
+                }
+            },
+            {
+                "StartPoint": {
+                    "X": -2,
+                    "Y": -15
+                },
+                "EndPoint": {
+                    "X": -2,
+                    "Y": 7
+                }
+            },
+            {
+                "StartPoint": {
+                    "X": -3,
+                    "Y": -15
+                },
+                "EndPoint": {
+                    "X": 3,
+                    "Y": -15
+                }
+            },
+            {
+                "StartPoint": {
+                    "X": -3,
+                    "Y": 7
+                },
+                "EndPoint": {
+                    "X": 3,
+                    "Y": 7
+                }
+            }
+        ],
+        "boxes": [
+        ],
+        "triangles": []
+    },
+    "strategy": "forward"
+}

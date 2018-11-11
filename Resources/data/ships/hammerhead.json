@@ -1,7 +1,6 @@
 	{
 	"id": "hammerhead",
 	"cost": 100,
-	"health": 25,
 	"color": {
 		"R": 0,
 		"G": 150,

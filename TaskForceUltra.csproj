@@ -42,6 +42,9 @@
     <Compile Include="src\GameModule\AI\IAIEntity.cs" />
     <Compile Include="src\GameModule\AI\strategies\AIStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ChaseStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\SpreadForwardStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\ForwardStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\CrazyRotatingStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ErraticStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\StaticStrategy.cs" />
     <Compile Include="src\GameModule\Entities\AIShip.cs" />
@@ -54,12 +57,12 @@
     <Compile Include="src\GameModule\Entities\Components\Emitter.cs" />
     <Compile Include="src\GameModule\Entities\Components\Engine.cs" />
     <Compile Include="src\GameModule\Entities\Components\Particle.cs" />
-    <Compile Include="src\GameModule\Entities\Components\SeekAmmo.cs" />
+    <Compile Include="src\GameModule\Entities\Components\EmittingAmmo.cs" />
     <Compile Include="src\GameModule\Entities\Components\Tool.cs" />
     <Compile Include="src\GameModule\Entities\Debris.cs" />
     <Compile Include="src\GameModule\Entities\Mover.cs" />
     <Compile Include="src\GameModule\Entities\NumberPopup.cs" />
-    <Compile Include="src\GameModule\Entities\PlayerShip.cs" />
+    <Compile Include="src\GameModule\Entities\ControllableShip.cs" />
     <Compile Include="src\GameModule\GameSendData.cs" />
     <Compile Include="src\GameModule\Handlers\ActionBinding.cs" />
     <Compile Include="src\GameModule\AI\AISpawner.cs" />
@@ -67,6 +70,7 @@
     <Compile Include="src\GameModule\Commands\BackwardCommand.cs" />
     <Compile Include="src\GameModule\Commands\ForwardCommand.cs" />
     <Compile Include="src\GameModule\Commands\GameCommandFactory.cs" />
+    <Compile Include="src\GameModule\Handlers\CommandHistory.cs" />
     <Compile Include="src\GameModule\Handlers\IActionBinding.cs" />
     <Compile Include="src\GameModule\IControllable.cs" />
     <Compile Include="src\GameModule\Commands\ShootCommand.cs" />
@@ -158,6 +162,15 @@
     <None Include="Resources\bundles\Game_Bundle.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\ammo\shotgunPellet.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ammo\superBeam.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\ammo\flame.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\ammo\shard.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -212,10 +225,10 @@
     <None Include="Resources\data\engines\heavy.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\engines\light.json">
+    <None Include="Resources\data\engines\medium.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\engines\myEngine.json">
+    <None Include="Resources\data\engines\light.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\engines\slowengine.json">
@@ -266,13 +279,25 @@
     <None Include="Resources\data\scores.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\ships\yamato.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\ships\cube.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\ships\hammerhead.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\ships\MyNewShip.json">
+    <None Include="Resources\data\ships\laserDestroyer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\shotgun.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\specialBeamCannon.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\flamethrower.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\tools\machinegun.json">

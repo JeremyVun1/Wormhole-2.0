@@ -16,7 +16,7 @@ namespace TaskForceUltra.src.GameModule
 	{
 		private IControllable controlled;
 		private IActionBinding bindings;
-		private List<ICommand> commandHistory;
+		private CommandHistory commandHistory;
 
 		private ICommand forwardCommand;
 		private ICommand backwardsCommand;
@@ -27,103 +27,99 @@ namespace TaskForceUltra.src.GameModule
 		private ICommand activatePowerupCommand;
 		private ICommand shootCommand;
 
-		private bool IsUndoMode;
-		private int i;
-
 		public InputController(IControllable c, IActionBinding b)
 		{
 			controlled = c;
 			bindings = b;
 
 			CreateCommands();
-			IsUndoMode = false;
-			commandHistory = new List<ICommand>();
+			commandHistory = new CommandHistory(200);
 		}
 
 		public void Update() {
-			if (IsUndoMode)
-				UndoCommand();
+			if (Util.IsUndoMode)
+				UndoCommands();
 			else HandleInput();
 
-			TrimCommandHistory();
+			DrawUI();
 		}
 
-		private void TrimCommandHistory() {
-			while (commandHistory.Count > 300) {
-				commandHistory.Reverse();
-				commandHistory.RemoveAt((commandHistory.Count - 1));
-				commandHistory.Reverse();
-			}
+		private void DrawUI() {
+			float w = SwinGame.ScreenWidth();
+			float h = SwinGame.ScreenHeight();
+			Rectangle rect = SwinGame.CreateRectangle(SwinGame.ToWorldX(w*0.3f), SwinGame.ToWorldY(h*0.92f), w*0.4f, h*0.02f);
+
+			SwinGame.FillRectangle(Color.Red, rect.X, rect.Y, rect.Width * commandHistory.Count / 200, rect.Height);
+			SwinGame.DrawRectangle(Color.White, rect);
 		}
 
-		private void UndoCommand() {
-			if (i < 0) {
-				IsUndoMode = false;
-				commandHistory.Clear();
+		private void UndoCommands() {
+			if (commandHistory.HasSteps()) {
+				DrawOverlay();
+				commandHistory.UndoLastStep();
 			}
-			else {
-				commandHistory[i].Undo();
-				Rectangle screenRect = SwinGame.CreateRectangle(Camera.CameraPos().X, Camera.CameraPos().Y, SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
-				SwinGame.FillRectangle(SwinGame.RGBAColor(255, 0, 0, 80), screenRect);
-				Rectangle textRect = SwinGame.CreateRectangle(0, SwinGame.ScreenHeight() * 0.85f, SwinGame.ScreenWidth(), 100);
-				SwinGame.DrawText("UNDOING COMMANDS", Color.White, Color.Transparent, "MenuTitle", FontAlignment.AlignCenter, textRect);
-
-				i -= 1;
-			}
+			else Util.IsUndoMode = false;
 		}
 
 		private void HandleInput() {
-			//super power reverse actions
+			//activate time reverse
 			if (bindings.ReverseTime()) {
-				IsUndoMode = true;
-				i = commandHistory.Count-1;
+				Util.IsUndoMode = true;
 				return;
 			}
 
 			//Movement
 			if (bindings.Forward()) {
 				forwardCommand.Execute();
-				commandHistory.Add(forwardCommand);
+				commandHistory.AddCommand(forwardCommand);
 			}				
 			if (bindings.Backward()) {
 				backwardsCommand.Execute();
-				commandHistory.Add(backwardsCommand);
+				commandHistory.AddCommand(backwardsCommand);
 			}				
 			if (bindings.StrafeLeft()) {
 				strafeLeftCommand.Execute();
-				commandHistory.Add(strafeLeftCommand);
+				commandHistory.AddCommand(strafeLeftCommand);
 			}
 
 			if (bindings.StrafeRight()) {
 				strafeRightcommand.Execute();
-				commandHistory.Add(strafeRightcommand);
+				commandHistory.AddCommand(strafeRightcommand);
 			}
 
 			//Rotation
 			if (bindings.TurnRight()) {
 				turnRightCommand.Execute();
-				commandHistory.Add(turnRightCommand);
+				commandHistory.AddCommand(turnRightCommand);
 			}
 
 			if (bindings.TurnLeft()) {
 				turnLeftCommand.Execute();
-				commandHistory.Add(turnLeftCommand);
+				commandHistory.AddCommand(turnLeftCommand);
 			}
 
 			//actions
 			if (bindings.Shoot()) {
 				shootCommand.Execute();
-				commandHistory.Add(shootCommand);
 			}
 				
 			if (bindings.ActivatePowerup()) {
 				Console.WriteLine("activate powerup input received");
 			}
-				
+
+			//go to next command step - allow multiple commmands to be stored in the same step and undone at the same time.
+			commandHistory.NextStep();
+		}
+
+		private void DrawOverlay() {
+			Rectangle screenRect = SwinGame.CreateRectangle(Camera.CameraPos().X, Camera.CameraPos().Y, SwinGame.ScreenWidth(), SwinGame.ScreenHeight());
+			SwinGame.FillRectangle(SwinGame.RGBAColor(255, 0, 0, 80), screenRect);
+			Rectangle textRect = SwinGame.CreateRectangle(0, SwinGame.ScreenHeight() * 0.85f, SwinGame.ScreenWidth(), 100);
+			SwinGame.DrawText("UNDOING COMMANDS", Color.White, Color.Transparent, "MenuTitle", FontAlignment.AlignCenter, textRect);
 		}
 
 		private void CreateCommands() {
-			var commandFac = new GameCommandFactory(controlled);
+			GameCommandFactory commandFac = new GameCommandFactory(controlled);
 
 			activatePowerupCommand = commandFac.Create(ShipAction.ActivatePowerup);
 			shootCommand = commandFac.Create(ShipAction.Shoot);

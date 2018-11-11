@@ -1,6 +1,6 @@
 {
 	"id": "fiery",
-	"rate": 5,
+	"rate": 10,
 	"particle": {
 		"path": "\\resources\\data\\particles\\fiery.json"
 	}

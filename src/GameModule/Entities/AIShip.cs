@@ -11,7 +11,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 	/// <summary>
 	/// AI ship that utilitises an AI strategy
 	/// </summary>
-	public class AIShip : Ship, IAIEntity
+	public class AIShip : ControllableShip, IAIEntity
 	{
 		public AIStrategy AIStrategy { private get; set; }
 

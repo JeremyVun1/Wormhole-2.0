@@ -1,22 +1,17 @@
 {
-    "id": "Rocket Launcher",
+    "id": "shotgun",
     "mass": 3,
     "scale": 0.5,
     "cooldown": 1,
-    "health": 10,
+    "health": 5,
     "shape": {
         "lines": [],
-        "boxes": [
+        "boxes": [],
+        "triangles": [
             {
-                "X": -0.5,
-                "Y": 0
-            },
-            {
-                "X": 0.5,
+                "X": 0,
                 "Y": 0
             }
-        ],
-        "triangles": [
         ]
     },
     "colors": [
@@ -27,6 +22,6 @@
         }
     ],
     "ammo": {
-        "path": "\\resources\\data\\ammo\\rocket.json"
+        "path": "\\resources\\data\\ammo\\shotgunPellet.json"
     }
 }

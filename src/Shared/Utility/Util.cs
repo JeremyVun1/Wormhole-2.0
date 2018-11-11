@@ -12,6 +12,8 @@ namespace TaskForceUltra
 	/// </summary>
 	public static class Util
 	{
+		public static bool IsUndoMode = false;
+
 		//////////////////////////
 		// Random number generation
 		/////////////////////////

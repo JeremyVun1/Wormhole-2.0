@@ -32,14 +32,10 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 				cdHandler.StartNewThreshhold(Util.Rand(turnCooldown));
 			}
 
-			//rotate
-			controlled.TurnTo(targetDir);
+			TryRotate();
 
-			//thrust
-			if (controlled.ShouldThrust(targetDir)) {
-				Vector vDir = SwinGame.VectorTo(1, 0);
-				controlled.Thrust(vDir);
-			}
+			if (controlled.ShouldThrust(targetDir))
+				ThrustForward();
 		}
 	}
 }

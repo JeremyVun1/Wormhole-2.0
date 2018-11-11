@@ -13,20 +13,17 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 	/// </summary>
 	public class StaticStrategy : AIStrategy
 	{
-		public StaticStrategy(IAIEntity controlled, int shootCooldown) : base(controlled, shootCooldown) {
+		public StaticStrategy(IAIEntity controlled, int shootCooldown = 0) : base(controlled, shootCooldown) {
 			targetDir = Util.RandomUnitVector();
 		}
 
 		protected override void ExecuteStrategy() {
 			base.ExecuteStrategy();
 
-			//rotate
-			controlled.TurnTo(targetDir);
+			TryRotate();
 
-			//thrust
-			if (controlled.ShouldThrust(targetDir)) {
-				controlled.Thrust(SwinGame.VectorTo(1, 0));
-			}
+			if (controlled.ShouldThrust(targetDir))
+				ThrustForward();
 		}
 	}
 }

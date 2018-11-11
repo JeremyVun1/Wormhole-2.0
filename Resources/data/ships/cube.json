@@ -1,7 +1,6 @@
 	{
 	"id": "cube",
 	"cost": 100,
-	"health": 30,
 	"color": {
 		"R": 0,
 		"G": 150,
@@ -67,43 +66,57 @@
 			"pos": {"X": 2, "Y": 2}
 		}
 	],
-	"tools": [
-        {
-            "path": "\\resources\\data\\tools\\machinegun.json",
-            "pos": {
-                "X": -2,
-                "Y": -2
+        "tools": [
+            {
+                "path": "\\resources\\data\\tools\\shotgun.json",
+                "pos": {
+                    "X": 0,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\shotgun.json",
+                "pos": {
+                    "X": 0,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\shotgun.json",
+                "pos": {
+                    "X": 0,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\shotgun.json",
+                "pos": {
+                    "X": 0,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\shotgun.json",
+                "pos": {
+                    "X": 0,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\shotgun.json",
+                "pos": {
+                    "X": 0,
+                    "Y": -2
+                }
+            },
+            {
+                "path": "\\resources\\data\\tools\\shotgun.json",
+                "pos": {
+                    "X": 0,
+                    "Y": -2
+                }
             }
-        },
-        {
-            "path": "\\resources\\data\\tools\\machinegun.json",
-            "pos": {
-                "X": -1,
-                "Y": -2
-            }
-        },
-        {
-            "path": "\\resources\\data\\tools\\machinegun.json",
-            "pos": {
-                "X": 0,
-                "Y": -2
-            }
-        },
-        {
-            "path": "\\resources\\data\\tools\\machinegun.json",
-            "pos": {
-                "X": 1,
-                "Y": -2
-            }
-        },
-        {
-            "path": "\\resources\\data\\tools\\machinegun.json",
-            "pos": {
-                "X": 2,
-                "Y": -2
-            }
-        }
-	],
+        ],
 	"emitters": [
 	]
 }

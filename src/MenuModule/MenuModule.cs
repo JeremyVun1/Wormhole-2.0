@@ -170,7 +170,7 @@ namespace TaskForceUltra.src.MenuModule
 			//spawn asteroids
 			Level menuScene = levelList["MenuScene"];
 			EntityHandler entityHandler = new EntityHandler(null, menuScene.PlayArea);
-			AsteroidFactory asteroidFac = new AsteroidFactory();
+			AsteroidFactory asteroidFac = new AsteroidFactory(entityHandler);
 			string asteroidPath = SwinGame.AppPath() + "\\resources\\data\\asteroids\\asteroid.json";
 			for (int i = 0; i < menuScene.AsteroidsToSpawn; i++) {
 				Asteroid toSpawn = asteroidFac.Create(asteroidPath, menuScene.PlayArea);

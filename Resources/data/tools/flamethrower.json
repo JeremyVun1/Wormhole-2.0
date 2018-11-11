@@ -1,23 +1,15 @@
 {
-    "id": "Heavy Launcher",
+    "id": "flamethrower",
     "mass": 3,
     "scale": 0.5,
-    "cooldown": 5,
-    "health": 15,
+    "cooldown": 0.01,
+    "health": 5,
     "shape": {
         "lines": [],
         "boxes": [
             {
                 "X": 0,
-                "Y": -1
-            },
-            {
-                "X": 0,
                 "Y": 0
-            },
-            {
-                "X": 0,
-                "Y": -1
             }
         ],
         "triangles": [
@@ -31,6 +23,6 @@
         }
     ],
     "ammo": {
-        "path": "\\resources\\data\\ammo\\missile.json"
+        "path": "\\resources\\data\\ammo\\flame.json"
     }
 }

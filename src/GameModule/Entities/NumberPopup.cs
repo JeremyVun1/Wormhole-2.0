@@ -50,7 +50,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 			float x = Util.Rand(500, 2000) / 8000f;
 			Vector dir = SwinGame.VectorTo(x, -1);
-			float lifetime = 1.5f;
+			float lifetime = 1;
 			BoundaryStrategy boundaryStrat = new DieBoundaryBehaviour(playArea);
 
 			return new NumberPopup(points.ToString(), points, pos, colors, vel, dir, lifetime, boundaryStrat, Team.None, true);

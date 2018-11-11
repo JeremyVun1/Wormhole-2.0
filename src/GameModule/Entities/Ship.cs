@@ -76,8 +76,17 @@ namespace TaskForceUltra.src.GameModule
 				return;
 
 			for(int i=0; i<componentList.Count; ++i) {
+				if (componentList[i] == null)
+					continue;
 				if (componentList[i].IsDead)
 					componentList.Remove(componentList[i]);
+			}
+		}
+
+		public override void Kill(Team killer) {
+			base.Kill(killer);
+			for (int i = 0; i < componentList.Count; i++) {
+				componentList[i].Kill(killer);
 			}
 		}
 
@@ -165,11 +174,12 @@ namespace TaskForceUltra.src.GameModule
 		/// </summary>
 		protected void Turn(float turnStrength) {
 			foreach (Engine e in componentList?.OfType<Engine>()) {
-				theta = e.Turn(turnStrength);
+				theta = e.Turn(turnStrength, Mass);
 				componentList.Turn(theta);
 			}
 		}
 
+		/* deprecated
 		/// <summary>
 		/// Turn the ship to a specified vector
 		/// </summary>
@@ -192,7 +202,7 @@ namespace TaskForceUltra.src.GameModule
 			}
 
 			componentList.Turn(theta);
-		}
+		}*/
 
 		/// <summary>
 		/// Activate a specific tool
@@ -324,10 +334,10 @@ namespace TaskForceUltra.src.GameModule
 			return result;
 		}
 
-		private PlayerShip CreatePlayerShip(string shipId, Point2D pos, BoundaryStrategy boundaryStrat, ControllerType controller, IHandlesEntities entHandler) {
+		private ControllableShip CreatePlayerShip(string shipId, Point2D pos, BoundaryStrategy boundaryStrat, ControllerType controller, IHandlesEntities entHandler) {
 			JObject obj = Util.Deserialize(FileRegistry[shipId]);
 
-			int health = obj.Value<int>("health");
+			//int health = obj.Value<int>("health");
 			List<Color> shipColors = new List<Color> { Util.GetRGBColor(obj.GetValue("color")), Color.Yellow, Color.White, Color.Red };
 			float scale = obj.Value<float>("scale");
 			JArray enginesObj = obj.Value<JArray>("engines");
@@ -340,13 +350,15 @@ namespace TaskForceUltra.src.GameModule
 
 			//shape
 			Shape shape = new ShapeFactory().Create(shapeObj, scale, SwinGame.PointAt(0, 0));
+			int health = shape.Mass / 2;
+			Console.WriteLine(health);
 			//shape.TeleportTo(pos);
 
 			//component
 			List<Component> components = BuildComponents(enginesObj, toolsObj, emittersObj, entHandler, boundaryStrat, team, offset);
 
-			PlayerShip result = new PlayerShip(shipId, FileRegistry[shipId], pos, SwinGame.PointAt(0, 0), shape, shipColors,
-				health, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1), boundaryStrat, team, components);
+			ControllableShip result = new ControllableShip(shipId, FileRegistry[shipId], pos, SwinGame.PointAt(0, 0), shape, shipColors,
+				health, SwinGame.VectorTo(0, 0), SwinGame.VectorTo(0, -1), 2000, boundaryStrat, team, components);
 
 			result.TeleportTo(pos);
 			return result;
@@ -357,7 +369,7 @@ namespace TaskForceUltra.src.GameModule
 
 			JObject obj = Util.Deserialize(FileRegistry[shipId]);
 
-			int health = obj.Value<int>("health");
+			//int health = obj.Value<int>("health");
 			List<Color> shipColors = new List<Color> { Color.Crimson, Color.Yellow, Color.White, Color.Red };
 			float scale = obj.Value<float>("scale");
 			JArray enginesObj = obj.Value<JArray>("engines");
@@ -370,6 +382,7 @@ namespace TaskForceUltra.src.GameModule
 
 			//shape
 			Shape shape = new ShapeFactory().Create(shapeObj, scale, SwinGame.PointAt(0, 0));
+			int health = shape.Mass / 2;
 			shape.TeleportTo(pos);
 
 			//components
