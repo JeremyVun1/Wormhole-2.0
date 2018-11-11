@@ -101,7 +101,6 @@ namespace TaskForceUltra.src.GameModule
 			//actions
 			if (bindings.Shoot()) {
 				shootCommand.Execute();
-				commandHistory.AddCommand(shootCommand);
 			}
 				
 			if (bindings.ActivatePowerup()) {

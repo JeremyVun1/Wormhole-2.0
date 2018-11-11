@@ -110,7 +110,7 @@ namespace TaskForceUltra.src.GameModule
 			}
 
 			//spawn asteroids
-			AsteroidFactory asteroidFac = new AsteroidFactory();
+			AsteroidFactory asteroidFac = new AsteroidFactory(entHandler);
 			string asteroidPath = SwinGame.AppPath() + "\\resources\\data\\asteroids\\asteroid.json";
 			for (int i=0; i<level.AsteroidsToSpawn; i++) {
 				Asteroid toSpawn = asteroidFac.Create(asteroidPath, level.PlayArea);

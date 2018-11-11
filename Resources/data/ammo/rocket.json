@@ -1,32 +1,44 @@
 {
-	"id": "Rocket",
-	"colors": [
-		{
-			"R": 255,
-			"G": 255,
-			"B": 255
-		}
-	],
-	"mass": 5,
-	"damage": 1,
-	"lifetime": 1.5,
-	"vel": 1,
-	"maxVel": 10,
-	"turnRate": 6,
-	"scale": 0.3,
-	"shape": {
-		"boxes": [
-			{"X": 0, "Y": -1},
-			{"X": 0, "Y": 0},
-			{"X": 0, "Y": 1}
-		],
-		"triangles": [
-			{"X": 0, "Y": -2}
-		]
-	},
-    "behaviour": "seek",
-    "primingDelay":  0,
-	"emitters": [
+    "id": "Rocket",
+    "colors": [
+        {
+            "R": 255,
+            "G": 200,
+            "B": 255
+        }
+    ],
+    "mass": 5,
+    "damage": 1,
+    "lifetime": 1.5,
+    "vel": 1,
+    "maxVel": 10,
+    "turnRate": 6,
+    "scale": 0.3,
+    "shape": {
+        "boxes": [
+            {
+                "X": 0,
+                "Y": -1
+            },
+            {
+                "X": 0,
+                "Y": 0
+            },
+            {
+                "X": 0,
+                "Y": 1
+            }
+        ],
+        "triangles": [
+            {
+                "X": 0,
+                "Y": -2
+            }
+        ]
+    },
+    "strategy": "chase",
+    "primingDelay": 0,
+    "emitters": [
         {
             "path": "\\resources\\data\\emitters\\smoky.json",
             "pos": {
@@ -34,5 +46,5 @@
                 "Y": 0
             }
         }
-	]
+    ]
 }

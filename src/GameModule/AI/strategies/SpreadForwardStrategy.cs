@@ -9,12 +9,12 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 	/// <summary>
 	/// Keep rotating
 	/// </summary>
-	public class CrazyRotatingStrategy : AIStrategy
+	public class SpreadForwardStrategy : AIStrategy
 	{
 		private int rotationDir;
 
-		public CrazyRotatingStrategy(IAIEntity controlled, int shootCd = 0) : base(controlled, shootCd) {
-			rotationDir = Util.Rand(-1, 2);
+		public SpreadForwardStrategy(IAIEntity controlled, int shootCd = 0) : base(controlled, shootCd) {
+			rotationDir = Util.Rand(-1, 3);
 		}
 
 		/// <summary>
@@ -22,6 +22,8 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 		/// </summary>
 		protected override void ExecuteStrategy() {
 			base.ExecuteStrategy();
+
+			rotationDir = Util.Rand(-1, 3);
 
 			if (rotationDir <= 0) {
 				turnLeftCommand.Execute();
@@ -31,6 +33,8 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 				turnRightCommand.Execute();
 				commandHistory.AddCommand(turnRightCommand);
 			}
+
+			ThrustForward();
 		}
 	}
 }

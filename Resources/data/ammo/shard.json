@@ -9,7 +9,7 @@
     ],
     "mass": 2,
     "damage": 1,
-    "lifetime": 0.7,
+    "lifetime": 0.9,
     "vel": 4,
     "maxVel": 4,
     "turnRate": 1,
@@ -31,5 +31,5 @@
         "boxes": [],
         "triangles": []
     },
-    "behaviour": "static"
+    "strategy": "forward"
 }

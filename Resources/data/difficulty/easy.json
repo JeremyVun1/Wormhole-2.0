@@ -3,5 +3,5 @@
 	"spawnTimer": 20,
 	"aiMod": 0.5,
 	"shootCooldown": 8,
-	"difficultyLevel": 10
+	"difficultyLevel": 0
 }

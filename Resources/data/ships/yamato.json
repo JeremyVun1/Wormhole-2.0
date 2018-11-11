@@ -1,7 +1,6 @@
 {
-    "id": "Piccolo Ship",
+    "id": "Battle Ship",
     "cost": 100,
-    "health": 20,
     "color": {
         "R": 0,
         "G": 150,
@@ -13,6 +12,98 @@
         ],
         "boxes": [
             {
+                "X": 0,
+                "Y": -6
+            },
+            {
+                "X": -1,
+                "Y": -5
+            },
+            {
+                "X": 0,
+                "Y": -5
+            },
+            {
+                "X": 1,
+                "Y": -5
+            },
+            {
+                "X": -1,
+                "Y": -4
+            },
+            {
+                "X": 0,
+                "Y": -4
+            },
+            {
+                "X": 1,
+                "Y": -4
+            },
+            {
+                "X": -2,
+                "Y": -3
+            },
+            {
+                "X": -1,
+                "Y": -3
+            },
+            {
+                "X": 0,
+                "Y": -3
+            },
+            {
+                "X": 1,
+                "Y": -3
+            },
+            {
+                "X": 2,
+                "Y": -3
+            },
+            {
+                "X": -2,
+                "Y": -2
+            },
+            {
+                "X": -1,
+                "Y": -2
+            },
+            {
+                "X": 0,
+                "Y": -2
+            },
+            {
+                "X": 1,
+                "Y": -2
+            },
+            {
+                "X": 2,
+                "Y": -2
+            },
+            {
+                "X": -2,
+                "Y": -1
+            },
+            {
+                "X": -1,
+                "Y": -1
+            },
+            {
+                "X": 0,
+                "Y": -1
+            },
+            {
+                "X": 1,
+                "Y": -1
+            },
+            {
+                "X": 2,
+                "Y": -1
+            },
+            {
+                "X": -2,
+                "Y": 0
+            },
+            {
                 "X": -1,
                 "Y": 0
             },
@@ -25,14 +116,98 @@
                 "Y": 0
             },
             {
+                "X": 2,
+                "Y": 0
+            },
+            {
+                "X": -2,
+                "Y": 1
+            },
+            {
+                "X": -1,
+                "Y": 1
+            },
+            {
                 "X": 0,
-                "Y": -1
+                "Y": 1
+            },
+            {
+                "X": 1,
+                "Y": 1
+            },
+            {
+                "X": 2,
+                "Y": 1
+            },
+            {
+                "X": -2,
+                "Y": 2
+            },
+            {
+                "X": -1,
+                "Y": 2
+            },
+            {
+                "X": 0,
+                "Y": 2
+            },
+            {
+                "X": 1,
+                "Y": 2
+            },
+            {
+                "X": 2,
+                "Y": 2
+            },
+            {
+                "X": -2,
+                "Y": 3
+            },
+            {
+                "X": -1,
+                "Y": 3
+            },
+            {
+                "X": 0,
+                "Y": 3
+            },
+            {
+                "X": 1,
+                "Y": 3
+            },
+            {
+                "X": 2,
+                "Y": 3
+            },
+            {
+                "X": -1,
+                "Y": 4
+            },
+            {
+                "X": 0,
+                "Y": 4
+            },
+            {
+                "X": 1,
+                "Y": 4
+            },
+            {
+                "X": 0,
+                "Y": 5
             }
         ],
         "triangles": [
             {
+                "X": -0.5,
+                "Y": -6
+            },
+            {
+                "X": 0.5,
+                "Y": -6
+            },
+            {
                 "X": 0,
-                "Y": -2
+                "Y": -7
             }
         ]
     },
@@ -41,14 +216,21 @@
             "path": "\\resources\\data\\engines\\heavy.json",
             "pos": {
                 "X": -1,
-                "Y": 0.5
+                "Y": 4
+            }
+        },
+        {
+            "path": "\\resources\\data\\engines\\heavy.json",
+            "pos": {
+                "X": 0,
+                "Y": 4
             }
         },
         {
             "path": "\\resources\\data\\engines\\heavy.json",
             "pos": {
                 "X": 1,
-                "Y": 0.5
+                "Y": 4
             }
         }
     ],
@@ -57,14 +239,77 @@
             "path": "\\resources\\data\\tools\\specialBeamCannon.json",
             "pos": {
                 "X": -1,
-                "Y": 0
+                "Y": -4
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\specialBeamCannon.json",
+            "pos": {
+                "X": 0,
+                "Y": -4
             }
         },
         {
             "path": "\\resources\\data\\tools\\specialBeamCannon.json",
             "pos": {
                 "X": 1,
-                "Y": 0
+                "Y": -4
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\machinegun.json",
+            "pos": {
+                "X": -1,
+                "Y": -1
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\machinegun.json",
+            "pos": {
+                "X": 1,
+                "Y": -1
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\railgun.json",
+            "pos": {
+                "X": 2,
+                "Y": 1
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\railgun.json",
+            "pos": {
+                "X": -2,
+                "Y": 1
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\rocketLauncher.json",
+            "pos": {
+                "X": 2,
+                "Y": -3
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\rocketLauncher.json",
+            "pos": {
+                "X": -2,
+                "Y": -3
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\railgun.json",
+            "pos": {
+                "X": -1,
+                "Y": 3
+            }
+        },
+        {
+            "path": "\\resources\\data\\tools\\railgun.json",
+            "pos": {
+                "X": 1,
+                "Y": 3
             }
         }
     ],

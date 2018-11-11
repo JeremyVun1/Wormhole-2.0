@@ -42,6 +42,7 @@
     <Compile Include="src\GameModule\AI\IAIEntity.cs" />
     <Compile Include="src\GameModule\AI\strategies\AIStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ChaseStrategy.cs" />
+    <Compile Include="src\GameModule\AI\strategies\SpreadForwardStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ForwardStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\CrazyRotatingStrategy.cs" />
     <Compile Include="src\GameModule\AI\strategies\ErraticStrategy.cs" />
@@ -161,6 +162,9 @@
     <None Include="Resources\bundles\Game_Bundle.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\data\ammo\shotgunPellet.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\data\ammo\superBeam.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -221,10 +225,10 @@
     <None Include="Resources\data\engines\heavy.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\engines\light.json">
+    <None Include="Resources\data\engines\medium.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\engines\myEngine.json">
+    <None Include="Resources\data\engines\light.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\engines\slowengine.json">
@@ -284,7 +288,10 @@
     <None Include="Resources\data\ships\hammerhead.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\data\ships\MyNewShip.json">
+    <None Include="Resources\data\ships\laserDestroyer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\data\tools\shotgun.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\data\tools\specialBeamCannon.json">

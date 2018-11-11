@@ -25,7 +25,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 			this.friction = friction;
 			this.turnRate = turnRate;
 
-			cdHandler = new CooldownHandler(lifetime * 500);
+			cdHandler = new CooldownHandler(lifetime * 1000);
 			cdHandler.StartCooldown();
 		}
 
@@ -56,7 +56,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 			BoundaryStrategy boundaryStrat = new DieBoundaryBehaviour(playArea);
 			Debris result = new Debris("debris", null, pos, SwinGame.PointAt(0, 0), shape, colors, boundaryStrat,
-			1, Util.RandomUnitVector().Multiply(2), Util.RandomUnitVector(), 0.97f, Util.Rand(10), 3, Team.Computer);
+			1, Util.RandomUnitVector().Multiply(2), Util.RandomUnitVector(), 0.97f, Util.Rand(10), 0.7f, Team.Computer);
 
 			result.TeleportTo(pos);
 

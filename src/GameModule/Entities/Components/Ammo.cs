@@ -169,7 +169,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 				float scale = ammoObj.Value<float>("scale");
 				JObject shapeObj = ammoObj.Value<JObject>("shape");
 				Shape shape = new ShapeFactory().Create(shapeObj, scale, parentPos);
-				string behaviour = ammoObj.Value<string>("behaviour");
+				string strategy = ammoObj.Value<string>("strategy");
 
 				float primingDelay = 0;
 				try { primingDelay = ammoObj.Value<float>("primingDelay"); }
@@ -178,23 +178,21 @@ namespace TaskForceUltra.src.GameModule.Entities
 				if (team == Team.Computer)
 					colors = new List<Color> { Color.Yellow };
 
-				switch (behaviour) {
-					case "seek":
-						JArray emitterObj = null;
-						try { emitterObj = ammoObj.Value<JArray>("emitters"); } catch { }
-						List<Component> emitters = new EmitterFactory().CreateList(emitterObj, entHandler, boundaryStrat, team, parentPos, mod);
-						EmittingAmmo emittingAmmo = new EmittingAmmo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, primingDelay, turnRate, emitters, boundaryStrat, entHandler, team);
-						emittingAmmo.AIStrat = new ChaseStrategy(emittingAmmo, entHandler);
-						return emittingAmmo;
-					case "static":
-						Ammo staticAmmo = new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team);
-						staticAmmo.AIStrat = new ForwardStrategy(staticAmmo);
-						return staticAmmo;
-					default:
-						Ammo defaultAmmo = new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team);
-						defaultAmmo.AIStrat = new ForwardStrategy(defaultAmmo);
-						return defaultAmmo;
+				JArray emitterObj = null;
+				try { emitterObj = ammoObj.Value<JArray>("emitters"); } catch { }
+
+				Ammo result;
+
+				if (emitterObj != null) {
+					List<Component> emitters = new EmitterFactory().CreateList(emitterObj, entHandler, boundaryStrat, team, parentPos, mod);
+					result = new EmittingAmmo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, primingDelay, turnRate, emitters, boundaryStrat, entHandler, team);
+				} else {
+					result = new Ammo(id, path, SwinGame.PointAt(0, 0), parentPos, shape, colors, mass, damage, lifetime, vel, maxVel, turnRate, boundaryStrat, team);
 				}
+
+				AIStrategyFactory aiStratFac = new AIStrategyFactory(0, 0);
+				result.AIStrat = aiStratFac.CreateByName(strategy, result, entHandler);
+				return result;
 			}
 			catch (Exception e) {
 				Console.WriteLine(e);

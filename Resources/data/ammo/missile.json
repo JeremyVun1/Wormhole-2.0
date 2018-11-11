@@ -12,7 +12,7 @@
     "lifetime": 7,
     "vel": 2,
     "maxVel": 7,
-    "turnRate": 1.5,
+    "turnRate": 2,
     "scale": 0.6,
     "shape": {
         "boxes": [
@@ -36,7 +36,7 @@
             }
         ]
     },
-    "behaviour": "seek",
+    "strategy": "chase",
     "primingDelay": 0.8,
     "emitters": [
         {

@@ -1,20 +1,20 @@
 {
-	"id": "supa beam",
-	"colors": [
-		{
-			"R": 255,
-			"G": 100,
-			"B": 50
-		}
-	],
-	"mass": 5,
-	"damage": 5,
-	"lifetime": 2,
-	"vel": 20,
-	"maxVel": 20,
-	"turnRate": 0,
-	"scale": 0.5,
-	"shape": {
+    "id": "supa beam",
+    "colors": [
+        {
+            "R": 255,
+            "G": 100,
+            "B": 50
+        }
+    ],
+    "mass": 5,
+    "damage": 10,
+    "lifetime": 2,
+    "vel": 20,
+    "maxVel": 20,
+    "turnRate": 0,
+    "scale": 0.5,
+    "shape": {
         "lines": [
             {
                 "StartPoint": {
@@ -89,7 +89,7 @@
         ],
         "boxes": [
         ],
-		"triangles": []
-	},
-	"behaviour": "static"
+        "triangles": []
+    },
+    "strategy": "forward"
 }

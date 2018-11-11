@@ -124,8 +124,10 @@ namespace TaskForceUltra.src.GameModule.Handlers
 		/// Register collidable to the right node
 		/// </summary>
 		public void Register(ICollides obj) {
-			//guard
+			//guards
 			if (obj == null)
+				return;
+			if (!SwinGame.RectOnScreen(grid))
 				return;
 
 			//end condition

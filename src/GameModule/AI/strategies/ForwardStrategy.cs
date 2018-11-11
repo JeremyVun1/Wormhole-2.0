@@ -11,7 +11,7 @@ namespace TaskForceUltra.src.GameModule.AI.strategies
 	/// </summary>
 	public class ForwardStrategy : AIStrategy
 	{
-		public ForwardStrategy(IAIEntity controlled) : base(controlled) {
+		public ForwardStrategy(IAIEntity controlled, int shootCd = 0) : base(controlled, shootCd) {
 		}
 
 		/// <summary>

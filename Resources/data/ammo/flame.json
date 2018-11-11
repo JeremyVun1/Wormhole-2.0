@@ -25,5 +25,5 @@
             }
         ]
     },
-    "behaviour": "erratic"
+    "strategy": "spreadforward"
 }

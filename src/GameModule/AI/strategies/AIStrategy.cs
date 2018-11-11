@@ -128,7 +128,7 @@ namespace TaskForceUltra.src.GameModule.AI
 
 			//return the hardest strategy that the number can get
 			if (n < 5) {
-				return new CrazyRotatingStrategy(aiEntity);
+				return new CrazyRotatingStrategy(aiEntity, shootCooldown);
 			}
 			else if (n < 10) {
 				return new StaticStrategy(aiEntity, shootCooldown);
@@ -141,8 +141,23 @@ namespace TaskForceUltra.src.GameModule.AI
 			}
 		}
 
-		public AIStrategy CreateRotatingStrategy(IAIEntity aiEntity) {
-			return new CrazyRotatingStrategy(aiEntity);
+		public AIStrategy CreateByName(string strategy, IAIEntity aiEntity, IHandlesEntities entHandler) {
+			switch (strategy.ToLower()) {
+				case "crazyrotating":
+					return new CrazyRotatingStrategy(aiEntity, shootCooldown);
+				case "chase":
+					return new ChaseStrategy(aiEntity, entHandler, shootCooldown);
+				case "erratic":
+					return new ErraticStrategy(aiEntity, shootCooldown);
+				case "static":
+					return new StaticStrategy(aiEntity, shootCooldown);
+				case "forward":
+					return new ForwardStrategy(aiEntity, shootCooldown);
+				case "spreadforward":
+					return new SpreadForwardStrategy(aiEntity, shootCooldown);
+				default:
+					return new StaticStrategy(aiEntity, shootCooldown);
+			}
 		}
 
 		public AIStrategy Create(IAIEntity aiEntity) {

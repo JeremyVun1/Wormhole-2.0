@@ -21,6 +21,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		public AIStrategy AIStrat { set { aiStrat = value; } }
 		private float turnRate;
 		public float MaxVel { get; private set; }
+		private float thrustForce;
 		private int mass;
 		public override int Mass { get { return (base.Mass + mass); } }
 
@@ -31,6 +32,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 		{
 			this.turnRate = turnRate;
 			this.mass = mass;
+			this.thrustForce = thrustForce;
+			MaxVel = thrustForce;
 			Vel = dir.Multiply(thrustForce);
 			Damage = dmg;
 		}
@@ -64,9 +67,15 @@ namespace TaskForceUltra.src.GameModule.Entities
 			return true;
 		}
 
-		public void Thrust(Vector vDir) { }
+		public void Thrust(int thrustStrength) {
+			Vector deltaV = Dir.Multiply(thrustForce / mass);
+			deltaV = deltaV.Multiply(thrustStrength);
+			Vel = (Vel.AddVector(deltaV)).LimitToMagnitude(MaxVel);
+		}
 
-		public void ForwardCommand() { }
+		public void ForwardCommand() {
+			Thrust(1);
+		}
 
 		public void TurnRightCommand() {
 			theta += turnRate * Math.PI / 180;
@@ -78,7 +87,9 @@ namespace TaskForceUltra.src.GameModule.Entities
 
 		public void Fire() { }
 
-		public void BackwardCommand() { }
+		public void BackwardCommand() {
+			Thrust(-1);
+		}
 
 		public void StrafeLeftCommand() { }
 
@@ -94,6 +105,12 @@ namespace TaskForceUltra.src.GameModule.Entities
 	/// </summary>
 	public class AsteroidFactory
 	{
+		private IHandlesEntities entHandler;
+
+		public AsteroidFactory(IHandlesEntities entHandler) {
+			this.entHandler = entHandler;
+		}
+
 		public Asteroid Create(string filePath, Rectangle playArea) {
 			try {
 				JObject obj = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(filePath));
@@ -102,6 +119,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 				int health = obj.Value<int>("baseHealth");
 				int damage = obj.Value<int>("damage");
 				int mass = obj.Value<int>("mass");
+				string strategyName = obj.Value<string>("strategy");
 
 				JToken sizeObj = obj.GetValue("sizeRange");
 				JToken edgesObj = obj.GetValue("edgesRange");
@@ -125,7 +143,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 				Asteroid result = new Asteroid(id, filePath, SwinGame.PointAt(0, 0), SwinGame.PointAt(-size, size), shape, colors, mass, health, vel, dir, turnRate, boundaryStrat, Team.Computer, damage);
 				result.TeleportTo(spawnPos);
 
-				result.AIStrat = new AIStrategyFactory(0, 0).CreateRotatingStrategy(result);
+				result.AIStrat = new AIStrategyFactory(0, 0).CreateByName(strategyName, result, entHandler);
 				return result;
 			}
 			catch (Exception e) {

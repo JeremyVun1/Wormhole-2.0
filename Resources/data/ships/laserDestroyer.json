@@ -1,7 +1,6 @@
 	{
 	"id": "my Laser Ship",
 	"cost": 100,
-	"health": 20,
 	"color": {
 		"R": 0,
 		"G": 150,
@@ -23,11 +22,11 @@
 	},
 	"engines": [
 		{
-			"path": "\\resources\\data\\engines\\myEngine.json",
+			"path": "\\resources\\data\\engines\\light.json",
 			"pos": {"X": -1, "Y": 0.5}
 		},
 		{
-			"path": "\\resources\\data\\engines\\myEngine.json",
+			"path": "\\resources\\data\\engines\\light.json",
 			"pos": {"X": 1, "Y": 0.5}
 		}
 	],

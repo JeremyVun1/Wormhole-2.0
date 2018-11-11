@@ -60,8 +60,8 @@ namespace TaskForceUltra.src.GameModule.Entities
 			}
 		}
 
-		public double Turn(float turnStrength) {
-			return (turnRate * turnStrength);
+		public double Turn(float turnStrength, int mass) {
+			return (turnRate * turnStrength / mass);
 		}
 
 		public override void Update() {
@@ -81,7 +81,7 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		//engine does not take damage - bad gameplay if it does
-		public override bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) { return false; }
+		//public override bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) { return false; }
 	}
 
 	/// <summary>

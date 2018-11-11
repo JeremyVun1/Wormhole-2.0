@@ -1,11 +1,11 @@
 {
-	"id": "Light",
-	"thrust": 7,
-	"maxVel": 7,
-	"turnRate": 8,
-    "mass": 5,
-    "health": 10,
-	"scale": 0.6,
+	"id": "Medium",
+	"thrust": 10,
+	"maxVel": 6,
+	"turnRate": 10,
+    "mass": 15,
+    "health": 15,
+	"scale": 0.8,
 	"shape": {
 		"lines": [],
 		"boxes": [

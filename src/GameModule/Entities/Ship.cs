@@ -76,6 +76,8 @@ namespace TaskForceUltra.src.GameModule
 				return;
 
 			for(int i=0; i<componentList.Count; ++i) {
+				if (componentList[i] == null)
+					continue;
 				if (componentList[i].IsDead)
 					componentList.Remove(componentList[i]);
 			}
@@ -172,7 +174,7 @@ namespace TaskForceUltra.src.GameModule
 		/// </summary>
 		protected void Turn(float turnStrength) {
 			foreach (Engine e in componentList?.OfType<Engine>()) {
-				theta = e.Turn(turnStrength);
+				theta = e.Turn(turnStrength, Mass);
 				componentList.Turn(theta);
 			}
 		}
@@ -335,7 +337,7 @@ namespace TaskForceUltra.src.GameModule
 		private ControllableShip CreatePlayerShip(string shipId, Point2D pos, BoundaryStrategy boundaryStrat, ControllerType controller, IHandlesEntities entHandler) {
 			JObject obj = Util.Deserialize(FileRegistry[shipId]);
 
-			int health = obj.Value<int>("health");
+			//int health = obj.Value<int>("health");
 			List<Color> shipColors = new List<Color> { Util.GetRGBColor(obj.GetValue("color")), Color.Yellow, Color.White, Color.Red };
 			float scale = obj.Value<float>("scale");
 			JArray enginesObj = obj.Value<JArray>("engines");
@@ -348,6 +350,8 @@ namespace TaskForceUltra.src.GameModule
 
 			//shape
 			Shape shape = new ShapeFactory().Create(shapeObj, scale, SwinGame.PointAt(0, 0));
+			int health = shape.Mass / 2;
+			Console.WriteLine(health);
 			//shape.TeleportTo(pos);
 
 			//component
@@ -365,7 +369,7 @@ namespace TaskForceUltra.src.GameModule
 
 			JObject obj = Util.Deserialize(FileRegistry[shipId]);
 
-			int health = obj.Value<int>("health");
+			//int health = obj.Value<int>("health");
 			List<Color> shipColors = new List<Color> { Color.Crimson, Color.Yellow, Color.White, Color.Red };
 			float scale = obj.Value<float>("scale");
 			JArray enginesObj = obj.Value<JArray>("engines");
@@ -378,6 +382,7 @@ namespace TaskForceUltra.src.GameModule
 
 			//shape
 			Shape shape = new ShapeFactory().Create(shapeObj, scale, SwinGame.PointAt(0, 0));
+			int health = shape.Mass / 2;
 			shape.TeleportTo(pos);
 
 			//components

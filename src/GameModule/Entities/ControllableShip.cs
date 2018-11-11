@@ -21,7 +21,6 @@ namespace TaskForceUltra.src.GameModule.Entities
 		}
 
 		public override bool TryReactToCollision(int dmg, Vector collidingVel, int collidingMass, Team collider, bool forceReaction = false) {
-			forceReaction = false;
 			return base.TryReactToCollision(dmg, collidingVel, collidingMass, collider, forceReaction);
 		}
 

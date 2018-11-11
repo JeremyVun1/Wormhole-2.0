@@ -1,6 +1,6 @@
 {
 	"id": "myEmitter",
-	"rate": 5,
+	"rate": 10,
 	"particle": {
 		"path": "\\resources\\data\\particles\\myParticle.json"
 	}

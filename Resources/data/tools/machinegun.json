@@ -3,7 +3,7 @@
     "mass": 3,
     "scale": 0.5,
     "cooldown": 0.1,
-    "health": 10,
+    "health": 15,
     "shape": {
         "lines": [],
         "boxes": [

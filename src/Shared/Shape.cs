@@ -19,7 +19,7 @@ namespace TaskForceUltra
 		private Point2D pos;
 		public List<LineSegment> BoundingBox { get; private set; }
 		public int Mass {
-			get { return shape.Count; }
+			get { return shape.Count * 3; }
 		}
 
 		public Shape(List<LineSegment> shape, List<LineSegment> boundingBox, Point2D offsetPos) {
