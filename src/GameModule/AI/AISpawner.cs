@@ -31,7 +31,7 @@ namespace TaskForceUltra.src.GameModule
 		}
 
 		public virtual void Update() {
-			if (!cdHandler.IsOnCooldown()) {
+			if (!cdHandler.IsOnCooldown() && entityHandler.EntityList.Count < 5) {
 				Spawn();
 			}
 
