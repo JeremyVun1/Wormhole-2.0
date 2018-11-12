@@ -37,7 +37,9 @@ namespace TaskForceUltra.src.GameModule
 		public void RegisterAll() {
 			quadTree.Clear();
 			foreach (ICollides c in entityHandler.EntityList.OfType<ICollides>()) {
-				quadTree.Register(c);
+				if (c is Particle)
+					continue;
+				else quadTree.Register(c);
 			}
 		}
 

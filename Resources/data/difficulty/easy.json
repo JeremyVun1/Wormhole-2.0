@@ -2,6 +2,6 @@
 	"difficultyId": "easy",
 	"spawnTimer": 20,
 	"aiMod": 0.5,
-	"shootCooldown": 8,
-	"difficultyLevel": 0
+	"shootCooldown": 6,
+	"difficultyLevel": 10
 }
